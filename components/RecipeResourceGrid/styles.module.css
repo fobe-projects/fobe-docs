@@ -1,0 +1,6 @@
+.resourceGrid {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-bottom: 4rem;
+}

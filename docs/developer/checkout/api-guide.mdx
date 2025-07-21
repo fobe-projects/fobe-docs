@@ -1,0 +1,688 @@
+---
+title: Checkout API Guide
+sidebar_label: API Guide
+hide_table_of_contents: true
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import TwoColumn from "@site/components/Layout";
+
+<TwoColumn>
+<div>
+## Creating a Checkout Session
+
+A [`Checkout`](/api-reference/checkout/objects/checkout.mdx) object can be created for logged-in users and for anonymous (guest) users.
+
+To create a [`Checkout`](api-reference/checkout/objects/checkout.mdx) object, use the [`checkoutCreate`](api-reference/checkout/mutations/checkout-create.mdx) mutation.
+
+- If the call is made by an [authenticated user](/api-usage/authentication.mdx), the created checkout will be assigned to that user.
+
+- If the call is not made by an authenticated user, the created checkout will not have a user assigned.
+  User email is not required at this stage but must be provided before adding a promo code, creating a payment, or completing checkout.
+
+[`Checkout.channel.countries`](/api-reference/channels/objects/channel#channelcountriescountrydisplay---) provides a list of countries to which shipping is available, which is derived from all shipping methods assigned to a channel of the checkout. This can be useful to render country picker at the checkout view.
+</div>
+<Tabs>
+<TabItem value="GraphQL">
+
+```graphql
+mutation {
+  checkoutCreate(
+    input: {
+      channel: "default-channel"
+      email: "customer@example.com"
+      lines: [{ quantity: 1, variantId: "UHJvZHVjdFZhcmlhbnQ6Mjk3" }]
+      shippingAddress: {
+        firstName: "John"
+        lastName: "Doe"
+        streetAddress1: "1470  Pinewood Avenue"
+        city: "Michigan"
+        postalCode: "49855"
+        country: US
+        countryArea: "MI"
+      }
+      billingAddress: {
+        firstName: "John"
+        lastName: "Doe"
+        streetAddress1: "1470  Pinewood Avenue"
+        city: "Michigan"
+        postalCode: "49855"
+        country: US
+        countryArea: "MI"
+      }
+    }
+  ) {
+    checkout {
+      id
+      totalPrice {
+        gross {
+          amount
+          currency
+        }
+      }
+      isShippingRequired
+      shippingMethods {
+        id
+        name
+        active
+        message
+      }
+      availableCollectionPoints {
+        id
+        name
+        clickAndCollectOption
+      }
+      availablePaymentGateways {
+        id
+        name
+        config {
+          field
+          value
+        }
+      }
+    }
+    errors {
+      field
+      code
+    }
+  }
+}
+```
+
+    </TabItem>
+
+<TabItem value={"Result"}>
+```json
+{
+  "data": {
+    "checkoutCreate": {
+      "checkout": {
+        "id": "Q2hlY2tvdXQ6ZmE5ZjBkMjYtMWM3NC00MDgyLTk3MzktYTIxOGE2NzVjMDZk",
+        "totalPrice": {
+          "gross": {
+            "amount": 20,
+            "currency": "USD"
+          }
+        },
+        "isShippingRequired": true,
+        "shippingMethods": [
+          {
+            "id": "U2hpcHBpbmdNZXRob2Q6MTM=",
+            "name": "UPS",
+            "active": true,
+            "message": ""
+          },
+          {
+            "id": "U2hpcHBpbmdNZXRob2Q6MTI=",
+            "name": "DHL",
+            "active": false,
+            "message": "Not available."
+          }
+        ],
+        "availableCollectionPoints": [
+          {
+            "id": "V2FyZWhvdXNlOjU0NjliNWQ3LThmOGUtNGVmOS1iMGQxLWNhYWZmYTg4MjI1OQ==",
+            "name": "Local Store"
+            "clickAndCollectOption": "LOCAL"
+          },
+          {
+            "id": "=V2FyZWhvdXNlOjU0NjliNWQ3LThmOGUtNGVmOS1iMGQxLWNhYWZmYTg4MjI1OA==",
+            "name": "Company HQ"
+            "clickAndCollectOption": "ALL"
+          }
+        ],
+        "availablePaymentGateways": [
+          {
+            "id": "app.saleor.adyen",
+            "name": "Adyen",
+            "config": []
+          }
+        ]
+      },
+      "errors": []
+    }
+  }
+}
+```
+    </TabItem>
+</Tabs>
+</TwoColumn>
+
+<TwoColumn>
+<div>
+## Set Email
+When an anonymous checkout has been created without an email, the email must be set using [`CheckoutEmailUpdate`](api-reference/checkout/mutations/checkout-email-update.mdx) before creating payment and completing the checkout.
+</div>
+
+<Tabs>
+<TabItem value={"GraphQL"}>
+```graphql {2-4}
+mutation {
+  checkoutEmailUpdate(
+    id: "Q2hlY2tvdXQ6ZTEzZDFjOTItOWJkNi00ODViLTgyMDctZTNhM2I5NjVkZTQw"
+    email: "test_customer@example.com"
+  ) {
+    checkout {
+      id
+      email
+    }
+    errors {
+      field
+      message
+    }
+  }
+}
+```
+</TabItem>
+<TabItem value={"Result"}>
+
+```json {6}
+{
+  "data": {
+    "checkoutDeliveryMethodUpdate": {
+      "checkout": {
+        "id": "Q2hlY2tvdXQ6ZTEzZDFjOTItOWJkNi00ODViLTgyMDctZTNhM2I5NjVkZTQw",
+        "email": "test_customer@example.com"
+      },
+      "errors": []
+    }
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+</TwoColumn>
+
+<TwoColumn>
+<div>
+## Managing Lines
+To add an item to the cart, use [`checkoutLinesAdd`](api-reference/checkout/mutations/checkout-lines-add.mdx). The total price will be updated automatically.
+
+See also [`checkoutLinesDelete`](/api-reference/checkout/mutations/checkout-lines-delete.mdx) and [`checkoutLinesUpdate`](api-reference/checkout/mutations/checkout-lines-update.mdx).
+
+If the quantity is changed to **`0`**, it wll be removed from checkout.
+
+</div>
+
+<Tabs>
+<TabItem value={"GraphQL"}>
+```graphql {4}
+mutation {
+  checkoutLinesAdd(
+    id: "Q2hlY2tvdXQ6ZTEzZDFjOTItOWJkNi00ODViLTgyMDctZTNhM2I5NjVkZTQw"
+    lines: [{ quantity: 1, variantId: "UHJvZHVjdFZhcmlhbnQ6Mjc0" }]
+  ) {
+    checkout {
+      lines {
+        id
+        variant {
+          name
+        }
+        quantity
+      }
+      totalPrice {
+        gross {
+          currency
+          amount
+        }
+      }
+    }
+  }
+}
+```
+</TabItem>
+<TabItem value={"Response"}>
+```json {16-17}
+{
+  "data": {
+    "checkoutLinesAdd": {
+      "checkout": {
+        "lines": [
+          {
+            "id": "Q2hlY2tvdXRMaW5lOjI1Mw=="
+            "variant": {
+              "name": "XL"
+            },
+            "quantity": 1
+          }
+        ],
+        "totalPrice": {
+          "gross": {
+            "currency": "USD",
+            "amount": 5
+          }
+        }
+      }
+    }
+  }
+}
+```
+</TabItem>
+</Tabs>
+</TwoColumn>
+
+<TwoColumn>
+<div>
+## Creating Two Lines Using a Single Variant
+
+By default if a single variant is added multiple times, the quantity of the variant is increased without adding a new line.
+To add the same variant as a separate line, use the `forceNewLine` flag.
+
+When `forceNewLine` is not used and the variant exists in multiple lines - **Saleor will create a new line with provided quantity**
+
+</div>
+<Tabs>
+<TabItem value={"GraphQL"}>
+```graphql {5}
+mutation {
+  checkoutLinesAdd(
+    id: "Q2hlY2tvdXQ6ZTEzZDFjOTItOWJkNi00ODViLTgyMDctZTNhM2I5NjVkZTQw"
+    lines: [
+      { quantity: 1, variantId: "UHJvZHVjdFZhcmlhbnQ6Mjc0", forceNewLine: true }
+      { quantity: 2, variantId: "UHJvZHVjdFZhcmlhbnQ6Mjc0" }
+    ]
+  ) {
+    checkout {
+      lines {
+        id
+        variant {
+          name
+        }
+        quantity
+      }
+      totalPrice {
+        gross {
+          currency
+          amount
+        }
+      }
+    }
+  }
+}
+```
+</TabItem>
+<TabItem value={"Response"}>
+ ```json
+{
+  "data": {
+    "checkoutLinesAdd": {
+      "checkout": {
+        "lines": [
+          {
+            "id": "Q2hlY2tvdXRMaW5lOjI1Mw==",
+            "variant": {
+              "name": "XL"
+            },
+            "quantity": 1
+          },
+          {
+            "id": "Q2hlY2tvdXRMaW5lOjI1Mw==",
+            "variant": {
+              "name": "XL"
+            },
+            "quantity": 2
+          }
+        ],
+        "totalPrice": {
+          "gross": {
+            "currency": "USD",
+            "amount": 15
+          }
+        }
+      }
+    }
+  }
+}
+```
+</TabItem>
+</Tabs>
+</TwoColumn>
+
+<TwoColumn>
+<div>
+## Setting Custom Line Prices
+
+This feature is **only available for apps** with `HANDLE_CHECKOUTS` permission.
+
+The variant price of any item in checkout can be overridden.
+The provided price will be treated as the base price of the variant.
+Applying a voucher or sale in checkout will be used on top of the overridden price.
+
+The custom price can be set with the `price` field in the
+[`CheckoutLineInput`](api-reference/checkout/inputs/checkout-line-input.mdx)
+in the following mutations:
+
+- [`checkoutCreate`](api-reference/checkout/mutations/checkout-create.mdx),
+- [`checkoutLinesAdd`](api-reference/checkout/mutations/checkout-lines-add.mdx) – when adding
+  a variant that already exists in the checkout, the corresponding line gets overridden – the quantity is incremented and the price is updated.
+- [`checkoutLinesUpdate`](api-reference/checkout/mutations/checkout-lines-update.mdx) – overrides
+  the existing line with the price provided in the mutation.
+</div>
+<Tabs>
+<TabItem value={"GraphQL"}>
+
+```graphql {5}
+mutation {
+  checkoutLinesAdd(
+    id: "Q2hlY2tvdXQ6ZTEzZDFjOTItOWJkNi00ODViLTgyMDctZTNhM2I5NjVkZTQw"
+    lines: [
+      { quantity: 1, variantId: "UHJvZHVjdFZhcmlhbnQ6MzA2", price: 16.22 }
+    ]
+  ) {
+    checkout {
+      id
+      lines {
+        variant {
+          id
+        }
+        quantity
+        totalPrice {
+          gross {
+            amount
+            currency
+          }
+          net {
+            amount
+            currency
+          }
+        }
+      }
+    }
+    errors {
+      field
+      message
+    }
+  }
+}
+```
+
+</TabItem>
+<TabItem value={"Response"}>
+```json
+{
+  "data": {
+    "checkoutLinesAdd": {
+      "checkout": {
+        "id": "Q2hlY2tvdXQ6ZTEzZDFjOTItOWJkNi00ODViLTgyMDctZTNhM2I5NjVkZTQw",
+        "lines": [
+          {
+            "variant": {
+              "id": "UHJvZHVjdFZhcmlhbnQ6MzA2"
+            },
+            "quantity": 2,
+            "totalPrice": {
+              "gross": {
+                "amount": 32.44,
+                "currency": "USD"
+              },
+              "net": {
+                "amount": 32.44,
+                "currency": "USD"
+              }
+            }
+          }
+        ]
+      },
+      "errors": []
+    }
+  }
+}
+```
+</TabItem>
+</Tabs>
+</TwoColumn>
+
+<TwoColumn>
+<div>
+
+## Update Shipping Address
+
+Use [`checkoutShippingAddressUpdate`](/api-reference/checkout/mutations/checkout-shipping-address-update.mdx) and [`checkoutBillingAddressUpdate`](api-reference/checkout/mutations/checkout-billing-address-update.mdx) mutations to set the destination address.
+
+Keep in mind that address affects the availability of the products.
+
+</div>
+<Tabs>
+<TabItem value={"Mutation"}>
+```graphql
+mutation checkoutShippingAddressUpdate($checkoutId: ID!, $shippingAddress: AddressInput!) {
+  checkoutShippingAddressUpdate(
+    id: $checkoutId
+    shippingAddress: $shippingAddress
+  ) {
+    checkout {
+      id
+      shippingAddress {
+        ...AddressFragment
+      }
+      billingAddress {
+        ...AddressFragment
+      }
+    }
+  }
+}
+
+fragment AddressFragment on Address {
+    id
+    city
+    phone
+    postalCode
+    companyName
+    cityArea
+    streetAddress1
+    streetAddress2
+    countryArea
+    country {
+        country
+        code
+    }
+    firstName
+    lastName
+}
+````
+</TabItem>
+<TabItem value={"Variables"}>
+```json
+{
+  "checkoutId": "Q2hlY2tvdXQ6MDk1MmNiNWUtMzZkYi00YTQ5LThhN2MtZjAyNGE2M2Y1NzNj",
+  "shippingAddress": {
+    "city": "New York",
+    "cityArea": "",
+    "companyName": "",
+    "country": "US",
+    "countryArea": "NY",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "phone": "",
+    "postalCode": "10019",
+    "streetAddress1": "11 W 53rd St, New York, NY",
+    "streetAddress2": ""
+  }
+}
+````
+
+</TabItem>
+
+<TabItem value={"Response"}>
+```json
+{
+  "data": {
+    "checkoutShippingAddressUpdate": {
+      "checkout": {
+        "id": "Q2hlY2tvdXQ6MDk1MmNiNWUtMzZkYi00YTQ5LThhN2MtZjAyNGE2M2Y1NzNj",
+        "shippingAddress": {
+          "id": "QWRkcmVzczoxMjc=",
+          "city": "NEW YORK",
+          "phone": "",
+          "postalCode": "10019",
+          "companyName": "",
+          "cityArea": "",
+          "streetAddress1": "11 W 53rd St, New York, NY",
+          "streetAddress2": "",
+          "countryArea": "NY",
+          "country": {
+            "country": "United States of America",
+            "code": "US",
+            "__typename": "CountryDisplay"
+          },
+          "firstName": "First Name",
+          "lastName": "Last Name",
+          "__typename": "Address"
+        },
+        "billingAddress": {
+          "id": "QWRkcmVzczoxMjg=",
+          "city": "NEW YORK",
+          "phone": "",
+          "postalCode": "10019",
+          "companyName": "",
+          "cityArea": "",
+          "streetAddress1": "11 W 53rd St, New York, NY",
+          "streetAddress2": "",
+          "countryArea": "NY",
+          "country": {
+            "country": "United States of America",
+            "code": "US",
+            "__typename": "CountryDisplay"
+          },
+          "firstName": "First Name",
+          "lastName": "Last Name",
+          "__typename": "Address"
+        }
+      }
+    }
+  },
+  "extensions": {
+    "cost": {
+      "requestedQueryCost": 2,
+      "maximumAvailable": 50000
+    }
+  }
+}
+```
+</TabItem>
+</Tabs>
+
+</TwoColumn>
+
+<TwoColumn>
+<div>
+## Update Delivery Method
+
+Use [`checkoutDeliveryMethodUpdate`](/api-reference/checkout/mutations/checkout-delivery-method-update.mdx) to pass the delivery method returned by the `checkout` query.
+
+Notice that the return type in `checkout.deliveryMethod` can be either `Warehouse` or `ShippingMethod`, so we need to use the union type.
+
+Learn more about [delivery methods](/developer/checkout/address.mdx#selecting-the-delivery-method).
+
+See GraphQL documentation to [learn more about unions](https://graphql.org/learn/schema/#union-types).
+
+</div>
+<Tabs>
+<TabItem value={"Mutation"}>
+```graphql
+mutation {
+  checkoutDeliveryMethodUpdate(
+    id: "Q2hlY2tvdXQ6MDk1MmNiNWUtMzZkYi00YTQ5LThhN2MtZjAyNGE2M2Y1NzNj"
+    deliveryMethodId: "U2hpcHBpbmdNZXRob2Q6MTU="
+  ) {
+    errors {
+      message
+      field
+    }
+    checkout {
+      deliveryMethod{
+        ...on Warehouse{
+          id
+          name
+        }
+        ... on ShippingMethod{
+          id
+          name
+        }
+      }
+    }
+    __typename
+  }
+}
+```
+</TabItem>
+<TabItem value={"Response"}>
+```json
+{
+  "data": {
+    "checkoutDeliveryMethodUpdate": {
+      "errors": [],
+      "checkout": {
+        "deliveryMethod": {
+          "id": "U2hpcHBpbmdNZXRob2Q6MTU=",
+          "name": "FedEx"
+        }
+      },
+      "__typename": "CheckoutDeliveryMethodUpdate"
+    }
+  },
+  "extensions": {
+    "cost": {
+      "requestedQueryCost": 0,
+      "maximumAvailable": 50000
+    }
+  }
+}
+```
+</TabItem>
+</Tabs>
+</TwoColumn>
+
+<TwoColumn>
+<div>
+## Completing checkout
+Checkout can be completed if all [requirements are satisfied](/developer/checkout/lifecycle#completing-checkout).
+
+When the checkout is fully paid, the webhook [`CHECKOUT_FULLY_PAID`](api-reference/webhooks/enums/webhook-event-type-async-enum.mdx#webhookeventtypeasyncenumcheckout_fully_paid) will be triggered.
+
+</div>
+<Tabs>
+<TabItem value={"GraphQL"}>
+```graphql {2-4}
+mutation {
+  checkoutComplete(
+    id: "Q2hlY2tvdXQ6ZTEzZDFjOTItOWJkNi00ODViLTgyMDctZTNhM2I5NjVkZTQw"
+  ) {
+    order {
+      id
+      status
+    }
+    errors {
+      field
+      message
+    }
+  }
+}
+```
+</TabItem>
+<TabItem value={"Result"}>
+```json
+{
+  "data": {
+    "checkoutComplete": {
+      "order": {
+        "id": "T3JkZXI6MjU=",
+        "status": "UNFULFILLED"
+      },
+      "errors": []
+    }
+  }
+}
+```
+</TabItem>
+</Tabs>
+</TwoColumn>
+
+
+### Other Mutations and Queries
+
+- [`checkoutAddPromoCode`](api-reference/checkout/mutations/checkout-add-promo-code.mdx) - Add a promo code to the checkout.
+- [`customerAttach`](/api-reference/checkout/mutations/checkout-customer-attach.mdx) - Attach a user to the checkout.
+- [`customerDetach`](/api-reference/checkout/mutations/checkout-customer-detach) - Detach a user from the checkout.

@@ -1,0 +1,269 @@
+---
+title: Gift Cards
+---
+
+Gift cards in Saleor are digital codes that customers can redeem during checkout to reduce the total order amount. In Saleor, they can be created by staff or purchased directly at checkout.
+
+Gift cards are not assigned to any channel and can be used in any channel whose currency matches the gift card's currency. During the first gift card usage, the customer user is assigned the gift card, which can then only be used by this user.
+
+## Creating and Managing Gift Cards
+
+Staff users with the `MANAGE_GIFT_CARD` permission can create gift cards directly in Saleor and send them to customers. Gift cards can be created individually or in bulk, and can have an expiry date set or be non-expiring.
+
+### Creating Gift Cards
+
+#### Single Gift Card Creation
+The following example shows how to create a single gift card. Once you provide the `userEmail` and configure the email plugin for the given channel, the gift card is sent to the customer, and the `SENT_TO_CUSTOMER` event is created. In this example, providing the `expiryDate` value will set the expiry date. If you want to create a non-expiring card, do not provide the `expiryDate` value.
+
+```graphql {2-10}
+mutation {
+  giftCardCreate(
+    input: {
+      balance: { amount: 100, currency: "USD" }
+      userEmail: "test@example.com"
+      channel: "channel-USD"
+      expiryDate: "2050-10-10"
+      isActive: true
+    }
+  ) {
+    giftCard {
+      id
+      code
+      last4CodeChars
+      isActive
+      expiryDate
+      initialBalance {
+        currency
+        amount
+      }
+      currentBalance {
+        currency
+        amount
+      }
+      events {
+        type
+      }
+    }
+  }
+}
+```
+
+#### Bulk Gift Card Creation
+Creating gift cards in bulk is similar, but you need to specify the number of gift cards to create and the tag value which will be assigned to all created gift cards.
+
+```graphql {2-9}
+mutation {
+  giftCardBulkCreate(
+    input: {
+      count: 5
+      tag: "example-tag"
+      isActive: true
+      balance: { amount: 200.0, currency: "USD" }
+    }
+  ) {
+    giftCards {
+      id
+      code
+      isActive
+      tag
+    }
+  }
+}
+```
+
+After creation, you can export the gift card codes to CSV. Read more about [exporting gift cards](export/export-gift-cards).
+
+### Managing Gift Cards
+
+#### Resending Gift Cards
+You can resend the gift card to the customer at any time after creation. If the `userEmail` is not provided, the card is sent to the customer who already used the card. If the card hasn't been used yet, it is sent to the customer who created it.
+
+```graphql {2-8}
+mutation {
+  giftCardResend(
+    input: {
+      id: "R2lmdENhcmQ6MjU="
+      channel: "default-channel"
+      email: "saleor@example.com"
+    }
+  ) {
+    giftCard {
+      id
+      code
+      events {
+        type
+        user {
+          email
+        }
+        app {
+          name
+        }
+      }
+    }
+  }
+}
+```
+
+#### Updating Gift Cards
+After creation, the tag, expiry date, and balance amount can be updated.
+
+:::note
+Updating the balanceAmount will update both current and initial ballance, no matter if the card has already been used.
+:::
+
+```graphql {2-9}
+mutation {
+  giftCardUpdate(
+    id: "R2lmdENhcmQ6MjU=",
+    input: {
+      balanceAmount: 70,
+      expiryDate: "2040-10-10",
+      tag: "new-tag",
+    }
+  ) {
+    giftCard {
+      id
+      expiryDate
+      initialBalance {
+        currency
+        amount
+      }
+      currentBalance {
+        currency
+        amount
+      }
+      events {
+        type
+        expiryDate
+        oldExpiryDate
+        oldTag
+        tag
+        balance {
+          initialBalance {
+            amount
+            currency
+          }
+          oldInitialBalance {
+            amount
+            currency
+          }
+          currentBalance {
+            amount
+            currency
+          }
+          oldCurrentBalance {
+            amount
+            currency
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+#### Activating and Deactivating Gift Cards
+Cards can be activated and deactivated at any time, either individually or in bulk.
+
+```graphql {2}
+mutation {
+  giftCardDeactivate(id: "R2lmdENhcmQ6MjY=") {
+    giftCard {
+      id
+      isActive
+      events {
+        type
+      }
+    }
+  }
+}
+```
+
+For bulk operations, use [`giftCardBulkActivate`](api-reference/gift-cards/mutations/gift-card-bulk-activate.mdx) and [`giftCardBulkDeactivate`](api-reference/gift-cards/mutations/gift-card-bulk-deactivate.mdx) mutations.
+
+## Setting Up Gift Cards as Products
+
+To allow customers to purchase gift cards, you need to:
+
+1. Create a product type with `GIFT_CARD` kind
+2. Create a product using this product type
+3. Configure stock settings
+
+:::note
+If you want to have an unlimited number of gift cards in your shop, you should create a stock in a chosen channel with at least one quantity and unset the track inventory flag.
+:::
+
+### Gift Card Fulfillment Settings
+
+The `automaticallyFulfillNonShippableGiftCard` order setting controls when bought gift cards will be created:
+- If set to `True`: Gift card is created during checkout completion
+- If set to `False`: Gift card is created during order fulfillment
+
+### Gift Card Expiry Settings
+
+Gift card settings can be configured to:
+- Never expire
+- Expire after a specific period
+
+Example of setting expiry period to 1 year:
+
+```graphql {2-7}
+mutation {
+  giftCardSettingsUpdate(
+    input: {
+      expiryType: EXPIRY_PERIOD
+      expiryPeriod: { type: YEAR, amount: 1 }
+    }
+  ) {
+    giftCardSettings {
+      expiryType
+      expiryPeriod {
+        type
+        amount
+      }
+    }
+  }
+}
+```
+
+## Using Gift Cards in Checkout
+
+### Applying Gift Cards
+To use a gift card in checkout, run the [`checkoutAddPromoCode`](/api-reference/checkout/mutations/checkout-add-promo-code) mutation with the gift card code.
+
+:::important
+- The channel currency must match the gift card currency
+- If the card was previously used, the checkout user must match the gift card user
+- The card can be used multiple times until the balance is depleted
+:::
+
+### Tax Handling
+Gift cards are applied to the checkout total after tax calculation:
+1. First, Saleor calculates all taxes for the order
+2. Then, the gift card amount is subtracted from the gross total price
+3. The net amount and tax amount are adjusted proportionally
+
+### Multiple Gift Cards
+When multiple gift cards are used:
+- Saleor will always try to use the full amount from each gift card
+- The system processes gift cards in the order they were added to the checkout
+- If the checkout total is less than the gift card amount, only the necessary portion will be used
+- The remaining balance stays on the gift card for future use
+
+### Balance Changes
+Gift card balances are only updated after the order is completed:
+- Adding card to the checkout does not modify the card balance
+- Used amount will be deducted during checkout completion
+- If an order is cancelled, the gift card balance is not restored. You can restore current ballance using [`giftCardUpdate`](/api-reference/gift-cards/mutations/gift-card-update)
+
+### Returns and Refunds
+:::important
+Fulfilled gift cards cannot be returned or refunded. Once a gift card is fulfilled and sent to the customer, it cannot be reversed. This is because:
+- Gift cards are considered digital products
+- They can be used immediately after fulfillment
+:::
+
+If a customer requests a return for a gift card product (i.e., the gift card code has not yet been used), you can handle the process manually:
+
+1. Refund the payment through your payment gateway
+2. Deactivate the associated gift card in the Saleor dashboard to prevent future use

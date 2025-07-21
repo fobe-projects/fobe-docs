@@ -1,0 +1,68 @@
+---
+sidebar_label: Overview
+sidebar_position: 1
+title: Segment Overview
+description: Twilio Segment Overview
+---
+
+import { AppMetadata } from "/components/AppMetadata/AppMetadata.jsx";
+
+<AppMetadata
+  minSaleorVersion="3.20"
+  githubUrl="https://github.com/saleor/apps/tree/main/apps/segment"
+/>
+
+This application integrates with [Twilio Segment](https://segment.com/). It tracks events occurring in Saleor and sends them to Twilio Segment.
+
+## Features
+
+- Send information about order-related events to Segment.
+- Events send to Segment have identity set to user ID or email.
+
+## Assumptions & limitations
+
+-  Currently, only order-related events are supported. Events sent to Segment are in format defined by [V2 E-commerce Events](https://segment.com/docs/connections/spec/ecommerce/v2/) Segment specification.
+-  Order webhooks are asynchronous, meaning events may not be sent to Segment immediately.  
+-  The app uses the [`track` API](https://segment.com/docs/connections/sources/catalog/libraries/server/node/#track). 
+-  The app attempts to retrieve user information using the user ID or email. If that fails, it will send an anonymous ID.  
+-  The app has its webhooks initially disabled; configuring the app will activate the webhooks.  
+
+## Permissions
+
+- `MANAGE_ORDERS`
+
+## Application flow
+
+The application subscribes to the following webhooks and sends coresponding event to Segment:
+
+| Saleor webhook event      | Segment event     |
+| ------------------------- | ----------------- |
+| `ORDER_CONFIRMED`         | `Order Completed` |
+| `ORDER_CANCELLED`         | `Order Cancelled` |
+| `ORDER_REFUNDED`          | `Order Refunded`  |
+| `ORDER_UPDATED`           | `Order Updated`   |
+  
+
+Each event sent to Segment will have properties defined in Segment E-commerce Event spec:
+
+* [`Order Completed`](https://segment.com/docs/connections/spec/ecommerce/v2/#order-completed)
+* [`Order Cancelled`](https://segment.com/docs/connections/spec/ecommerce/v2/#order-cancelled)
+* [`Order Refunded`](https://segment.com/docs/connections/spec/ecommerce/v2/#order-refunded)
+* [`Order Updated`](https://segment.com/docs/connections/spec/ecommerce/v2/#order-updated)
+
+App will also add `channel_id` field with Saleor channel id for given order.
+
+Events sent to Segment will have `Saleor` suffix set in `event` [field](https://segment.com/docs/connections/spec/track/#event) e.g `Order Completed` will be tracked as `Saleor Order Completed`.
+
+
+Example of successful handling of `ORDER_UPDATED` webhook:
+
+```mermaid
+sequenceDiagram
+    OrderUpdatedWebhook->>+App: Send webhook payload
+    App-->>-Database: Fetch app configuration
+    Database-->>+App: Return configuration
+    App-->>+Segment: Use configuration & webhook payload to track event
+    Segment-->>-App: Returns success
+    App->>OrderUpdatedWebhook: Returns 200 status code
+```
