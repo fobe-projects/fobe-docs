@@ -1,0 +1,5 @@
+{
+  "pasteImage.path": "${projectRoot}/static/img/screenshot",
+  "pasteImage.defaultName": "Y-MM-DD-HH-mm-ss",
+  "pasteImage.insertPattern": "<br/><div style={{ textAlign: 'center' }}><img src=\"/img/screenshot/${imageFileName}\" alt=\"${imageFileName}\" style={{ width: '80%', height: 'auto' }} /></div><br/>"
+}

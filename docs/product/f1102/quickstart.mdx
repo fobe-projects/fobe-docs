@@ -17,7 +17,7 @@ The following figure illustrates the FoBE Quill nRF52840 Mesh hardware diagram.
 
 ## Mechanical dimensions
 
-FoBE Quill nRF52840 Mesh is a single-sided 60.96mm x 20.32mm (2.4" x 0.9") 1.6mm thick PCB with a USB Type-C port and dual rows of through-hole pins.
+FoBE Quill nRF52840 Mesh is a single sided 60.96mm x 20.32mm (2.4" x 0.9") 1.6mm thick PCB with a USB Type-C port and dual through-hole pins.
 
 <br/>
 <div style={{ textAlign: 'center' }}>
@@ -27,57 +27,57 @@ FoBE Quill nRF52840 Mesh is a single-sided 60.96mm x 20.32mm (2.4" x 0.9") 1.6mm
 
 ## Power supply
 
-The FoBE Quill nRF52840 Mesh is designed to be powered by a battery and includes charging circuitry for lithium batteries. The charger can be powered from a wall adapter via the USB Type-C connector. The incoming USB voltage is routed exclusively to the charger IC, which monitors the battery and stops charging when it's full or if the temperature is too high (this requires soldering a thermistor to the NTC test point). The output from the charger then powers the development kit through a step-down converter.
+The FoBE Quill nRF52840 Mesh is designed to be powered by a battery and provides the charger circuitry for lithium batteries. The charger circuitry can be connected to a wall outlet charger through the Type-C USB connector. The voltage coming from the Type-C USB port goes only to a charger chip. The charger chip detects if the battery needs to be recharged. When the battery is fully charged or the temperature is too high (requires soldering a thermistor module to the NTC test point), the charger chip will stop charging. The output of the charger chip is used to supply the development kit via a step-down converter.
 
-A high-efficiency step-down converter (TPS62825) with a low quiescent current generates the 3.3V rail. This power supply powers the entire development kit and connected peripheral modules, supporting a maximum current of 2A.
+A high-efficiency step-down converter (TPS62825) with a low quiescent current is used for generating 3.3 V. This 3.3 V power supply drives the consumption of the development kit and peripheral modules. The max current supported by the 3.3 V DC-DC is 2A.
 
 ### Peripheral Power
 
-**PERI_3V3** is a switchable 3.3V power supply that can be controlled by the MCU to cut off power to the MFP (Multi-Function Port) during idle periods, thus saving power. **PERI_3V3** is controlled by the **P1.03** GPIO on the SoC.
+**PERI_3V3** is another 3.3 V power supply. It can be controlled by the MCU to cut off power to the MFP (Multi-Function Port) during idle periods to save power. **PERI_3V3** is controlled by the **P1.03** GPIO on the SoC.
 
-        - Set **P1.03**=1 to turn **PERI_3V3** on.
-        - Set **P1.03**=0 to turn **PERI_3V3** off.
+        - Set **P1.03**=1, **PERI_3V3** is on.
+        - Set **P1.03**=0, **PERI_3V3** is off.
 
-**DISPLAY_EN** and **DISPLAY_BLK** are used to control the display power and backlight, respectively. They are controlled by the **P0.07** and **P0.27** GPIOs on the SoC.
+**DISPLAY_EN** and **DISPLAY_BLK** are used to control the display power supply and backlight. They are controlled by the **P0.07** and **P0.27** GPIOs on the SoC, respectively.
 
-        - Set **P0.07**=0 to turn **DISPLAY_EN** on.
-        - Set **P0.07**=1 to turn **DISPLAY_EN** off.
-        - Set **P0.27**=0 to turn **DISPLAY_BLK** on.
-        - Set **P0.27**=1 to turn **DISPLAY_BLK** off.
+        - Set **P0.07**=0, **DISPLAY_EN** is on.
+        - Set **P0.07**=1, **DISPLAY_EN** is off.
+        - Set **P0.27**=0, **DISPLAY_BLK** is on.
+        - Set **P0.27**=1, **DISPLAY_BLK** is off.
 
 ### Power consumption
 
-Power consumption measurements were performed while powering the board with a simulated 3.7V lithium battery.
+Power consumption measurements are performed when powered by a simulated 3.7V lithium battery.
 
 |Mode                                           |Average Current |
 |---------------------------------------------------------|---------|
-|SoC in sleep mode, all peripherals off                   | \< 18uA   |
-|SoC in active mode, all peripherals on, SX1262 in RX mode | \< 40mA  |
-|SoC in active mode, all peripherals on, SX1262 in TX mode | \< 140mA  |
+|SoC in sleep mode, all peripherals off                   | \<18uA   |
+|SoC in active mode, all peripherals on, SX1262 in RX mode | \<40mA  |
+|SoC in active mode, all peripherals on, SX1262 in TX mode | \<140mA  |
 
 ### Voltage measurement
 
-Battery voltage is measured using a voltage divider with high-precision thick film resistors. The high-side resistor (R1) is 1M Ohm, and the low-side resistor (R2) is 1.5M Ohm. The SoC's **P0.05** GPIO is connected to the measurement point.
+Battery voltage measurement is performed using a set of high-precision thick film resistors. The high-side resistor (R1) is 1M Ohm, and the low-side resistor (R2) is 1.5M Ohm. The SoC's **P0.05** GPIO is connected to the measurement point:
 
-For a voltage divider circuit with two resistors, R1 and R2, in series, where Vin is the input voltage and Vout is the voltage across R2:
+For a voltage divider circuit with two resistors R1 and R2 in series, where Vin is the total input voltage across both resistors, and Vout is the voltage across R2:
 
 **Vout = Vin * (R2 / (R1 + R2))**
 
-By reading the voltage at the measurement point with the ADC, the battery voltage can be calculated using this formula.
+By acquiring the voltage at the measurement point using the ADC, the current battery voltage can be obtained according to the formula.
 
 ## General purpose I/Os
 
-There are up to 21 multi-function General Purpose I/Os (GPIOs) available on the header pins, 7 of which can be used as ADC inputs. These GPIOs operate at a 3.3V logic level. Any GPIO can be mapped to a digital peripheral (such as UART, SPI, TWI, PDM, I2S, QSPI, PWM, and QDEC) for layout flexibility.
+There are up to 21 multi-function General Purpose I/Os (GPIOs) available on the header pins (7 of which can be used as ADC inputs). These GPIOs are powered from the on-board 3.3V rail and should be used for 3.3V logic level. Any GPIO can be mapped to a digital peripheral (such as UART, SPI, TWI, PDM, I2S, QSPI, PWM, and QDEC) for layout flexibility.
 
-The MFP provides an additional 4 GPIO pins. Two of these can be connected to an NFC antenna, used with modules supporting the MFP interface, or configured as two I2C channels.
+The MFP additionally provides 4 GPIO pins, two of which can be connected to an NFC antenna, or directly connected to modules supporting the MFP interface, or expand to two I2C channels.
 
 ## Display
 
-The FoBE Quill nRF52840 Mesh features an on-board 1.14-inch full-color IPS display, driven by an ST7789V chip and mounted on a PETG bracket. It connects to the development board via an FPC (Flexible Printed Circuit) and has a resolution of 135 x 240 pixels with a maximum brightness of 400 cd/m².
+The FoBE Quill nRF52840 Mesh features an on-board 1.14-inch full-color IPS display, driven by an ST7789V chip, and mounted on a PETG bracket. It connects to the development board via an FPC (Flexible Printed Circuit) and has a resolution of 135 x 240 pixels with a maximum brightness of 400 cd/m².
 
 ## Buttons and LEDs
 
-There are two buttons and one blue LED connected to dedicated GPIOs on the nRF52840 SoC. The following table shows the connections:
+There are two buttons, one Blue LED connected to dedicated GPIOs on the nRF52840 SoC. The following table shows the Button and LED connections:
 
 | Component | GPIO Pin | Active state |
 |-----------|----------|--------------|
@@ -87,9 +87,9 @@ There are two buttons and one blue LED connected to dedicated GPIOs on the nRF52
 
 ## Sub-GHz Radio
 
-The FoBE Quill nRF52840 Mesh board features an on-board sub-GHz radio module based on the Semtech SX1262. It supports LoRa and (G)FSK modulation and operates in the 433 MHz, 868 MHz, and 915 MHz frequency bands (depending on the model). An integrated 1.8V TCXO ensures excellent stability across temperature variations.
+The FoBE Quill nRF52840 Mesh board features an on-board sub-GHz radio module based on the Semtech SX1262 chip. It supports LoRa and (G)FSK modulation and operates in the 433 MHz, 868 MHz, and 915 MHz frequency bands (model dependent), An integrated 1.8V TCXO ensures excellent stability, unaffected by temperature variations.
 
-Key specifications include a low active receive current of just 4.2 mA, a maximum transmit power of up to +22 dBm, and high sensitivity down to -148 dBm, providing excellent interference immunity.
+Key specifications include an active receive current consumption of just 4.2 mA, a maximum transmit power of up to +22 dBm, and high sensitivity down to -148 dBm, providing excellent interference immunity.
 
 The module connects to the nRF52840 SoC via SPI for long-range wireless communication:
 
@@ -112,11 +112,11 @@ The FoBE Quill nRF52840 Mesh board has an embedded SMD ceramic antenna for the n
 
 ### Sub-GHz Antenna
 
-The FoBE Quill nRF52840 Mesh board has an iPEX-U.FL connector for an external sub-GHz antenna.
+The FoBE Quill nRF52840 Mesh board has an iPEX-U.FL connector for connecting an external sub-GHz antenna.
 
 ## Debug interface
 
-The FoBE Quill nRF52840 Mesh board provides a debug interface via the SWD (Serial Wire Debug) port. This allows developers to program and debug their applications using compatible tools and IDEs.
+The FoBE Quill nRF52840 Mesh board provides a debug interface through the SWD (Serial Wire Debug) connector. This allows developers to program and debug their applications using compatible tools and IDEs.
 
 <br/>
 <div style={{ textAlign: 'center' }}>
@@ -128,16 +128,16 @@ The FoBE Quill nRF52840 Mesh board provides a debug interface via the SWD (Seria
 
 ### Prerequisite
 
-Before you begin, please make sure you have the following items:
+Before starting to use the FoBE Quill nRF52840 Mesh, please make sure to prepare the following necessary items:
 
 #### Hardware
         * FoBE Quill nRF52840 Mesh board
-        * USB-C Cable (must support data transfer)
+        * USB-C Cable
         * 3.7V Li-Ion/LiPo Battery (optional, for battery-powered applications)
-        * Sub-GHz Antenna (required if your program enables sub-GHz communication to avoid damaging the module)
+        * Sub-GHz Antenna (optional, but if your program enables sub-GHz communication, please be sure to connect the antenna, otherwise, the module will be damaged)
 
 #### Software
-        You can use various IDEs for programming the FoBE Quill nRF52840 Mesh.
+        You can choose multiple IDEs for coding the FoBE Quill nRF52840 Mesh.
         * [Arduino IDE](https://www.arduino.cc/en/software)
         * [Platform IO](https://platformio.org/)
         * [Visual Studio Code](https://code.visualstudio.com/)
@@ -146,23 +146,23 @@ Before you begin, please make sure you have the following items:
 
 ### Setup the board
 
-Follow these steps to get your FoBE Quill nRF52840 Mesh board up and running:
+To light up your FoBE Quill nRF52840 Mesh board, follow these steps:
 
 1. Connect the Sub-GHz antenna to the iPEX-U.FL connector on the board (if applicable).
 
 :::warning
-If you are using the Sub-GHz radio, you must connect an appropriate antenna to the iPEX-U.FL connector. Operating the radio without an antenna may cause permanent damage.
+If you are using the Sub-GHz radio module, please ensure that you connect an appropriate antenna to the iPEX-U.FL connector. Using the module without an antenna may damage it.
 :::
 
 2. Connect the board to your computer using a USB-C cable.
 
 :::important
-Ensure your USB cable supports data transfer (USB 2.0 or higher). Charge-only cables will not work.
+Make sure your USB cable supports data transfer (USB 2.0 or USB 3.0 are both fine), and is not a charge-only cable.
 :::
 
-3. Launch the Arduino IDE.
+3. Launch the Arduino application
 
-4. Add the FoBE board package to your Arduino IDE.
+4. Add FoBE Quill nRF52840 Mesh board package to your Arduino IDE
 
    - Open the Arduino IDE and navigate to **File** > **Preferences**.
    - In the "Additional Boards Manager URLs" field, add the following URL:
@@ -174,34 +174,34 @@ Ensure your USB cable supports data transfer (USB 2.0 or higher). Charge-only ca
 
 <br/><div style={{ textAlign: 'center' }}><img src="/img/screenshot/2025-07-19-00-56-16.png" alt="2025-07-19-00-56-16.png" style={{ width: '80%', height: 'auto' }} /></div><br/>
 
-5. Install the board package.
+5. Install board package
 
-   - Navigate to the **Boards Manager** (icon in the left sidebar).
-   - Search for "FoBE Quill nRF52840 Mesh" and click "Install".
+   - Navigate to **Boards Manager** (icon in the left sidebar).
+   - Search for "FoBE Quill nRF52840 Mesh" and click on the "Install" button.
 
 <br/><div style={{ textAlign: 'center' }}><img src="/img/screenshot/2025-07-19-00-57-30.png" alt="2025-07-19-00-57-30.png" style={{ width: '80%', height: 'auto' }} /></div><br/>
 
-6. Select the board and port.
+6. Select the board
 
    - Click the board selector in the top left corner of the Arduino IDE.
-   - Select the port corresponding to your FoBE Quill nRF52840 Mesh board.
+   - Select port which corresponds to your FoBE Quill nRF52840 Mesh board.
    - Select **FoBE Quill nRF52840 Mesh** from the list of available boards.
 
 <br/><div style={{ textAlign: 'center' }}><img src="/img/screenshot/2025-07-19-00-58-16.png" alt="2025-07-19-00-58-16.png" style={{ width: '80%', height: 'auto' }} /></div><br/>
 
-7. Open an example sketch.
+7. Open the example sketch
 
    - Navigate to **File** > **Examples** > **01.Basics** > **Blink**.
    
 <br/><div style={{ textAlign: 'center' }}><img src="/img/screenshot/2025-07-19-00-59-35.png" alt="2025-07-19-00-59-35.png" style={{ width: '80%', height: 'auto' }} /></div><br/>
 
-8. Upload the sketch.
+8. Upload the sketch
 
    - Click the **Upload** button (right arrow icon) in the Arduino IDE toolbar.
    - Wait for the upload process to complete.
 
 :::warning
-If you want to use the USB Serial for printing output, ensure you enable "Serial (CDC)" under **Tools** > **Print Port**. Then, add the following line to the top of your sketch:
+If you want to using the USB Serial as print port, please make sure to enable the Serial (CDC) in **Tools** > **Print Port** > **Serial (CDC)**, and add the following line to the top of your sketch:
 
 ```cpp
 #include <Adafruit_TinyUSB.h>
@@ -210,7 +210,7 @@ If you want to use the USB Serial for printing output, ensure you enable "Serial
 
 <br/><div style={{ textAlign: 'center' }}><img src="/img/screenshot/2025-07-19-01-00-36.png" alt="2025-07-19-01-00-36.png" style={{ width: '80%', height: 'auto' }} /></div><br/>
 
-Once the upload is complete, the onboard blue LED should start blinking, indicating that your board is successfully set up and running the example sketch.
+Once the upload is complete, the onboard Blue LED should start blinking, indicating that the board is successfully set up and running the example sketch.
 
 <br/>
 <div style={{ textAlign: 'center' }}>
@@ -222,7 +222,7 @@ Once the upload is complete, the onboard blue LED should start blinking, indicat
 
 ### Measuring battery status
 
-The battery voltage can be measured using the ADC (Analog-to-Digital Converter) on the nRF52840 SoC. The measurement is performed through a voltage divider circuit, as described in the Power Supply section.
+The battery voltage can be measured using the ADC (Analog-to-Digital Converter) on the nRF52840 SoC. The voltage measurement is performed through a voltage divider circuit, as described in the Power Supply section.
 
 #### Measuring battery voltage
 
@@ -281,7 +281,7 @@ void loop()
 The TFT display on the FoBE Quill nRF52840 Mesh can be controlled using the Adafruit GFX library. You can draw shapes, text, and images on the display.
 
 :::important
-Make sure to install the **Adafruit GFX** and **Adafruit ST7735 and ST7789 Library** libraries in your Arduino IDE before using the following code.
+Make sure install the **Adafruit GFX** and **Adafruit ST7735 and ST7789 Library** libraries in your Arduino IDE before using the following code.
 :::
 
 ```cpp
@@ -296,11 +296,11 @@ Adafruit_ST7789 tft = Adafruit_ST7789(&SPI1, PIN_ST7789_NSS, PIN_ST7789_RS, PIN_
 
 void setup()
 {
-  // Initialize the TFT_EN and TFT_BLK pins as outputs
+    // Initialize the TFT_EN and TFT_BLK pins as an output
   pinMode(PIN_TFT_EN, OUTPUT);
   pinMode(PIN_TFT_BLK, OUTPUT);
 
-  // Turn on the display power
+  // Turn on the display
   digitalWrite(PIN_TFT_EN, LOW);
   // Turn on the backlight
   digitalWrite(PIN_TFT_BLK, LOW);
@@ -316,7 +316,7 @@ void setup()
   tft.setRotation(1);
   Serial.println(F("Initialized"));
 
-  // Fill the screen with black
+  // Fill something to display
   tft.fillScreen(ST77XX_BLACK);
   tft.setTextWrap(false);
   tft.fillScreen(ST77XX_BLACK);
@@ -325,7 +325,7 @@ void setup()
   tft.setTextSize(2);
   tft.println("Hello FoBE!");
 
-  Serial.println(F("Display update complete"));
+  Serial.println(F("Display complete"));
 }
 
 void loop() {}
@@ -335,6 +335,6 @@ void loop() {}
 
 ### Power Consumption Verification
 
-To verify the power consumption of the FoBE Quill nRF52840 Mesh, you can use a power analyzer or a multimeter to measure the current drawn by the board in different modes (e.g., sleep, active).
+To verify the power consumption of the FoBE Quill nRF52840 Mesh, you can use a multimeter or an oscilloscope to measure the current drawn by the board in different modes (sleep, active, etc.).
 
-You can follow the [Meshtastic application guide](/product/f1101/applications#meshtastic) to set up a low-power scenario for measurement.
+You can follow the Application Meshtastic to measure the power consumption of board.

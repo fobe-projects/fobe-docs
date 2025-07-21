@@ -1,5 +1,35 @@
-const { title, ref } = require("./sidebars/utils");
-const { productQuill } = require("./sidebars/product-quill");
+export const chapterTitle = (id, label, icon) => ({
+  type: "doc",
+  id,
+  label,
+  customProps: {
+    icon,
+    isTitle: true,
+  },
+});
+
+export const hr = () => ({
+  type: "html",
+  value: "<hr/>",
+});
+
+export const title = (value) => ({
+  type: "html",
+  value,
+  className: "menu__group-label",
+});
+
+export const ref = (id, label, icon) => {
+  return {
+    type: "ref",
+    label,
+    id,
+    customProps: {
+      icon,
+    },
+  };
+};
+
 
 const backToHome = {
   type: "ref",
@@ -97,5 +127,29 @@ module.exports = {
       },
     },
   ],
-  productQuill: [backToHome, ...productQuill],
+  productQuill: [backToHome,
+    chapterTitle("product/quill", "Quill Series", "box"),
+    {
+      type: "category",
+      label: "FoBE Quill nRF52840 Mesh",
+      items: [
+        "product/f1101/index",
+        "product/f1101/quickstart",
+        "product/f1101/programming",
+        "product/f1101/applications",
+        "product/f1101/resources",
+      ],
+    },
+    {
+      type: "category",
+      label: "FoBE Quill ESP32-S3 Mesh",
+      items: [
+        "product/f1102/index",
+        "product/f1102/quickstart",
+        "product/f1102/programming",
+        "product/f1102/applications",
+        "product/f1102/resources",
+      ],
+    }
+  ],
 };

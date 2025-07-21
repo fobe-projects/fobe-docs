@@ -197,10 +197,6 @@ module.exports = {
       additionalLanguages: [
         "json",
         "bash",
-        "graphql",
-        "http",
-        "tsx",
-        "typescript",
       ],
     },
   },
