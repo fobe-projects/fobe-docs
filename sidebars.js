@@ -30,7 +30,6 @@ export const ref = (id, label, icon) => {
   };
 };
 
-
 const backToHome = {
   type: "ref",
   id: "index",
@@ -55,16 +54,11 @@ module.exports = {
     {
       type: "category",
       label: "Quickstart",
-      items: [
-        "product/quill",
-        "product/quill",
-        "product/quill",
-      ],
+      items: ["product/quill", "product/quill", "product/quill"],
       customProps: {
         icon: "play",
       },
     },
-
 
     title("Development Boards"),
     ref("product/quill", "Quill Series", "feather"),
@@ -90,22 +84,29 @@ module.exports = {
     title("Additional Resources"),
     {
       type: "doc",
-      id: "product/quill",
+      id: "about",
       customProps: {
         icon: "info",
       },
     },
     {
       type: "doc",
-      id: "product/quill",
+      id: "disclaimer",
       customProps: {
         icon: "checklist",
       },
     },
     {
+      type: "doc",
+      id: "privacy",
+      customProps: {
+        icon: "shield",
+      },
+    },
+    {
       type: "link",
       label: "Store",
-      href: "https://saleor.io/discord",
+      href: "https://store.fobestudio.com",
       customProps: {
         icon: "shop",
       },
@@ -113,7 +114,7 @@ module.exports = {
     {
       type: "link",
       label: "Report an Issue",
-      href: "https://github.com/saleor/saleor-docs/issues/new",
+      href: "https://github.com/fobe-projects/fobe-documentation-web/issues/new",
       customProps: {
         icon: "feedback",
       },
@@ -121,13 +122,14 @@ module.exports = {
     {
       type: "link",
       label: "Join Discord",
-      href: "https://saleor.io/discord",
+      href: "https://discord.gg/XjPDqEWyC7",
       customProps: {
         icon: "discord",
       },
     },
   ],
-  productQuill: [backToHome,
+  productQuill: [
+    backToHome,
     chapterTitle("product/quill", "Quill Series", "box"),
     {
       type: "category",
@@ -150,6 +152,6 @@ module.exports = {
         "product/f1102/applications",
         "product/f1102/resources",
       ],
-    }
+    },
   ],
 };
