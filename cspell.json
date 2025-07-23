@@ -27,13 +27,16 @@
     "noopener",
     "noreferrer",
     "psql",
-    "saleor",
+    "fobe",
+    "fobestudio",
     "shippo",
     "slugifying",
     "turborepo",
     "undiscounted",
     "żółta",
-    "Blik"
+    "Blik",
+    "pico",
+    "meshtastic"
   ],
   "allowCompoundWords": true,
   "useGitignore": true,

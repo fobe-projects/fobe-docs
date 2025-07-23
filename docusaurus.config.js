@@ -14,7 +14,8 @@ module.exports = {
   // Used for publishing and more
   projectName: "fobe-documentation-web",
   organizationName: "fobe-projects",
-
+  deploymentBranch: "gh-pages",
+  trailingSlash: false,
   favicon: "img/favicon.png",
 
   future: {
@@ -127,7 +128,7 @@ module.exports = {
         </span>
         <a
     			target="_blank"
-    			href="https://fobestudio.com/discord"
+    			href="https://discord.gg/XjPDqEWyC7"
     		>
     			Join the community
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 25 20">
@@ -142,8 +143,8 @@ module.exports = {
 
     algolia: {
       appId: "KOMJIOT8N0", // cspell: disable-line
-      apiKey: "a83e359f6cc92c99dd6dc4d5b713f55a",
-      indexName: "fobe-documentation",
+      apiKey: "1cbe9bcb1d974a5c73e4146543eb8335",
+      indexName: "docs_fobestudio_com_komjiot8n0_pages", // cspell: disable-line
       placeholder: "Search FoBE Documentation",
     },
 
@@ -184,7 +185,7 @@ module.exports = {
           position: "left",
         },
         {
-          to: "https://cloud.saleor.io/signup?utm_button=Sign%20up&utm_page=docs",
+          to: "https://store.fobestudio.com",
           label: "Store 🛍️",
           position: "right",
           className: "store-button-cta",
@@ -194,10 +195,7 @@ module.exports = {
 
     prism: {
       theme: themes.oceanicNext,
-      additionalLanguages: [
-        "json",
-        "bash",
-      ],
+      additionalLanguages: ["json", "bash"],
     },
   },
   customFields: {
@@ -211,9 +209,6 @@ module.exports = {
           customCss: [require.resolve("./src/css/theme.css")],
         },
         sitemap: {
-          // Skip changefreq and priority for all pages as Google ignores them.
-          // Add last modification timestamp, which seems to have impact on indexing priority.
-          // https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap#additional-notes-about-xml-sitemaps
           lastmod: "date",
           changefreq: null,
           priority: null,
@@ -223,7 +218,7 @@ module.exports = {
           routeBasePath: "/",
           path: "docs",
           editUrl: function ({ version, versionDocsDirPath, docPath }) {
-            return `https://github.com/saleor/saleor-docs/edit/main/docs/${docPath}`;
+            return `https://github.com/fobe-projects/fobe-documentation-web/edit/main/docs/${docPath}`;
           },
           sidebarPath: "sidebars.js",
         },

@@ -2,7 +2,7 @@
 slug: /
 title: Welcome
 hide_table_of_contents: true
-description: Highlights of the Saleor documentation. Learn about Saleor using tutorials, API reference, and developer guides.
+description: Highlights of the FoBE documentation. Learn about FoBE using tutorials and developer guides.
 ---
 
 <style>
@@ -26,71 +26,70 @@ import CardGrid from "@site/components/CardGrid";
 import Tiles from "@site/components/Tiles";
 
 import {
-  Tag,
-  BadgePercent,
-  Split,
-  ShoppingBag,
-  TableProperties,
-  CreditCard,
-  Earth,
-  Truck,
-  Download,
-  Package,
-  LayoutDashboard,
-  Store,
+    MessageCircleQuestion,
+    Store,
+    BotMessageSquare,
+    Github,
+    Feather,
+CircuitBoard,
+    Minimize2,
+    Blocks,
+    ChevronsLeftRightEllipsis   ,
+    Signal,
+    MessageSquareQuote,
+    Tag,
+    BadgePercent,
+    Split,
+    ShoppingBag,
+    TableProperties,
+    CreditCard,
+    Earth,
+    Truck,
+    Download,
+    Package,
+    LayoutDashboard,
 } from "lucide-react";
 
-<Tiles />
-
-Learn about Saleor using tutorials, API reference, and developer guides.
+Learn about hardware and software using tutorials and developer guides.
 
 <CardGrid>
 
-    [<Icon32 name={"play"} /> **Quickstart** Explore tutorials to get up and running quickly.](quickstart/cloud.mdx)
+    [<MessageCircleQuestion size={32} strokeWidth={2}/> **About Us** Explore FoBE Studio.](/about)
 
-    [<Icon32 name={"api"} /> **API Reference** Lookup GraphQL types, queries and mutations.](api-reference/api-reference.mdx)
+    [<Store size={32} strokeWidth={2}/> **Store** Pick your favorite products.](https://store.fobestudio.com)
 
-    [<Icon32 name={"feature"} /> **Why Saleor** Learn about product vision and architecture.](overview/why-saleor/composable.mdx)
+    [<BotMessageSquare size={32} strokeWidth={2}/> **Discord** Join the discussion community now.](https://discord.gg/XjPDqEWyC7)
 
-    [<Icon32 name={"buildApp"} /> **Build Apps** Build integrations and dashboard apps.](developer/extending/apps/overview.mdx)
+    [<Github size={32} strokeWidth={2}/> **Github** Explore our Github repositories.](https://github.com/fobe-projects)
 
 </CardGrid>
 
-<Block title="Core Concepts" >
+<Block title="Products" >
     <Chapters>
-        [<Tag size={16} strokeWidth={1.5}/> **Products** _Configure catalog._](developer/products/overview.mdx)
+        [<Feather size={16} strokeWidth={1.5}/> **Quill** _Versatile MCU board series._](/product/quill)
 
-        [<ShoppingBag size={16} strokeWidth={1.5}/> **Checkout** _Business logic of checkout._](developer/checkout/overview.mdx)
+        [<CircuitBoard size={16} strokeWidth={1.5}/> **DevKit** _UNO-compatible MCU board with integrated debugger._](/product/quill)
 
-        [<Split size={16} strokeWidth={1.5}/> **Channels** _Multi channel configuration._](developer/channels/overview.mdx)
+        [<Minimize2 size={16} strokeWidth={1.5}/> **Pico** _Ultra-compact, low-power MCU board._](/product/quill)
 
-        [<BadgePercent size={16} strokeWidth={1.5}/> **Promotions** _Vouchers and discounts._](developer/discounts/promotions.mdx)
+        [<Blocks size={16} strokeWidth={1.5}/> **Shield** _Professional functional integration evaluation board._](/product/quill)
 
-        [<TableProperties size={16} strokeWidth={1.5}/> **Attributes** _Custom fields._](developer/attributes/overview.mdx)
-
-        [<CreditCard size={16} strokeWidth={1.5}/> **Payments** _Payment integrations and API._](developer/payments/overview.mdx)
+        [<TableProperties size={16} strokeWidth={1.5}/> **Breakout** _Compact and flexible functional expansion board._](/product/quill)
 
     </Chapters>
 
 </Block>
 
-<Block title="Recipes" >
+<Block title="Solution" >
     <Chapters>
-        [<Earth size={16} strokeWidth={1.5}/> **Multi-region** _Build global experience with regions, currencies, and storefronts._](/recipes/multi-region.mdx)
+        [<Earth size={16} strokeWidth={1.5}/> **Environmental Telemetry** _Build reliable environmental monitoring systems with MicroPython._](/)
 
-        [<Download size={16} strokeWidth={1.5}/> **Digital Products** _Sell licenses, services, and other non-physical goods._](/recipes/digital-products.mdx)
+        [<ChevronsLeftRightEllipsis size={16} strokeWidth={1.5}/> **Data Transfer Unit** _Programmable high-performance data transfer unit built with Zephyr RTOS and Lua._](/)
 
-        [<Truck size={16} strokeWidth={1.5}/> **Custom shipping** _Shipping options tailored to your customers._](/recipes/custom-shipping.mdx)
+        [<Signal size={16} strokeWidth={1.5}/> **Meshbus** _Mesh network for low-rate, long-distance data transmission built on multi-wireless protocols._](/)
 
-        [<Package size={16} strokeWidth={1.5}/> **Click and Collect** _Managing in-store order pickup._](/recipes/click-and-collect.mdx)
+        [<MessageSquareQuote size={16} strokeWidth={1.5}/> **Meshtastic** _Build popular Meshtastic hardware devices._](/)
 
-        [<LayoutDashboard size={16} strokeWidth={1.5}/> **Extending dashboard** _Add new management views to the Dashboard._](/recipes/extending-dashboard.mdx)
-
-        [<Store size={16} strokeWidth={1.5}/> **Marketplace** _Create a marketplace platform where multiple sellers can sell their products._](/recipes/marketplace.mdx)
+        [<LayoutDashboard size={16} strokeWidth={1.5}/> **FoBE DPC** _High-concurrency IoT data processing platform._](/)
     </Chapters>
-</Block>
-
-
-<Block title={"Extensions"}>
-  <Apps />
 </Block>

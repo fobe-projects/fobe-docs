@@ -33,7 +33,7 @@ const NotFound = () => {
     <Layout
       title={`Page not found`}
       permalink="/404"
-      description="List of all documented versions of Saleor"
+      description="List of all documented versions of FoBE Studio"
     >
       <div className="container margin-vert--xl">
         <h1>Requested page could not be found.</h1>

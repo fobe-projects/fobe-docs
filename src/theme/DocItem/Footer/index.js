@@ -41,7 +41,7 @@ export default function DocItemFooter() {
         )}
 
         <a
-          href={"https://saleor.io/discord"}
+          href={"https://discord.gg/XjPDqEWyC7"}
           target={"_blank"}
           rel="noreferrer"
         >
@@ -49,7 +49,9 @@ export default function DocItemFooter() {
           Help
         </a>
         <a
-          href={"https://github.com/saleor/saleor-docs/issues"}
+          href={
+            "https://github.com/fobe-projects/fobe-documentation-web/issues/new"
+          }
           target={"_blank"}
           rel="noreferrer"
         >
@@ -59,10 +61,9 @@ export default function DocItemFooter() {
       </div>
 
       <div className={s.links}>
-        Copyright © 2018–{new Date().getFullYear()}{" "}
-        <a href="https://saleor.io/">Saleor Commerce</a>. All rights reserved. |{" "}
-        <a href={"https://saleor.io/legal/terms"}>Terms</a> |{" "}
-        <a href={"https://saleor.io/legal/privacy"}>Privacy</a> |{" "}
+        Copyright © 2024–{new Date().getFullYear()} FoBE Studio. All rights
+        reserved. | <a href={"disclaimer"}>Disclaimer</a> |{" "}
+        <a href={"privacy"}>Privacy</a> |{" "}
         {/* The cookie consent modal only shows when theres attached GTM container with CookieYes integration */}
         <a href="#" className="cky-banner-element">
           Manage Cookies Settings
