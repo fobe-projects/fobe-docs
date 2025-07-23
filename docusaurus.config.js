@@ -14,7 +14,8 @@ module.exports = {
   // Used for publishing and more
   projectName: "fobe-documentation-web",
   organizationName: "fobe-projects",
-
+  deploymentBranch: "gh-pages",
+  trailingSlash: false,
   favicon: "img/favicon.png",
 
   future: {
