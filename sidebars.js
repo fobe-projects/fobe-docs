@@ -62,6 +62,7 @@ module.exports = {
 
     title("Development Boards"),
     ref("product/quill", "Quill Series", "feather"),
+    ref("product/breakout", "Breakout Series", "appBoard"),
     // ref("developer/index", "Pico Series", "distribute"),
     // ref("cloud/overview", "Mesh Cube", "appBoard"),
 
@@ -151,6 +152,19 @@ module.exports = {
         "product/f1102/programming",
         "product/f1102/applications",
         "product/f1102/resources",
+      ],
+    },
+  ],
+  productBreakout: [
+    backToHome,
+    chapterTitle("product/breakout", "Breakout Series", "appBoard"),
+    {
+      type: "category",
+      label: "FoBE Breakout L76K",
+      items: [
+        "product/f2207/index",
+        "product/f2207/quickstart",
+        "product/f2207/resources",
       ],
     },
   ],

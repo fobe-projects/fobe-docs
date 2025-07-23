@@ -1,0 +1,39 @@
+---
+title: Quick Start
+sidebar_label: Quick Start
+---
+
+This guide introduces the FoBE Breakout L76K and how to use it.
+
+## Hardware diagram
+
+The following figure illustrates the FoBE Breakout L76K hardware diagram.
+
+<br/>
+<div style={{ textAlign: 'center' }}>
+  <img src="/img/products/f2207-1a.digram.png" alt="FoBE Breakout L76K Hardware Diagram" style={{ width: '80%', height: 'auto' }} />
+</div>
+<br/>
+
+## Mechanical dimensions
+
+FoBE Breakout L76K is a single-sided 25.4mm x 25.4mm (1" x 1") 1.6mm thick PCB with a SH1.0 6-pin connector and a set of 6-pin 2.54mm header holes.
+
+<br/>
+<div style={{ textAlign: 'center' }}>
+  <img src="/img/products/f2207-1a.dimensions.png" alt="FoBE Breakout L76K Mechanical Dimensions" style={{ width: '80%', height: 'auto' }} />
+</div>
+<br/>
+
+## Peripheral Interfaces
+
+Besides power and UART connections, the external interface also includes Wakeup and Reset pins for more control over the module.
+
+## GNSS Configuration Jumper
+
+The board features a GALAXY solder pad. Soldering this pad configures the module to use GPS + GLONASS. By default, the pad is not soldered, and the module uses BeiDou + GPS.
+
+## PPS LED Jumper
+
+The board includes a PPS (Pulse Per Second) LED with a jumper. To save power, you can physically cut the trace between the pads of this jumper. You can later re-solder the jumper to reconnect the PPS LED.
+
