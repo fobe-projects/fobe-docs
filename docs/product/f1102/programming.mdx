@@ -2,11 +2,11 @@
 title: Programming
 ---
 
-This guide describes how to program the FoBE Quill nRF52840 Mesh.
+This guide describes how to program the FoBE Quill ESP32-S3 Mesh.
 
 ## Arduino
 
-If you use the Arduino IDE for programming, please see [Quick Start - Setup the board](/product/f1101/quickstart#setup-the-board).
+If you use the Arduino IDE for programming, please see [Quick Start - Setup the board](/product/f1102/quickstart#setup-the-board).
 
 The following describes how to program the FoBE Quill nRF52840 Mesh with Arduino using PlatformIO.
 
@@ -18,7 +18,7 @@ You can follow the official guide of [PlatformIO](https://platformio.org/platfor
 
     1. Open the **PlatformIO Home** and navigate to **Platforms**.
     2. Click "Advanced Installation" button.
-    3. Input the git repository url ```https://github.com/fobe-projects/fobe-nrf52-platformio.git#develop``` then click "Install" button, waiting for installation done.
+    3. Input the git repository url ```https://github.com/fobe-projects/fobe-nrf52-platformio.git#develop``` then click "Install" button, and wait for the installation to complete.
 
     <br/><div style={{ textAlign: 'center' }}><img src="/img/screenshot/2025-07-19-02-24-59.png" alt="2025-07-19-02-24-59.png" style={{ width: '80%', height: 'auto' }} /></div><br/>
 
@@ -50,7 +50,7 @@ You can follow the official guide of [PlatformIO](https://platformio.org/platfor
 
 [MicroPython](https://micropython.org) is a lean and efficient implementation of the Python 3 programming language that includes a small subset of the Python standard library and is optimised to run on microcontrollers and in constrained environments.
 
-The following describes how to program the FoBE Quill nRF52840 Mesh with MicroPython.
+The following describes how to program the FoBE Quill Esp32-S3 Mesh with MicroPython.
 
 #### Releases
 
@@ -77,7 +77,7 @@ To install the MicroPython firmware, follow these steps:
 
 #### HEX with OpenOCD (CMSIS-DAP)
 
-Hex files are used for programming the device using OpenOCD, please make sure OpenOCD is installed and configured correctly.
+Hex files are used for programming the device using OpenOCD. Please make sure OpenOCD is installed and configured correctly.
 
     1. Download the latest firmware file with the `.hex` extension.
     2. Connect the FoBE Quill nRF52840 Mesh to your computer.
@@ -110,7 +110,7 @@ source .venv/bin/activate
 pip3 install mpremote
 
 # Create a new file named main.py
-echo "print('Hello, FoBE Quill nRF52840 Mesh!')" > main.py
+echo "print('Hello, FoBE Quill ESP32-S3 Mesh!')" > main.py
 
 # Copy the main.py file to the device
 mpremote cp main.py :
@@ -128,7 +128,7 @@ More information about the MicroPython REPL can be found in the [MicroPython doc
 
 The [Zephyr OS](https://zephyrproject.org) is based on a small-footprint kernel designed for use on resource-constrained and embedded systems: from simple embedded environmental sensors and LED wearables to sophisticated embedded controllers, smart watches, and IoT wireless applications.
 
-The following describes how to program the FoBE Quill nRF52840 Mesh with Zephyr RTOS.
+The following describes how to program the FoBE Quill ESP32-S3 Mesh with Zephyr RTOS.
 
 ### Create a new project
 
@@ -161,100 +161,100 @@ Before you start, make sure you have Python installed on your system.
         ```
     4. Create app folder and add some files like:
 
-        ```
-        .west/
-        └── config
-        app/
-        ├── CMakeLists.txt
-        ├── prj.conf
-        ├── west.yml
-        └── src
-            └── main.c
-        ```
+    ```
+    .west/
+    └── config
+    app/
+    ├── CMakeLists.txt
+    ├── prj.conf
+    ├── west.yml
+    └── src
+        └── main.c
+    ```
 
-        Add `CMakeLists.txt` file with the following content:
+    Add `CMakeLists.txt` file with the following content:
 
-        ```cmake
-        cmake_minimum_required(VERSION 3.20.0)
-        find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
-        project(app)
+    ```cmake
+    cmake_minimum_required(VERSION 3.20.0)
+    find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
+    project(app)
 
-        target_sources(app PRIVATE src/main.c)
-        ```
+    target_sources(app PRIVATE src/main.c)
+    ```
 
-        Add `prj.conf` file with the following content:
+    Add `prj.conf` file with the following content:
 
-        ```ini
-        CONFIG_GPIO=y
-        ```
+    ```ini
+    CONFIG_GPIO=y
+    ```
 
-        Add `west.yml` file with the following content:
+    Add `west.yml` file with the following content:
 
-        ```yaml
-        manifest:
-        remotes:
-            - name: zephyr
-                url-base: https://github.com/zephyrproject-rtos
-            - name: fobe
-                url-base: https://github.com/fobe-projects
-        projects:
-            - name: zephyr
-                remote: zephyr
-                revision: main
-                path: zephyr
-                import: true
-            - name: fobe-zephyr-sdk
-                remote: fobe
-                path: fobe
-                revision: main
-        ```
+    ```yaml
+    manifest:
+    remotes:
+        - name: zephyr
+            url-base: https://github.com/zephyrproject-rtos
+        - name: fobe
+            url-base: https://github.com/fobe-projects
+    projects:
+        - name: zephyr
+            remote: zephyr
+            revision: main
+            path: zephyr
+            import: true
+        - name: fobe-zephyr-sdk
+            remote: fobe
+            path: fobe
+            revision: main
+    ```
 
-        Add `src/main.c` file with the following content:
+    Add `src/main.c` file with the following content:
 
-        ```c
-        #include <stdio.h>
-        #include <zephyr/kernel.h>
-        #include <zephyr/drivers/gpio.h>
+    ```c
+    #include <stdio.h>
+    #include <zephyr/kernel.h>
+    #include <zephyr/drivers/gpio.h>
 
-        /* 1000 msec = 1 sec */
-        #define SLEEP_TIME_MS 1000
+    /* 1000 msec = 1 sec */
+    #define SLEEP_TIME_MS 1000
 
-        /* The devicetree node identifier for the "led0" alias. */
-        #define LED0_NODE DT_ALIAS(led0)
+    /* The devicetree node identifier for the "led0" alias. */
+    #define LED0_NODE DT_ALIAS(led0)
 
-        /*
-        * A build error on this line means your board is unsupported.
-        * See the sample documentation for information on how to fix this.
-        */
-        static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
+    /*
+    * A build error on this line means your board is unsupported.
+    * See the sample documentation for information on how to fix this.
+    */
+    static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
 
-        int main(void)
-        {
-            int ret;
-            bool led_state = true;
+    int main(void)
+    {
+        int ret;
+        bool led_state = true;
 
-            if (!gpio_is_ready_dt(&led)) {
-                return 0;
-            }
+        if (!gpio_is_ready_dt(&led)) {
+            return 0;
+        }
 
-            ret = gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
+        ret = gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
+        if (ret < 0) {
+            return 0;
+        }
+
+        while (1) {
+            ret = gpio_pin_toggle_dt(&led);
             if (ret < 0) {
                 return 0;
             }
 
-            while (1) {
-                ret = gpio_pin_toggle_dt(&led);
-                if (ret < 0) {
-                    return 0;
-                }
-
-                led_state = !led_state;
-                printf("LED state: %s\n", led_state ? "ON" : "OFF");
-                k_msleep(SLEEP_TIME_MS);
-            }
-            return 0;
+            led_state = !led_state;
+            printf("LED state: %s\n", led_state ? "ON" : "OFF");
+            k_msleep(SLEEP_TIME_MS);
         }
-        ```
+        return 0;
+    }
+    ```
     5. Install and configure the Zephyr SDK:
 
     ```bash
@@ -273,16 +273,16 @@ Before you start, make sure you have Python installed on your system.
     Double-click the reset button on the device to enter bootloader mode, then run the following commands in the terminal:
 
     ```bash
-    # Build the project for the FoBE Quill nRF52840 Mesh board
-    west build -b fobe_quill_nrf52840/nrf52840/uf2 ./app
+    # Build the project for the FoBE Quill ESP32-S3 Mesh board
+    west build -b fobe_quill_esp32s3/esp32s3/procpu/w ./app
 
     # Flash the project to the board
     west flash
     ```
 
-    That you can got a simple LED blinking example (Zephyr RTOS Standalone project) running on the **FoBE Quill nRF52840 Mesh**.
+    Now you have a simple LED blinking example (Zephyr RTOS Standalone project) running on the **FoBE Quill ESP32-S3 Mesh**.
     <div style={{ textAlign: 'center' }}><img src="/img/screenshot/2025-07-21-13-38-07.png" alt="2025-07-21-13-38-07.png" style={{ width: '100%', height: 'auto' }} /></div><br/>
 
     More information about the **Zephyr RTOS** can be found in the [Zephyr documentation](https://docs.zephyrproject.org/latest/).
 
-    Or you can explore the [FoBE Zephyr](https://github.com/fobe-projects/fobe-zephyr) for more details on using the **FoBE Zephyr SDK**.
+    You can also explore the [FoBE Zephyr](https://github.com/fobe-projects/fobe-zephyr) for more details on using the **FoBE Zephyr SDK**.

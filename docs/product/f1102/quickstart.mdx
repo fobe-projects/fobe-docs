@@ -119,11 +119,11 @@ The FoBE Quill ESP32-S3 Mesh board provides a debug interface via USB (CDC/JTAG)
 
 ### Prerequisite
 
-Before starting to use the FoBE Quill ESP32-S3 Mesh, please make sure to prepare the following necessary items:
+Before you begin, please make sure you have the following items:
 
 #### Hardware
         * FoBE Quill ESP32-S3 Mesh board
-        * USB-C Cable
+        * USB-C Cable (must support data transfer)
         * 3.7V Li-Ion/LiPo Battery (optional, for battery-powered applications)
         * Sub-GHz Antenna (optional, but if your program enables sub-GHz communication, please be sure to connect the antenna, otherwise, the module will be damaged)
 
@@ -180,7 +180,7 @@ Once uploaded, the onboard blue LED should blink, indicating the board is runnin
 
 <br/>
 <div style={{ textAlign: 'center' }}>
-  <img src="/img/meme/you-did-a-great-job.png" alt="You Did a Great Job" style={{ width: '50%', height: 'auto' }} />
+  <img src="/img/meme/that-s-it.png" alt="Thaaaaaat's it" style={{ width: '50%', height: 'auto' }} />
 </div>
 <br/>
 
@@ -215,16 +215,15 @@ void loop() {
 
 ```cpp
 #include <Arduino.h>
-
-#define CHARGING_STATUS_PIN 10
+#include <Adafruit_TinyUSB.h>
 
 void setup() {
-  pinMode(CHARGING_STATUS_PIN, INPUT);
+  pinMode(PIN_CHARGING, INPUT);
   Serial.begin(115200);
 }
 
 void loop() {
-  int status = digitalRead(CHARGING_STATUS_PIN);
+  int status = digitalRead(PIN_CHARGING);
   Serial.print("Charging status: ");
   Serial.println(status == LOW ? "Charging" : "Not Charging");
   delay(1000);
