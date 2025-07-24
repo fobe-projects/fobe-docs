@@ -176,7 +176,7 @@ module.exports = {
       { name: "theme-color", content: "#0c7d7b" },
 
       { name: "canonical", content: "https://docs.fobestudio.com" },
-      { name: "apple-mobile-web-app-capable", content: "yes" },
+      { name: "mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-status-bar-style", content: "default" },
       { name: "format-detection", content: "telephone=no" },
     ],
