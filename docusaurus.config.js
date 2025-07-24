@@ -146,6 +146,7 @@ module.exports = {
       apiKey: "1cbe9bcb1d974a5c73e4146543eb8335",
       indexName: "fobe-documentation-web", // cspell: disable-line
       placeholder: "Search FoBE Documentation",
+      contextualSearch: true,
     },
 
     colorMode: {
