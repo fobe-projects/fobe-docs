@@ -3,7 +3,7 @@ require("dotenv").config();
 const { themes } = require("prism-react-renderer");
 const path = require("node:path");
 
-const gtmContainerId = process.env.GTM_CONTAINER_ID;
+const gtmContainerId = "GTM-PQDT48Z5"; // cspell: disable-line
 
 module.exports = {
   title: "FoBE Documentation",
@@ -120,6 +120,67 @@ module.exports = {
   ],
 
   themeConfig: {
+    metadata: [
+      {
+        name: "keywords",
+        content:
+          "fobe, documentation, api, graphql, commerce, headless, ecommerce, fobe_studio, developer, docs",
+      }, // cspell: disable-line
+      {
+        name: "description",
+        content:
+          "FoBE Studio Documentation - High performance, composable, headless commerce API. Complete developer guide and API reference.",
+      }, // cspell: disable-line
+      { name: "author", content: "FoBE Studio" },
+      { name: "robots", content: "index, follow" },
+      { name: "language", content: "en" },
+
+      { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "FoBE Documentation" },
+      {
+        property: "og:title",
+        content: "FoBE Documentation - Headless Commerce API",
+      },
+      {
+        property: "og:description",
+        content:
+          "High performance, composable, headless commerce API. Complete developer guide and API reference for building modern ecommerce applications.",
+      }, // cspell: disable-line
+      {
+        property: "og:image",
+        content: "https://docs.fobestudio.com/img/og-image.png",
+      },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:url", content: "https://docs.fobestudio.com" },
+      { property: "og:locale", content: "en_US" },
+
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:site", content: "@fobe_studio" },
+      { name: "twitter:creator", content: "@fobe_studio" },
+      {
+        name: "twitter:title",
+        content: "FoBE Documentation - Headless Commerce API",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "High performance, composable, headless commerce API. Complete developer guide and API reference.",
+      },
+      {
+        name: "twitter:image",
+        content: "https://docs.fobestudio.com/img/twitter-image.png",
+      },
+
+      { name: "viewport", content: "width=device-width, initial-scale=1.0" },
+      { name: "theme-color", content: "#0c7d7b" },
+
+      { name: "canonical", content: "https://docs.fobestudio.com" },
+      { name: "apple-mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-status-bar-style", content: "default" },
+      { name: "format-detection", content: "telephone=no" },
+    ],
+
     announcementBar: {
       id: "announcement-bar",
       content: `
@@ -210,9 +271,9 @@ module.exports = {
           customCss: [require.resolve("./src/css/theme.css")],
         },
         sitemap: {
-          lastmod: "date",
-          changefreq: null,
-          priority: null,
+          lastmod: "datetime",
+          changefreq: "daily",
+          priority: 0.5,
         },
         docs: {
           breadcrumbs: false,
