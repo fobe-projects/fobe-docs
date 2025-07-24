@@ -1,0 +1,96 @@
+---
+title: Quick Start
+sidebar_label: Quick Start
+---
+
+This guide introduces the FoBE Base Cube nRF52840 and how to use it.
+
+## Hardware diagram
+
+The following figure illustrates the FoBE Base Cube nRF52840 hardware diagram.
+
+<br/>
+<div style={{ textAlign: 'center' }}>
+  <img src="/img/products/f2102-r1lg.digram.png" alt="FoBE Base Cube nRF52840 Hardware Diagram" style={{ width: '80%', height: 'auto' }} />
+</div>
+<br/>
+
+<br/>
+<div style={{ textAlign: 'center' }}>
+  <img src="/img/products/f2102-r1lg.digram-1.png" alt="FoBE Base Cube nRF52840 Hardware Diagram-1" style={{ width: '80%', height: 'auto' }} />
+</div>
+<br/>
+
+## Mechanical dimensions
+
+FoBE Base Cube nRF52840 is a compact PCB with dimensions of 50mm * 50mm, designed for outdoor LoRa communication.
+
+<br/>
+<div style={{ textAlign: 'center' }}>
+  <img src="/img/products/f2102-r1lg.dimensions.png" alt="FoBE Base Cube nRF52840 Mechanical Dimensions" style={{ width: '80%', height: 'auto' }} />
+</div>
+<br/>
+
+## Power Supply
+
+*   GPS power (GNSS-3V3) is controlled by MCU P0.26. GPS data backup power is not controlled.
+*   Screen, buzzer, and external header power (PERI-3V3) are controlled by MCU P0.16.
+
+## Status Indicators
+
+The board has two indicator LEDs:
+
+*   Power LED
+*   Charging Indicator LED
+
+## Buttons
+
+The board has two buttons:
+
+*   Reset Button
+*   User Button (connected to MCU P1.00)
+
+## Shielding Pads
+
+The MCU and LoRa IC have reserved shielding pads, allowing users to add shielding covers for improved signal performance.
+
+## Battery Management
+
+*   The battery charging IC directly manages the battery connection.
+*   The NTC header is directly connected to the charging IC.
+*   Battery voltage is measured using a voltage divider circuit (1M and 1.5M resistors), and the measurement is read by MCU P0.05.
+
+## Sub-GHz Radio (LoRa)
+
+The FoBE Base Cube nRF52840 board features an on-board sub-GHz radio module based on the Semtech SX1262. It supports LoRa and (G)FSK modulation and operates in the 433 MHz, 868 MHz, and 915 MHz frequency bands (depending on the model). An integrated 1.8V TCXO ensures excellent stability across temperature variations.
+
+Key specifications include a low active receive current of just 4.2 mA, a maximum transmit power of up to +22 dBm, and high sensitivity down to -148 dBm, providing excellent interference immunity.
+
+The module connects to the nRF52840 SoC via SPI for long-range wireless communication:
+
+| SX1262 Pin | GPIO Pin |
+|-----------|----------|
+| MISO     | **P0.24** |
+| MOSI     | **P0.22** |
+| SCK      | **P0.20** |
+| NSS      | **P1.08** |
+| RST      | **P0.13** |
+| BUSY     | **P0.15** |
+| DIO1     | **P0.17** |
+| RXEN     | **P0.11** |
+
+## GPS
+
+The GPS module has the following pin assignments:
+
+| GPS Pin | GPIO Pin |
+|-----------|----------|
+| RST      | **P0.04** |
+| RXD      | **P0.12** |
+| TXD      | **P1.09** |
+| PPS      | **P0.08** |
+| WAKE     | **P0.06** |
+
+### GNSS Configuration Jumper
+
+The board features a GALAXY solder pad. Soldering this pad configures the module to use GPS + GLONASS. By default, the pad is not soldered, and the module uses BeiDou + GPS.

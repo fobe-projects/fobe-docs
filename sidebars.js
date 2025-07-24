@@ -181,5 +181,14 @@ module.exports = {
         "product/f2101/resources",
       ],
     },
+    {
+      type: "category",
+      label: "FoBE Base Cube nRF52840",
+      items: [
+        "product/f2102/index",
+        "product/f2102/quickstart",
+        "product/f2102/resources",
+      ],
+    },
   ],
 };
