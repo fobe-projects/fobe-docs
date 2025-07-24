@@ -62,6 +62,7 @@ module.exports = {
 
     title("Development Boards"),
     ref("product/quill", "Quill Series", "feather"),
+    ref("product/base", "Base Series", "thermometer"),
     ref("product/breakout", "Breakout Series", "appBoard"),
     // ref("developer/index", "Pico Series", "distribute"),
     // ref("cloud/overview", "Mesh Cube", "appBoard"),
@@ -165,6 +166,19 @@ module.exports = {
         "product/f2207/index",
         "product/f2207/quickstart",
         "product/f2207/resources",
+      ],
+    },
+  ],
+  productBase: [
+    backToHome,
+    chapterTitle("product/base", "Base Series", "thermometer"),
+    {
+      type: "category",
+      label: "FoBE Base with Solar Power",
+      items: [
+        "product/f2101/index",
+        "product/f2101/quickstart",
+        "product/f2101/resources",
       ],
     },
   ],
