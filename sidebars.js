@@ -156,19 +156,6 @@ module.exports = {
       ],
     },
   ],
-  productBreakout: [
-    backToHome,
-    chapterTitle("product/breakout", "Breakout Series", "appBoard"),
-    {
-      type: "category",
-      label: "FoBE Breakout L76K",
-      items: [
-        "product/f2207/index",
-        "product/f2207/quickstart",
-        "product/f2207/resources",
-      ],
-    },
-  ],
   productBase: [
     backToHome,
     chapterTitle("product/base", "Base Series", "thermometer"),
@@ -188,6 +175,37 @@ module.exports = {
         "product/f2102/index",
         "product/f2102/quickstart",
         "product/f2102/resources",
+      ],
+    },
+  ],
+  productBreakout: [
+    backToHome,
+    chapterTitle("product/breakout", "Breakout Series", "appBoard"),
+    {
+      type: "category",
+      label: "FoBE Breakout SHT40",
+      items: [
+        "product/f2202/index",
+        "product/f2202/quickstart",
+        "product/f2202/resources",
+      ],
+    },
+    {
+      type: "category",
+      label: "FoBE Breakout L76K",
+      items: [
+        "product/f2207/index",
+        "product/f2207/quickstart",
+        "product/f2207/resources",
+      ],
+    },
+    {
+      type: "category",
+      label: "FoBE Breakout ADS1115",
+      items: [
+        "product/f2208/index",
+        "product/f2208/quickstart",
+        "product/f2208/resources",
       ],
     },
   ],

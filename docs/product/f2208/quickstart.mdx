@@ -1,0 +1,72 @@
+---
+title: Quick Start
+sidebar_label: Quick Start
+---
+
+This guide introduces the FoBE Breakout ADS1115 and how to use it.
+
+## Hardware diagram
+
+The following figure illustrates the FoBE Breakout ADS1115 hardware diagram.
+
+<br/>
+<div style={{ textAlign: 'center' }}>
+  <img src="/img/products/f2208-1a.digram.png" alt="FoBE Breakout ADS1115 Hardware Diagram" style={{ width: '80%', height: 'auto' }} />
+</div>
+<br/>
+
+## Mechanical dimensions
+
+FoBE Breakout ADS1115 is a single-sided 25.4mm x 25.4mm (1" x 1") PCB.
+
+<br/>
+<div style={{ textAlign: 'center' }}>
+  <img src="/img/products/f2208-1a.dimensions.png" alt="FoBE Breakout ADS1115 Mechanical Dimensions" style={{ width: '80%', height: 'auto' }} />
+</div>
+<br/>
+
+## Peripheral Interfaces
+
+The board provides two 4-pin SH1.0 connectors and a 6-pin 2.54mm header holes, all providing IIC connections. The header holes also include an INT pin for ADC conversion triggering.
+
+## Address Selection
+
+The IIC address of the ADS1115 can be configured using the B0-B3 solder pads. 
+
+| Pad  | IIC Address (Binary) |
+|------|---------------------------|
+| B0   | 01001000                        |
+| B1   | 01001001                        |
+| B2   | 01001010                        |
+| B3   | 01001011                        |
+
+## EEPROM Address
+
+The IIC address of the EEPROM can be configured using the A0-A2 solder pads. The  bits [3:1] are A2, A1, and A0. The last bit is determined by the operation: write (0) or read (1).
+
+| A2   | A1   | A0   | IIC Address (Binary) |
+|------|------|------|----------------------|
+| 0    | 0    | 0    | 1010000x             |
+| 0    | 0    | 1    | 1010001x             |
+| 0    | 1    | 0    | 1010010x             |
+| 0    | 1    | 1    | 1010011x             |
+| 1    | 0    | 0    | 1010100x             |
+| 1    | 0    | 1    | 1010101x             |
+| 1    | 1    | 0    | 1010110x             |
+| 1    | 1    | 1    | 1010111x             |
+
+(x: 0 for write, 1 for read)
+
+## External Connection Channels
+
+The board provides a 4-pin 3.81mm terminal block for external connections:
+
+*   Channel 0: 4-20mA current measurement (120 Ohm resistor)
+*   Channel 1: Voltage measurement (10k and 39k voltage divider)
+*   Channel 2: NTC thermistor measurement (internal 100k resistor)
+*   Channel 3: ADC calibration (connected to internal voltage reference)
+
+## ADC-INT Enable
+
+The board provides a reserved solder jumper. Soldering or shorting this jumper enables the ADC-INT function.
+
