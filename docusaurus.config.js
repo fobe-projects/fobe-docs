@@ -144,7 +144,7 @@ module.exports = {
     algolia: {
       appId: "KOMJIOT8N0", // cspell: disable-line
       apiKey: "1cbe9bcb1d974a5c73e4146543eb8335",
-      indexName: "docs_fobestudio_com_komjiot8n0_pages", // cspell: disable-line
+      indexName: "fobe-documentation-web", // cspell: disable-line
       placeholder: "Search FoBE Documentation",
     },
 
