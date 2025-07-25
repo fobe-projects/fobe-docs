@@ -17,7 +17,7 @@ The following figure illustrates the FoBE Breakout ADS1115 hardware diagram.
 
 ## Mechanical dimensions
 
-FoBE Breakout ADS1115 is a single-sided 25.4mm x 25.4mm (1" x 1") PCB.
+FoBE Breakout ADS1115 is a single-sided 25.4mm x 25.4mm (1" x 1") PCB. Fixing by 4-6 1.6mm Screw holes.
 
 <br/>
 <div style={{ textAlign: 'center' }}>
@@ -25,48 +25,85 @@ FoBE Breakout ADS1115 is a single-sided 25.4mm x 25.4mm (1" x 1") PCB.
 </div>
 <br/>
 
-## Peripheral Interfaces
+## Interfaces
 
-The board provides two 4-pin SH1.0 connectors and a 6-pin 2.54mm header holes, all providing IIC connections. The header holes also include an INT pin for ADC conversion triggering.
+The board provides two 4-pin SH1.0 connectors providing IIC connections. 
+
+  |Interface                           |Description |
+  |-------------------------------|---------|
+  |3V3 |Power supply       |
+  |GND  |Ground       |
+  |SDA |I2C bus data line       |
+  |SCL |I2C bus clock line       |
+
+And there is a 6-pin 2.54mm header holes also used for IIC connections:
+
+  |Interface                           |Description |
+  |-------------------------------|---------|
+  |NC |No use       |
+  |GND  |Ground       |
+  |3V3 |Power supply       |
+  |SDA |I2C bus data line       |
+  |SCL |I2C bus clock line       |
+  |INT |ADC conversion trigger pin       |
 
 ## Address Selection
 
-The IIC address of the ADS1115 can be configured using the B0-B3 solder pads. 
+  ### ADC
+    The IIC address of the ADS1115 can be configured using the B0-B3 solder pads. 
 
-| Pad  | IIC Address (Binary) |
-|------|---------------------------|
-| B0   | 01001000                        |
-| B1   | 01001001                        |
-| B2   | 01001010                        |
-| B3   | 01001011                        |
+    | Pad  | IIC Address (Binary) |
+    |------|---------------------------|
+    | B0   | 01001000                        |
+    | B1   | 01001001                        |
+    | B2   | 01001010                        |
+    | B3   | 01001011                        |
 
-## EEPROM Address
+  ### EEPROM 
 
-The IIC address of the EEPROM can be configured using the A0-A2 solder pads. The  bits [3:1] are A2, A1, and A0. The last bit is determined by the operation: write (0) or read (1).
+    The IIC address of the EEPROM can be configured using the A0-A2 solder pads. The  bits [3:1] are A2, A1, and A0. The last bit is determined by the operation: write (0) or read (1).
 
-| A2   | A1   | A0   | IIC Address (Binary) |
-|------|------|------|----------------------|
-| 0    | 0    | 0    | 1010000x             |
-| 0    | 0    | 1    | 1010001x             |
-| 0    | 1    | 0    | 1010010x             |
-| 0    | 1    | 1    | 1010011x             |
-| 1    | 0    | 0    | 1010100x             |
-| 1    | 0    | 1    | 1010101x             |
-| 1    | 1    | 0    | 1010110x             |
-| 1    | 1    | 1    | 1010111x             |
+    | A2   | A1   | A0   | IIC Address (Binary) |
+    |------|------|------|----------------------|
+    | 0    | 0    | 0    | 1010000x             |
+    | 0    | 0    | 1    | 1010001x             |
+    | 0    | 1    | 0    | 1010010x             |
+    | 0    | 1    | 1    | 1010011x             |
+    | 1    | 0    | 0    | 1010100x             |
+    | 1    | 0    | 1    | 1010101x             |
+    | 1    | 1    | 0    | 1010110x             |
+    | 1    | 1    | 1    | 1010111x             |
 
-(x: 0 for write, 1 for read)
+    (x: 0 for write, 1 for read)
 
-## External Connection Channels
+## Measure Connection
 
-The board provides a 4-pin 3.81mm terminal block for external connections:
+|Channel                          | Measure | Description |
+|-------------------------------|---------|---------|
+| 0 | 4-20mA current measurement |Measured a voltage by a 120Ω resistor to ground|
+| 1 | Voltage measurement (0-10V) |Measured through a voltage divider consisting of 10 KΩ (top) and 39 KΩ (bottom)|
+| 2 | NTC thermistor measurement |Measured by a voltage divider circuit, configured with a 100kΩ resistor and powered by an internal 2.5V reference|
+| 3 | ADC calibration  | connected to internal voltage reference(2.5V)|
 
-*   Channel 0: 4-20mA current measurement (120 Ohm resistor)
-*   Channel 1: Voltage measurement (10k and 39k voltage divider)
-*   Channel 2: NTC thermistor measurement (internal 100k resistor)
-*   Channel 3: ADC calibration (connected to internal voltage reference)
 
-## ADC-INT Enable
+## ADC-INT
 
-The board provides a reserved solder jumper. Soldering or shorting this jumper enables the ADC-INT function.
+The feature of ADC conversion ready no enable by default. If you want to use the INT pin, you need to solder the jumper pad ADC-INT. That connect the ADC pin: "ALERT/RDY" to the Ground.
+
+## Programming
+
+### FoBE Quill nRF52840 Mesh Example
+The FoBE Quill nRF52840 Mesh development board provides multiple digital gpio; pins D2, D1, D0 are used in the example:
+
+<br/>
+<div style={{ textAlign: 'center' }}>
+  <img src="/img/products/f2208-1a.connection.png" alt="FoBE Breakout L76K Mechanical connection" style={{ width: '100%', height: 'auto' }} />
+</div>
+<br/>
+
+```C++
+#include <TinyGPSPlus.h>
+#include <SoftwareSerial.h>
+......
+```
 
