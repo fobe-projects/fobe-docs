@@ -17,7 +17,7 @@ The following figure illustrates the FoBE Breakout L76K hardware diagram.
 
 ## Mechanical dimensions
 
-FoBE Breakout L76K is a single-sided 25.4mm x 25.4mm (1" x 1") 1.6mm thick PCB with a SH1.0 6-pin connector and a set of 6-pin 2.54mm header holes.
+FoBE Breakout L76K is a single-sided 25.4mm x 25.4mm (1" x 1") 1.6mm thick PCB with a SH1.0 6-pin connector and a set of 6-pin 2.54mm header holes. Fixing by 4 x 1.6mm Screw holes.
 
 <br/>
 <div style={{ textAlign: 'center' }}>
@@ -25,15 +25,47 @@ FoBE Breakout L76K is a single-sided 25.4mm x 25.4mm (1" x 1") 1.6mm thick PCB w
 </div>
 <br/>
 
-## Peripheral Interfaces
+## Interfaces
+SH1.0 6Pin Connector and Reserved 6Pin Header Holes provide the following interfaces:
 
-Besides power and UART connections, the external interface also includes Wakeup and Reset pins for more control over the module.
+  |Interface                           |Description |
+  |-------------------------------|---------|
+  |3V3 |Power supply       |
+  |GND  |Ground       |
+  |TX |UART data output       |
+  |RX |UART command input       |
+  |RST |Reset IC, Low-active      |
+  |WAKE |Enable IC's Standby mode, Low-active       |
 
-## GNSS Configuration Jumper
+## Configuration Jumper
 
-The board features a GALAXY solder pad. Soldering this pad configures the module to use GPS + GLONASS. By default, the pad is not soldered, and the module uses BeiDou + GPS.
+The board features two jumper pads:
 
-## PPS LED Jumper
+|Interface                           |Description |
+|-------------------------------|---------|
+|JP1 |Soldering this pad configures the module to use GPS + GLONASS. By default, the pad is not soldered, and the module uses BeiDou + GPS. |
+|JP2 |The PPS (Pulse Per Second) LED jumper. To save power, you can physically cut the trace between the pads of this jumper. You can later re-solder the jumper to reconnect the PPS LED. |
 
-The board includes a PPS (Pulse Per Second) LED with a jumper. To save power, you can physically cut the trace between the pads of this jumper. You can later re-solder the jumper to reconnect the PPS LED.
+## Other
+- Build-in 3.1V Rechargeable Button Cell Battery for Data Retention.
+- If using an active antenna, the "ACTIVE-ANT PWR" pad needs to be connected to 3V3.
+- PPS-PULSE: Outputs a pulse per second, works concurrently with the PPS LED, and is not affected by JP2.
 
+## Programming
+
+### FoBE Quill nRF52840 Mesh Example
+It can be connected through the MFP port of the FoBE Quill nRF52840 Mesh development board.
+
+<br/>
+<div style={{ textAlign: 'center' }}>
+  <img src="/img/products/f2207-1a.connection.png" alt="FoBE Breakout L76K Mechanical connection" style={{ width: '100%', height: 'auto' }} />
+</div>
+<br/>
+
+```C++
+#include <TinyGPSPlus.h>
+#include <SoftwareSerial.h>
+......
+```
+
+Make sure that the GPS module is used in a more open location so that it can get a good GPS signal.

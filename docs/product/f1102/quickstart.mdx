@@ -42,16 +42,6 @@ A high-efficiency step-down converter (TPS62825) with a low quiescent current ge
 - Set **GPIO12 = HIGH** to turn on OLED power  
 - Set **GPIO12 = LOW** to turn off OLED power
 
-### Power consumption
-
-Power consumption measurements are performed when powered by a simulated 3.7V lithium battery.
-
-| Mode                                              | Average Current |
-|---------------------------------------------------|-----------------|
-| SoC in sleep mode, all peripherals off            | \<14mA          |
-| SoC in active mode, all peripherals on, SX1262 RX | \<40mA          |
-| SoC in active mode, all peripherals on, SX1262 TX | \<140mA         |
-
 ### Voltage measurement
 
 Battery voltage measurement is performed using a set of high-precision thick film resistors. The high-side resistor (R1) is 1M Ohm, and the low-side resistor (R2) is 1.5M Ohm. The SoC's ADC pin (GPIP0) is connected to the measurement point:

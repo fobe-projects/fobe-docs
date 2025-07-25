@@ -17,27 +17,44 @@ order: 1
 
 ## Introduction
 
-The FoBE Breakout L76K is a compact GNSS/GPS module designed for location tracking and navigation applications. It features the L76K GPS receiver IC and offers flexible connectivity options for easy integration into various projects.
+The FoBE Breakout L76K is a multi-satellite system (GPS, BeiDou, GLONASS, QZSS), multi-system joint positioning and single system independent positioning, supports AGNSS function, can provide users with fast and accurate, GNSS module with high-performance positioning experience.
 
-This board provides both a SH1.0 6-pin connector and reserved 6-pin header holes for external connections, offering versatility in interfacing with other devices. It also includes a 3.1V rechargeable button cell battery for data retention, an IPEX antenna connector for external GPS antenna, and a PPS indicator LED for indicating GPS pulse-per-second output.
+## Applications
+- Mobile Applications: Provide precise geolocation capabilities for your mobile apps.
+- Tracking Devices: Design and build location and tracking devices.
+- Geolocation Features: Add geolocation capabilities to your projects.
+
 
 ## Key Features
 
 *   **GNSS/GPS Module:**
     *   L76K GPS Receiver IC
     *   Supports GPS, GLONASS, BeiDou, Galileo, and QZSS
-    *   PPS Indicator LED
 
 *   **Connectivity:**
     *   SH1.0 6Pin Connector and Reserved 6Pin Header Holes
-    *   IPEX Antenna Connector
 
-*   Power supply
-    *   3.3V Operating Voltage
-    *   3.1V Rechargeable Button Cell Battery for Data Retention
+        |Interface                           |Description |
+        |-------------------------------|---------|
+        |3V3 |Power supply       |
+        |GND  |Ground       |
+        |TX |UART data output       |
+        |RX |UART command input       |
+        |RST |Reset IC, Low-active      |
+        |WAKE |Enable IC's Standby mode, Low-active       |
+
+    *   Onboard IPEX4 antenna connector
+
+*   Other
+    *   Build-in 3.1V Rechargeable Button Cell Battery for Data Retention
+
+
+ 
 
 ## Packing List
 
 |Part                           |Quantity |
 |-------------------------------|---------|
 |FoBE Breakout L76K board |1        |
+|SH1.0mm 6 Pin Connector Plug Male with 100mm Wire  |1        |
+|PCB Blade Antenna for GPS with IPEX4  |1        |
