@@ -181,7 +181,7 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Breakout AS5600 (X)",
+          label: "Breakout AS5600",
           link: { type: "doc", id: "product/f2206/index" },
           items: ["product/f2206/quickstart", "product/f2206/resources"],
         },

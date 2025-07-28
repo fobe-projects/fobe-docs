@@ -3,6 +3,71 @@ title: Quick Start
 sidebar_label: Quick Start
 ---
 
-:::warning
-This page is under construction.
-:::
+This guide introduces the FoBE Breakout AS5600 and how to use it.
+
+## Hardware diagram
+
+The following figure illustrates the FoBE Breakout AS5600 hardware diagram.
+
+<br/>
+<div style={{ textAlign: 'center' }}>
+  <img src="/img/products/f2206-1a.digram.png" alt="FoBE Breakout AS5600 Hardware Diagram" style={{ width: '80%', height: 'auto' }} />
+</div>
+<br/>
+
+## Mechanical dimensions
+
+FoBE Breakout AS5600 is a single-sided 25.4mm x 25.4mm (1" x 1") 1.6mm thick PCB with two SH1.0 4-pin connectors and a set of 5-pin 2.54mm header holes. Fixing by 4(or more) x 1.6mm Screw holes.
+
+<br/>
+<div style={{ textAlign: 'center' }}>
+  <img src="/img/products/f2206-1a.dimensions.png" alt="FoBE Breakout AS5600 Mechanical Dimensions" style={{ width: '80%', height: 'auto' }} />
+</div>
+<br/>
+
+## Interfaces
+
+The board provides two 4-pin SH1.0 connectors, all providing the same IIC connections for MCU control.
+
+  |Interface                           |Description |
+  |-------------------------------|---------|
+  |GND  |Ground       |
+  |3V3 |Power supply       |
+  |SDA |I2C bus data line       |
+  |SCL |I2C bus clock line       |
+
+And a set of 5-pin 2.54mm header holes, providing the same IIC connections for MCU control, plus an interrupt pin.
+
+  |Interface                           |Description |
+  |-------------------------------|---------|
+  |GND  |Ground       |
+  |3V3 |Power supply       |
+  |SDA |I2C bus data line       |
+  |SCL |I2C bus clock line       |
+  |OUT |Analog/PWM output|
+
+## Configuration Jumper
+
+The board features a jumper pad:
+
+|Interface                           |Description |
+|-------------------------------|---------|
+|PROGRAM OPTION |Connect: Angle Programming Through the OUT Pin; Default: Angle Programming Through the I²C Interface. |
+|DIRECTION POLARITY| Direction polarity: The JUMPER below : values increase clockwise; The JUMPER above : values increase counterclockwise |
+
+## Programming
+
+### FoBE Quill nRF52840 Mesh Example
+The FoBE Quill nRF52840 Mesh development board provides multiple digital gpio; pins D2, D1, D0 are used in the example:
+
+<br/>
+<div style={{ textAlign: 'center' }}>
+  <img src="/img/products/f2206-1a.connection.png" alt="FoBE Breakout AS5600 Mechanical connection" style={{ width: '80%', height: 'auto' }} />
+</div>
+<br/>
+
+```C++
+#include <TinyGPSPlus.h>
+#include <SoftwareSerial.h>
+......
+```
