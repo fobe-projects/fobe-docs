@@ -3,6 +3,61 @@ title: Quick Start
 sidebar_label: Quick Start
 ---
 
-:::warning
-This page is under construction.
-:::
+This guide introduces the FoBE Breakout OLED 0.42 inch and how to use it.
+
+## Hardware diagram
+
+The following figure illustrates the FoBE Breakout OLED 0.42 inch hardware diagram.
+
+<br/>
+<div style={{ textAlign: 'center' }}>
+  <img src="/img/products/f2203-1a.digram.png" alt="FoBE Breakout OLED 0.42 inch Hardware Diagram" style={{ width: '80%', height: 'auto' }} />
+</div>
+<br/>
+
+## Mechanical dimensions
+
+FoBE Breakout OLED 0.42 inch is a single-sided 25.4mm x 25.4mm (1" x 1") 1.6mm thick PCB with two SH1.0 4-pin connectors and a set of 4-pin 2.54mm header holes. Fixing by 4 x 1.6mm Screw holes.
+
+<br/>
+<div style={{ textAlign: 'center' }}>
+  <img src="/img/products/f2203-1a.dimensions.png" alt="FoBE Breakout OLED 0.42 inch Mechanical Dimensions" style={{ width: '80%', height: 'auto' }} />
+</div>
+<br/>
+
+## Interfaces
+
+The board provides two 4-pin SH1.0 connectors and a set of 4-pin 2.54mm header holes, all providing the same IIC connections for MCU control.
+
+  |Interface                           |Description |
+  |-------------------------------|---------|
+  |3V3 |Power supply       |
+  |GND  |Ground       |
+  |SDA |I2C bus data line       |
+  |SCL |I2C bus clock line       |
+
+## Configuration Jumper
+
+The board features two jumper pad:
+
+|Interface                           |Description |
+|-------------------------------|---------|
+|LED-JUMPER |The PPS (Pulse Per Second) LED jumper. To save power, you can physically cut the trace between the pads of this jumper. You can later re-solder the jumper to reconnect the PPS LED. |
+|IIC PULL-UP |By default, sda/scl are pulled up, you can physically cut the trace between the pads of this jumper if you don't need them.|
+
+## Programming
+
+### FoBE Quill nRF52840 Mesh Example
+The FoBE Quill nRF52840 Mesh development board provides multiple digital gpio; pins D2, D1 are used in the example:
+
+<br/>
+<div style={{ textAlign: 'center' }}>
+  <img src="/img/products/f2203-1a.connection.png" alt="FoBE Breakout L76K Mechanical connection" style={{ width: '80%', height: 'auto' }} />
+</div>
+<br/>
+
+```C++
+#include <TinyGPSPlus.h>
+#include <SoftwareSerial.h>
+......
+```
