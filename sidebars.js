@@ -199,7 +199,7 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Breakout GP8303 (X)",
+          label: "Breakout GP8303",
           link: { type: "doc", id: "product/f2209/index" },
           items: ["product/f2209/quickstart", "product/f2209/resources"],
         },

@@ -1,10 +1,63 @@
 ---
 title: Overview
 sidebar_label: Overview
-description: Overview of FoBE Core nRF52840 Mesh.
+description: Overview of FoBE Breakout GP8303.
 order: 1
 ---
 
-:::warning
-This page is under construction.
-:::
+# FoBE Breakout GP8303
+
+#### I2C 4-20mA/0-20mA DAC Module.
+
+<br/>
+<div style={{ textAlign: 'center' }}>
+  <img src="/img/products/f2209-1a.main.png" alt="FoBE Breakout GP8303 Main" style={{ width: '80%', height: 'auto' }} />
+</div>
+<br/>
+
+## Introduction
+
+FoBE Breakout GP8303 can convert I2C signals into analog signals, and can linearly convert 12-bit digital values 0x000-0xFFF into 4-20mA analog current; the output current linearity is 0.1%.
+
+There is an eeprom on board, can store the calibration parameter.
+
+## Applications
+- Function signal generator
+- Automatic controller for lighting or fountain
+- Automatic and quick transformation of small equipment
+- Electromechanical equipment debugging
+- Transformation of small test device
+
+## Key Features
+
+*   **GP8303:**
+    - With output open circuit alarm function.
+    - Input signal range 12Bit, 0x000-0xFFF
+    - 3bit I2C hardware address bit
+    - Input I2C signal high level: 2.7V-5.5V
+    - Output voltage linearity error: 0.1% (TPY)
+    - Power supply voltage: 18V - 36V
+    - Power consumption: < 5mA
+    - Startup time: < 2ms
+    - Operating temperature: -40°C to 85°C
+
+*   **EEPROM:**
+    - 64 Kbit (8 Kbyte) of EEPROM
+    - Page size: 32 byte
+    - Write protect of the whole memory array
+    - Enhanced ESD/Latch-Up protection
+    - More than 4 million Write cycles
+    - More than 200-years data retention
+
+*   **Connectivity:**
+    -  Two 4Pin SH1.0 Connectors(IIC)
+    -  6Pin 2.54mm Header Holes (IIC + 2 x NC)
+    -  Output by 4 x 3.81mm Screw terminal block
+
+
+## Packing List
+
+|Part                           |Quantity |
+|-------------------------------|---------|
+|FoBE Breakout GP8303 board |1        |
+|SH1.0mm 4 Pin Connector Plug Male with 100mm Wire  |2        |
