@@ -1,10 +1,64 @@
 ---
 title: Overview
 sidebar_label: Overview
-description: Overview of FoBE Core nRF52840 Mesh.
+description: Overview of FoBE Breakout GP8403.
 order: 1
 ---
 
-:::warning
-This page is under construction.
-:::
+# FoBE Breakout GP8403
+
+#### I2C 0-5V/0-10V two channel DAC Module.
+
+<br/>
+<div style={{ textAlign: 'center' }}>
+  <img src="/img/products/f2210-1a.main.png" alt="FoBE Breakout GP8403 Main" style={{ width: '80%', height: 'auto' }} />
+</div>
+<br/>
+
+## Introduction
+
+FoBE Breakout GP8403 can convert I2C signals into analog signals, and can linearly convert 12-bit digital values 0x000-0xFFF into 0-5V or 0-10V analog Voltage; The Output voltage error: < 0.5%.
+
+There is an eeprom on board, can store the calibration parameter.
+
+## Applications
+- General signal conversion
+- Motor speed regulation, LED dimming
+- Inverter, power supply
+- Industrial analog signal isolation
+
+## Key Features
+
+*   **GP8403:**
+    - GP8403 uses I2C interface to linearly convert two analog voltage outputs of 0-5V or 0-10V.
+    - Input signal range 12Bit, 0x000-0xFFF
+    - 0-5V/0-10V output voltage is controlled by internal data
+    - Input I2C signal high level: 2.7V-5.5V
+    - Output voltage error: < 0.5% (can reach 0.1% TPY after two-point calibration)
+    - Output voltage linearity error: 0.1% (TPY)
+    - Output short circuit protection, when the output pin is short-circuited to ground, the chip enters protection mode and stops output.
+    - Power supply voltage: 9V-36V
+    - Power consumption: < 5mA
+    - Start-up time: < 2ms
+    - Operating temperature: -40°C to 85°C
+
+*   **EEPROM:**
+    - 64 Kbit (8 Kbyte) of EEPROM
+    - Page size: 32 byte
+    - Write protect of the whole memory array
+    - Enhanced ESD/Latch-Up protection
+    - More than 4 million Write cycles
+    - More than 200-years data retention
+
+*   **Connectivity:**
+    -  Two 4Pin SH1.0 Connectors(IIC)
+    -  6Pin 2.54mm Header Holes (IIC + 2 x NC)
+    -  Output by 4 x 3.81mm Screw terminal block
+
+
+## Packing List
+
+|Part                           |Quantity |
+|-------------------------------|---------|
+|FoBE Breakout GP8403 board |1        |
+|SH1.0mm 4 Pin Connector Plug Male with 100mm Wire  |2        |
