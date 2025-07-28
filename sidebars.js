@@ -175,7 +175,7 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Breakout ENS160 (X)",
+          label: "Breakout ENS160",
           link: { type: "doc", id: "product/f2205/index" },
           items: ["product/f2205/quickstart", "product/f2205/resources"],
         },
