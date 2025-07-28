@@ -151,7 +151,7 @@ module.exports = {
       items: [
         {
           type: "category",
-          label: "Breakout LPS22 (X)",
+          label: "Breakout LPS22",
           link: { type: "doc", id: "product/f2201/index" },
           items: ["product/f2201/quickstart", "product/f2201/resources"],
         },
@@ -169,7 +169,7 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Breakout BM8563 (X)",
+          label: "Breakout BM8563",
           link: { type: "doc", id: "product/f2204/index" },
           items: ["product/f2204/quickstart", "product/f2204/resources"],
         },

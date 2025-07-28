@@ -36,16 +36,16 @@ The board provides two 4-pin SH1.0 connectors, all providing the same IIC connec
   |SDA |I2C bus data line       |
   |SCL |I2C bus clock line       |
 
-And a set of 6-pin 2.54mm header holes:
+And a set of 6-pin 2.54mm header holes, providing the same IIC connections for MCU control, plus an interrupt pin and a programmable output pin.
 
   |Interface                           |Description |
   |-------------------------------|---------|
-  |INT  |Trigger when the programmed timing conditions are met       |
+  |INT  |Trigger when the programmed timing conditions are met: Active Low      |
   |GND  |Ground       |
   |3V3 |Power supply       |
   |SDA |I2C bus data line       |
   |SCL |I2C bus clock line       |
-  |OUT  |CLK_OUT: Can output programmable square wave       |
+  |OUT  |CLK_OUT: Can output programmable square wave: Active Low       |
 
 ## Configuration Jumper
 
