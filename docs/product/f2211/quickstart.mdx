@@ -3,6 +3,55 @@ title: Quick Start
 sidebar_label: Quick Start
 ---
 
-:::warning
-This page is under construction.
-:::
+This guide introduces the FoBE Breakout CMSIS-DAP Lite and how to use it.
+
+## Hardware diagram
+
+The following figure illustrates the FoBE Breakout CMSIS-DAP Lite hardware diagram.
+
+<br/>
+<div style={{ textAlign: 'center' }}>
+  <img src="/img/products/f2211-1a.digram.png" alt="FoBE Breakout CMSIS-DAP Lite Hardware Diagram" style={{ width: '80%', height: 'auto' }} />
+</div>
+<br/>
+
+## Mechanical dimensions
+
+FoBE Breakout CMSIS-DAP Lite is a single-sided 25.4mm x 25.4mm (1" x 1") 1.6mm thick PCB with a USB-C female and a set of 12-pin 2.54mm pin header. 
+
+Two button for reset and bootloader mode, and a DAP-LED indicates the operating status of the DAP protocol.
+
+Fixing by 4 x 1.6mm Screw holes.
+
+<br/>
+<div style={{ textAlign: 'center' }}>
+  <img src="/img/products/f2211-1a.dimensions.png" alt="FoBE Breakout CMSIS-DAP Lite Mechanical Dimensions" style={{ width: '80%', height: 'auto' }} />
+</div>
+<br/>
+
+## Interfaces
+
+The board provides 12-pin 2.54mm pin header interface, which can be used to connect to the target board. The pinout is as follows:
+
+  |Interface                           |Function |Description|
+  |-------------------------------|---------|--------|
+  |VCP_RXD  |Virtual COM Port Receive (RX)       |Receives data from the target device.
+  |VCP_TXD	|Virtual COM Port Transmit (TX)|	Transmits data to the target device.
+  |3V3|	Power Output	|Provides 3.3V power supply to the target device.
+  |5V|	Power Output	|Provides 5V power supply to the target device.
+  |GND|  |Ground       |
+  |SWRST|	Software Reset	|Resets the target device via software command.
+  |JTAG_TMS|	JTAG Test Mode Select	|Control signal for JTAG interface mode selection.
+  |JTAG_TDO|	JTAG Test Data Output	|Outputs test data from the target device.
+  |JTAG_TDI|	JTAG Test Data Input	|Inputs test data to the target device.
+  |JTAG_TCK|	JTAG Test Clock	|Clock signal for JTAG interface operations.
+
+## Usage Example
+
+### FoBE Quill nRF52840 Mesh:
+
+<br/>
+<div style={{ textAlign: 'center' }}>
+  <img src="/img/products/f2211-1a.connection.png" alt="FoBE Breakout CMSIS-DAP Lite Mechanical connection" style={{ width: '80%', height: 'auto' }} />
+</div>
+<br/>
