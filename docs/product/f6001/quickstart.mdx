@@ -3,6 +3,50 @@ title: Quick Start
 sidebar_label: Quick Start
 ---
 
-:::warning
-This page is under construction.
-:::
+This guide introduces the FoBE Core nRF52840 Mesh and how to use it for LoRa/LoRaWAN applications.
+
+## Hardware diagram
+
+The following figure illustrates the FoBE Core nRF52840 Mesh hardware diagram.
+
+<br/>
+<div style={{ textAlign: 'center' }}>
+  <img src="/img/products/f6001-1a.digram.png" alt=" FoBE Core nRF52840 Mesh Hardware Diagram" style={{ width: '80%', height: 'auto' }} />
+</div>
+<br/>
+
+## Mechanical dimensions
+
+FoBE Core nRF52840 Mesh is a single-sided 15.24mm x 25.4mm 1.6mm thick PCB with 90 pads (including GND).
+
+<br/>
+<div style={{ textAlign: 'center' }}>
+  <img src="/img/products/f6001-1a.dimensions.png" alt=" FoBE Core nRF52840 Mesh Mechanical Dimensions" style={{ width: '80%', height: 'auto' }} />
+</div>
+<br/>
+
+## Pinout
+
+All nRF52840 pins are available as 90 pads (including GND) on the module. Please refer to the nRF52840 datasheet for detailed pin descriptions and functionalities.
+
+## Programming
+
+### Development Environment Setup
+
+To start developing applications for the FoBE Core nRF52840 Mesh, you'll need to set up a development environment. Here are the recommended steps:
+
+1.  **Install the Arduino IDE:** Download and install the latest version of the Arduino IDE from the official Arduino website.
+2.  **Install the Board Support Package (BSP):** Add the necessary board support package for the nRF52840 to the Arduino IDE. This will allow you to compile and upload code to the module.
+3.  **Install LoRaWAN library:** You can use the [MCCI LoRaWAN LMIC library](https://github.com/mcci-catena/arduino-lmic) to develop LoRaWAN applications.
+
+### Example Code
+
+Here's a simple example of sending a LoRaWAN message using the FoBE Core nRF52840 Mesh:
+
+```C++
+// filepath: example.cpp
+#include <lmic.h>
+#include <SPI.h>
+```
+
+**Note:** This is a basic example and may require adjustments based on your specific LoRaWAN network and configuration.
