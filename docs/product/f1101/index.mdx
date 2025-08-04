@@ -14,64 +14,185 @@ order: 1
   <img src="/img/products/f1101-r1a.main.png" alt="FoBE Quill nRF52840 Mesh Main" style={{ width: '80%', height: 'auto' }} />
 </div>
 <br/>
-
+<br/>
+<div className="theme-button-buy" style={{ textAlign: 'center' }}>
+<a href="https://store.fobestudio.com/products/f1101" target="_blank" rel="noopener noreferrer">
+        <button>Buy One 🛍️</button>
+</a>
+</div>
 ## Introduction
 
 The FoBE Quill nRF52840 Mesh is a compact and versatile development platform for IoT solutions. It combines Nordic's high-end multiprotocol SoC, the nRF52840, with Semtech's ultra-low-power sub-GHz radio transceiver, the SX1262 (packaged using SiP technology). Designed for IoT applications, it offers a comprehensive wireless connectivity solution, supporting protocols such as Bluetooth 5, Thread, Zigbee, IEEE 80.2.15.4, and LoRa®.
 
 This development board is feature-rich, including a battery charger, dedicated power path management, an ultra-low quiescent current DC-DC converter, a 1.14-inch color IPS display, user-programmable LEDs and buttons, an MFP expansion connector, a reversible USB-C connector, and header sockets for easy expansion.
 
-## Key Features
+## Tech specs
+<table>
+    <tbody>
+        <tr>
+            <td colspan="1" rowspan="2">Board</td>
+            <td>Name</td>
+            <td>FoBE Quill nRF52840 Mesh</td>
+        </tr>
+        <tr>
+            <td>SKU</td>
+            <td>F1101</td>
+        </tr>
+        <tr>
+            <td>Microcontroller</td>
+            <td colspan="2" rowspan="1">Nordic nRF52840 (64 MHz Arm® Cortex-M4 with FPU)</td>
+        </tr>
+        <tr>
+            <td>USB</td>
+            <td>USB-C®</td>
+            <td>Native in the nRF52840 Processor</td>
+        </tr>
+        <tr>
+            <td colspan="1" rowspan="3">Pins</td>
+            <td>Digital I/O Pins</td>
+            <td>20</td>
+        </tr>
+        <tr>
+            <td>Analog input Pins</td>
+            <td>8 (12-bit, 200 ksps)</td>
+        </tr>
+        <tr>
+            <td>PWM Pins</td>
+            <td>4x 4-channel</td>
+        </tr>
+        <tr>
+            <td colspan="1" rowspan="4">Communication</td>
+            <td>UART</td>
+            <td>Yes, 2x with EasyDMA</td>
+        </tr>
+        <tr>
+            <td>I2C</td>
+            <td>Yes, 2x compatible 2-wire master/slave</td>
+        </tr>
+        <tr>
+            <td>SPI</td>
+            <td>Yes, 4x master/3x slave with EasyDMA</td>
+        </tr>
+        <tr>
+            <td>CAN</td>
+            <td>No</td>
+        </tr>
+        <tr>
+            <td colspan="1" rowspan="3">Power</td>
+            <td>Circuit operating voltage</td>
+            <td>3.3 V</td>
+        </tr>
+        <tr>
+            <td>Input voltage (VIN)</td>
+            <td>3.7 - 5 V</td>
+        </tr>
+        <tr>
+            <td>DC Current per I/O Pin</td>
+            <td>15 mA</td>
+        </tr>
+        <tr>
+            <td>Clock speed</td>
+            <td>SoC</td>
+            <td>up to 64MHz</td>
+        </tr>
+        <tr>
+            <td>Memory</td>
+            <td>Integrated</td>
+            <td>1024 kB ROM, 256 kB SRAM</td>
+        </tr>
+        <tr>
+            <td colspan="1" rowspan="2">Wireless</td>
+            <td>Integrated</td>
+            <td>Bluetooth® 5, Thread, Zigbee, IEEE 802.15.4, NFC-A Tag, 2.4 GHz proprietary<br/>Embedded SMD ceramic antenna</td>
+        </tr>
+        <tr>
+            <td>ASR6500 on Board</td>
+            <td>LoRa® (470 MHz for Model SLT, 868 - 915 MHz for Model SHT)<br/>iPEX-U.FL connector for sub-GHz external antenna</td>
+        </tr>
+        <tr>
+        <td colspan="1" rowspan="4">Display</td>
+            <td>Size</td>
+            <td>1.14 inch</td>
+        </tr>
+        <tr>
+            <td>Panel</td>
+            <td>TFT LCD, Color</td>
+        </tr>
+        <tr>
+            <td>Resolution</td>
+            <td>240 x 135 pixels</td>
+        </tr>
+        <tr>
+            <td>Driver</td>
+            <td>ST7789V</td>
+        </tr>
+        <tr>
+            <td colspan="1" rowspan="2">Buttons</td>
+            <td>Reset</td>
+            <td>Yes, 1x</td>
+        </tr>
+        <tr>
+            <td>User</td>
+            <td>Yes, 1x</td>
+        </tr>
+        <tr>
+            <td colspan="1" rowspan="2">LEDs</td>
+            <td>User</td>
+            <td>Yes, 1x Blue</td>
+        </tr>
+        <tr>
+            <td>Charging</td>
+            <td>Yes, 1x Orange</td>
+        </tr>
+        <tr>
+        <td colspan="1" rowspan="3">Connectivity</td>
+            <td>Battery</td>
+            <td>3.7 V Rechargeable LiPo/Li-ion, JST PH2.0 2-Pin</td>
+        </tr>
+        <tr>
+            <td>MFP (Multi-Function Port)</td>
+            <td>JST SH1.0 6-Pin</td>
+        </tr>
+        <tr>
+            <td>Debugger (ARM Serial Wire Debug)</td>
+            <td>2.54mm pitch pin header</td>
+        </tr>
+        <tr>
+            <td colspan="1" rowspan="2">Dimensions</td>
+            <td>Width</td>
+            <td>60.96 mm</td>
+        </tr>
+        <tr>
+            <td>Length</td>
+            <td>22.86 mm</td>
+        </tr>
+    </tbody>
+</table>
 
-* Nordic Semiconductor nRF52840 SoC
-        - 64 MHz Arm® Cortex-M4 with FPU
-        - 1 MB Flash + 256 KB RAM
-        - Bluetooth LE, Bluetooth mesh, Thread, Zigbee, 802.15.4, ANT and 2.4 GHz proprietary
-        - Arm TrustZone® Cryptocell 310 Security Subsystem
-        - 2.4 GHz Transceiver with +8 dBm TX Power
-        - GPIO, UART, SPI, TWI (I2C), PDM, I2S, QSPI, PWM, QDEC, 12-bit ADC support
-        - Integrated USB 2.0 Full-speed Controller
-        - Integrated NFC-A Tag
-
-* Power supply
-        - Supports both 5 V USB and 3.7 V rechargeable battery as power supply
-        - Flexible power consumption control
-        - 3.3V IO Operating Voltage
-
-* Connectivity
-        - MFP expansion connector
-        - USB-C connector (reversible)
-        - 0.5mm pitch 8-pin FPC connector for display
-        - 2.54 mm pitch pin header for easy prototyping
-        - PH2.0 2-Pin Battery Connector
-        - Up to 21 multi-function General Purpose IOs (7 can be used as ADC inputs)
-
-* Antenna
-        - iPEX-U.FL connector for sub-GHz external antenna
-        - Embedded SMD ceramic antenna for nRF52840 SoC
-
-* Display
-        - 1.14 inch IPS color display with 240 x 135 resolution
-        - Driven by ST7789V controller
-
-* User Interface
-        - 1 user programmable LED
-        - 1 user programmable button
-        - 1 charge status LED
-
-* Debugger
-        - ARM Serial Wire Debug (SWD) port via edge pins
-        - UF2 Bootloader supporting Drag-and-drop programming over USB drive
-
-* Software
-        - nRF Connect SDK
-        - Zephyr RTOS
-        - MicroPython
-        - Arduino
 
 ## Packing List
 
-|Part                           |Quantity |
-|-------------------------------|---------|
-|FoBE Quill nRF52840 Mesh board |1        |
-|14 Pin 2.54mm THT Pin Header   |2        |
+<table>
+    <tbody>
+        <tr>
+            <td>Part</td>
+            <td>Quantity</td>
+        </tr>
+        <tr>
+            <td>FoBE Quill nRF52840 Mesh board</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>MFP Cable (JST SH1.0 6-Pin)</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>MFP to IIC Cable (JST SH1.0 6-Pin to JST SH1.0 4-Pin)</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>14 Pin 2.54mm THT Pin Header</td>
+            <td>2</td>
+        </tr>
+    </tbody>
+</table>

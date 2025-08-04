@@ -25,6 +25,7 @@
 :root {
   --ifm-spacing-horizontal: var(--spacer-5);
 }
+
 /*Default variables for reference*/
 
 /*:root {*/
@@ -425,4 +426,26 @@ div.theme-announcement-bar .close {
 
 div.theme-announcement-bar .close:hover svg {
   color: #9333ea;
+}
+
+div.theme-button-buy {
+  > a {
+    > button {
+      font-size: 20px;
+      padding: 12px 20px;
+      background-color: transparent;
+      border: #02844c solid 2px;
+      border-radius: 30px;
+      font-weight: 500;
+    }
+
+    > button:hover {
+      color: white;
+      cursor: pointer;
+    }
+
+    > button:active {
+      color: white;
+    }
+  }
 }
