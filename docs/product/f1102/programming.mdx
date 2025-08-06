@@ -2,7 +2,7 @@
 title: Programming
 ---
 
-This guide describes how to program the FoBE Quill ESP32-S3 Mesh.
+This guide describes how to program the FoBE Quill ESP32S3 Mesh.
 
 ## Arduino
 
@@ -50,7 +50,7 @@ You can follow the official guide of [PlatformIO](https://platformio.org/platfor
 
 [MicroPython](https://micropython.org) is a lean and efficient implementation of the Python 3 programming language that includes a small subset of the Python standard library and is optimised to run on microcontrollers and in constrained environments.
 
-The following describes how to program the FoBE Quill Esp32-S3 Mesh with MicroPython.
+The following describes how to program the FoBE Quill ESP32S3 Mesh with MicroPython.
 
 #### Releases
 
@@ -110,7 +110,7 @@ source .venv/bin/activate
 pip3 install mpremote
 
 # Create a new file named main.py
-echo "print('Hello, FoBE Quill ESP32-S3 Mesh!')" > main.py
+echo "print('Hello, FoBE Quill ESP32S3 Mesh!')" > main.py
 
 # Copy the main.py file to the device
 mpremote cp main.py :
@@ -128,7 +128,7 @@ More information about the MicroPython REPL can be found in the [MicroPython doc
 
 The [Zephyr OS](https://zephyrproject.org) is based on a small-footprint kernel designed for use on resource-constrained and embedded systems: from simple embedded environmental sensors and LED wearables to sophisticated embedded controllers, smart watches, and IoT wireless applications.
 
-The following describes how to program the FoBE Quill ESP32-S3 Mesh with Zephyr RTOS.
+The following describes how to program the FoBE Quill ESP32S3 Mesh with Zephyr RTOS.
 
 ### Create a new project
 
@@ -273,14 +273,14 @@ Before you start, make sure you have Python installed on your system.
     Double-click the reset button on the device to enter bootloader mode, then run the following commands in the terminal:
 
     ```bash
-    # Build the project for the FoBE Quill ESP32-S3 Mesh board
+    # Build the project for the FoBE Quill ESP32S3 Mesh board
     west build -b fobe_quill_esp32s3/esp32s3/procpu/w ./app
 
     # Flash the project to the board
     west flash
     ```
 
-    Now you have a simple LED blinking example (Zephyr RTOS Standalone project) running on the **FoBE Quill ESP32-S3 Mesh**.
+    Now you have a simple LED blinking example (Zephyr RTOS Standalone project) running on the **FoBE Quill ESP32S3 Mesh**.
     <div style={{ textAlign: 'center' }}><img src="/img/screenshot/2025-07-21-13-38-07.png" alt="2025-07-21-13-38-07.png" style={{ width: '100%', height: 'auto' }} /></div><br/>
 
     More information about the **Zephyr RTOS** can be found in the [Zephyr documentation](https://docs.zephyrproject.org/latest/).

@@ -83,7 +83,7 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Quill ESP32-S3 Mesh",
+          label: "Quill ESP32S3 Mesh",
           link: { type: "doc", id: "product/f1102/index" },
           items: [
             "product/f1102/quickstart",
