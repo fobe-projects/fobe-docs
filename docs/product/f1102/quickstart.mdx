@@ -17,7 +17,7 @@ The following figure illustrates the FoBE Quill ESP32-S3 Mesh hardware diagram.
 
 ## Mechanical dimensions
 
-FoBE Quill ESP32-S3 Mesh is a single-sided PCB with dimensions of 60.96mm x 20.32mm (2.4" x 0.8"), 1.6mm thick, featuring a USB Type-C port and dual through-hole pin headers.
+FoBE Quill ESP32-S3 Mesh is a single-sided PCB with dimensions of 60.96mm x 22.86mm (2.4" x 0.9"), 1.6mm thick, featuring a USB Type-C port and dual through-hole pin headers.
 
 <br/>
 <div style={{ textAlign: 'center' }}>
@@ -44,7 +44,7 @@ A high-efficiency step-down converter (TPS62825) with a low quiescent current ge
 
 ### Voltage measurement
 
-Battery voltage measurement is performed using a set of high-precision thick film resistors. The high-side resistor (R1) is 1M Ohm, and the low-side resistor (R2) is 1.5M Ohm. The SoC's ADC pin (GPIP0) is connected to the measurement point:
+Battery voltage measurement is performed using a set of high-precision thick film resistors. The high-side resistor (R1) is 1M Ohm, and the low-side resistor (R2) is 1.5M Ohm. The SoC's ADC pin (GPIO0) is connected to the measurement point:
 
 For a voltage divider circuit with two resistors R1 and R2 in series, where Vin is the total input voltage across both resistors, and Vout is the voltage across R2:
 
@@ -54,9 +54,9 @@ By acquiring the voltage at the measurement point using the ADC, the current bat
 
 ## General purpose I/Os
 
-Up to 21 multi-function GPIOs are available on the header pins (7 can be used as ADC inputs). These GPIOs operate at 3.3V logic level and can be mapped to various digital peripherals (UART, SPI, I2C, PWM, etc.) for flexible development.
+Up to 20 multi-function GPIOs are available on the header pins (6 can be used as ADC inputs). These GPIOs operate at 3.3V logic level and can be mapped to various digital peripherals (UART, SPI, I2C, PWM, etc.) for flexible development.
 
-The MFP additionally provides 4 GPIO pins, two of which can be connected to an NFC antenna, or directly connected to modules supporting the MFP interface, or expand to two I2C channels.
+The MFP additionally provides 4 GPIO pins, or directly connected to modules supporting the MFP interface, or expand to two I2C channels.
 
 ## Display
 
@@ -141,32 +141,49 @@ If you are using the Sub-GHz radio module, please ensure that you connect an app
 Make sure your USB cable supports data transfer (USB 2.0 or USB 3.0 are both fine), and is not a charge-only cable.
 :::
 
-3. Launch your preferred development environment (ESP-IDF, Arduino, PlatformIO, etc.).
+3. Launch the Arduino IDE.
 
-4. Add ESP32 board support to your IDE if required (for Arduino, use the Boards Manager).
+4. Add the FoBE board package to your Arduino IDE.
 
-5. Select the correct board and port.
+   - Open the Arduino IDE and navigate to **File** > **Preferences**.
+   - In the "Additional Boards Manager URLs" field, add the following URL:
+   
+     ```
+     https://arduino.fobestudio.com/package_fobe_index.json
+     ```
+   - Click **OK** to save the changes.
 
-6. Open or create a new project. Upload a simple example, such as the Blink sketch:
+<br/><div style={{ textAlign: 'center' }}><img src="/img/screenshot/2025-07-19-00-56-16.png" alt="2025-07-19-00-56-16.png" style={{ width: '80%', height: 'auto' }} /></div><br/>
 
-```cpp
-#include <Arduino.h>
+5. Install the board package.
 
-#define LED_PIN 11 // User LED is on GPIO11
+   - Navigate to the **Boards Manager** (icon in the left sidebar).
+   - Search for "FoBE ESP32" and click "Install".
 
-void setup() {
-  pinMode(LED_PIN, OUTPUT);
-}
+<br/><div style={{ textAlign: 'center' }}><img src="/img/screenshot/2025-08-06-17-44-04.png" alt="2025-08-06-17-44-04.png" style={{ width: '80%', height: 'auto' }} /></div><br/>
 
-void loop() {
-  digitalWrite(LED_PIN, HIGH);
-  delay(500);
-  digitalWrite(LED_PIN, LOW);
-  delay(500);
-}
-```
+6. Select the board and port.
 
-Once uploaded, the onboard blue LED should blink, indicating the board is running.
+   - Click the board selector in the top left corner of the Arduino IDE.
+   - Select the port corresponding to your FoBE ESP32-S3 Mesh board.
+   - Select **FoBE ESP32-S3 Mesh** from the list of available boards.
+
+<br/><div style={{ textAlign: 'center' }}><img src="/img/screenshot/2025-08-06-17-45-51.png" alt="2025-08-06-17-45-51.png" style={{ width: '80%', height: 'auto' }} /></div><br/>
+
+7. Open an example sketch.
+
+   - Navigate to **File** > **Examples** > **01.Basics** > **Blink**.
+   
+<br/><div style={{ textAlign: 'center' }}><img src="/img/screenshot/2025-07-19-00-59-35.png" alt="2025-07-19-00-59-35.png" style={{ width: '80%', height: 'auto' }} /></div><br/>
+
+8. Upload the sketch.
+
+   - Click the **Upload** button (right arrow icon) in the Arduino IDE toolbar.
+   - Wait for the upload process to complete.
+
+<br/><div style={{ textAlign: 'center' }}><img src="/img/screenshot/2025-08-06-17-47-14.png" alt="2025-08-06-17-47-14.png" style={{ width: '80%', height: 'auto' }} /></div><br/>
+
+Once the upload is complete, the onboard blue LED should start blinking, indicating that your board is successfully set up and running the example sketch.
 
 <br/>
 <div style={{ textAlign: 'center' }}>
@@ -178,22 +195,31 @@ Once uploaded, the onboard blue LED should blink, indicating the board is runnin
 
 ### Measuring battery status
 
-The battery voltage can be measured using the ADC (Analog-to-Digital Converter) on the ESP32-S3 SoC. The voltage measurement is performed through a voltage divider circuit, as described in the Power Supply section.
+The battery voltage can be measured using the ADC (Analog-to-Digital Converter) on the nRF52840 SoC. The measurement is performed through a voltage divider circuit, as described in the Power Supply section.
+
+#### Measuring battery voltage
 
 ```cpp
 #include <Arduino.h>
 
-#define VBAT_ADC_PIN 10
-
-void setup() {
+void setup()
+{
+  // Initialize serial communication
   Serial.begin(115200);
+  
+  // Configure ADC
+  analogReadResolution(12);  // 12-bit resolution (0-4095)
+  analogSetAttenuation(ADC_11db);  // For 0-3.3V range
 }
 
-void loop() {
-  int raw = analogRead(VBAT_ADC_PIN);
-  float vref = 3.3; // ADC reference voltage
+void loop()
+{
+  // Read battery voltage
+  int raw = analogRead(PIN_VBAT);
+  float vref = 3.3; // ADC reference voltage for ESP32-S3
   float vmeas = raw * vref / 4095.0;
-  float voltage = vmeas * (2.5); // Adjust multiplier according to divider ratio
+  float voltage = vmeas * 1.77; // Adjusted for the voltage divider, assuming r1 and r2 are not used here
+  
   Serial.print("Battery voltage: ");
   Serial.print(voltage);
   Serial.println(" V");
@@ -201,52 +227,86 @@ void loop() {
 }
 ```
 
-### Reading charging status
-
-```cpp
-#include <Arduino.h>
-#include <Adafruit_TinyUSB.h>
-
-void setup() {
-  pinMode(PIN_CHARGING, INPUT);
-  Serial.begin(115200);
-}
-
-void loop() {
-  int status = digitalRead(PIN_CHARGING);
-  Serial.print("Charging status: ");
-  Serial.println(status == LOW ? "Charging" : "Not Charging");
-  delay(1000);
-}
-```
-
 ### Drawing on the display
 
-The OLED display can be controlled using the Adafruit SSD1306/SSD1312 library for Arduino.
+The OLED display can be controlled using the Adafruit SSD1306 library for Arduino.
+
+:::important
+Make sure you have installed the **Adafruit SSD1306** and **Adafruit GFX** libraries via the Arduino IDE Library Manager.
+:::
 
 ```cpp
-#include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
-#define SCREEN_WIDTH 128
-#define SCREEN_HEIGHT 64
-#define OLED_RESET    -1
-#define OLED_ADDR     0x3C // Confirm I2C address
+#define SCREEN_WIDTH 128    // OLED display width, in pixels
+#define SCREEN_HEIGHT 64    // OLED display height, in pixels
+#define OLED_RESET -1       // Reset pin # (or -1 if sharing Arduino reset pin)
+#define SCREEN_ADDRESS 0x3C // Confirm I2C address
+
+// FoBE Logo bitmap data (128x32 pixels)
+const unsigned char fobe_logo[] PROGMEM = {
+    0x07, 0xff, 0xff, 0xe0, 0x00, 0x3f, 0xc0, 0x00, 0x1f, 0xff, 0xfc, 0x00, 0x1f, 0xff, 0xff, 0xc0,
+    0x07, 0xff, 0xff, 0xe0, 0x00, 0xff, 0xf8, 0x00, 0x1f, 0xff, 0xff, 0x00, 0x1f, 0xff, 0xff, 0xc0,
+    0x07, 0xff, 0xff, 0xe0, 0x03, 0xff, 0xfe, 0x00, 0x1f, 0xff, 0xff, 0xc0, 0x1f, 0xff, 0xff, 0xc0,
+    0x07, 0xff, 0xff, 0xe0, 0x0f, 0xff, 0xff, 0x00, 0x1f, 0xff, 0xff, 0xc0, 0x1f, 0xff, 0xff, 0xc0,
+    0x07, 0xff, 0xff, 0xe0, 0x1f, 0xff, 0xff, 0x80, 0x1f, 0xff, 0xff, 0xe0, 0x1f, 0xff, 0xff, 0xc0,
+    0x00, 0x00, 0x00, 0x00, 0x3f, 0xff, 0xff, 0xc0, 0x00, 0x00, 0x1f, 0xe0, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x7f, 0xdf, 0xdf, 0xe0, 0x00, 0x00, 0x07, 0xf0, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x7f, 0x1f, 0xcf, 0xf0, 0x00, 0x00, 0x07, 0xf0, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0xfe, 0x3f, 0xc3, 0xf0, 0x00, 0x00, 0x03, 0xf0, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0xfc, 0x3f, 0x81, 0xf8, 0x00, 0x00, 0x03, 0xf0, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x01, 0xf8, 0x7f, 0x81, 0xf8, 0x00, 0x00, 0x07, 0xf0, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x01, 0xf8, 0x7f, 0x80, 0xfc, 0x00, 0x00, 0x07, 0xe0, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x01, 0xf0, 0x7f, 0x00, 0xfc, 0x00, 0x00, 0x3f, 0xc0, 0x1f, 0xff, 0xff, 0x80,
+    0x07, 0xff, 0xff, 0x81, 0xf0, 0xff, 0x00, 0x7c, 0x1f, 0xff, 0xff, 0xc0, 0x1f, 0xff, 0xff, 0x80,
+    0x07, 0xff, 0xff, 0x83, 0xf0, 0xff, 0x00, 0x7c, 0x1f, 0xff, 0xff, 0x00, 0x1f, 0xff, 0xff, 0x80,
+    0x07, 0xff, 0xff, 0x83, 0xf0, 0xff, 0x00, 0x7c, 0x1f, 0xff, 0xff, 0x80, 0x1f, 0xff, 0xff, 0x80,
+    0x07, 0xff, 0xff, 0x83, 0xf0, 0x1f, 0xf0, 0x7c, 0x1f, 0xff, 0xff, 0xe0, 0x1f, 0xff, 0xff, 0x80,
+    0x07, 0xff, 0xff, 0x83, 0xf0, 0x1f, 0xe0, 0x7c, 0x1f, 0xff, 0xff, 0xf0, 0x1f, 0xff, 0xff, 0x80,
+    0x07, 0xf0, 0x00, 0x01, 0xf0, 0x1f, 0xc0, 0xfc, 0x1f, 0x80, 0x0f, 0xf0, 0x1f, 0x80, 0x00, 0x00,
+    0x07, 0xf0, 0x00, 0x01, 0xf0, 0x1f, 0x80, 0xfc, 0x1f, 0x80, 0x03, 0xf8, 0x1f, 0x80, 0x00, 0x00,
+    0x07, 0xf0, 0x00, 0x01, 0xf8, 0x3f, 0x80, 0xfc, 0x1f, 0x80, 0x03, 0xf8, 0x1f, 0x80, 0x00, 0x00,
+    0x07, 0xf0, 0x00, 0x01, 0xf8, 0x3f, 0x01, 0xf8, 0x1f, 0x80, 0x01, 0xf8, 0x1f, 0x80, 0x00, 0x00,
+    0x07, 0xf0, 0x00, 0x00, 0xfc, 0x3e, 0x03, 0xf8, 0x1f, 0x80, 0x01, 0xf8, 0x1f, 0x80, 0x00, 0x00,
+    0x07, 0xf0, 0x00, 0x00, 0xfe, 0x3c, 0x03, 0xf0, 0x1f, 0x80, 0x01, 0xf8, 0x1f, 0x80, 0x00, 0x00,
+    0x07, 0xf0, 0x00, 0x00, 0x7f, 0x78, 0x0f, 0xf0, 0x1f, 0x80, 0x03, 0xf8, 0x1f, 0x80, 0x00, 0x00,
+    0x07, 0xf0, 0x00, 0x00, 0x3f, 0xf0, 0x1f, 0xe0, 0x1f, 0x80, 0x07, 0xf8, 0x1f, 0x80, 0x00, 0x00,
+    0x07, 0xf0, 0x00, 0x00, 0x3f, 0xff, 0xff, 0xc0, 0x1f, 0xff, 0xff, 0xf8, 0x1f, 0xff, 0xff, 0xe0,
+    0x07, 0xf0, 0x00, 0x00, 0x1f, 0xff, 0xff, 0x80, 0x1f, 0xff, 0xff, 0xf0, 0x1f, 0xff, 0xff, 0xe0,
+    0x07, 0xf0, 0x00, 0x00, 0x07, 0xff, 0xff, 0x00, 0x1f, 0xff, 0xff, 0xe0, 0x1f, 0xff, 0xff, 0xe0,
+    0x07, 0xf0, 0x00, 0x00, 0x03, 0xff, 0xfe, 0x00, 0x1f, 0xff, 0xff, 0xe0, 0x1f, 0xff, 0xff, 0xe0,
+    0x07, 0xf0, 0x00, 0x00, 0x00, 0xff, 0xf8, 0x00, 0x1f, 0xff, 0xff, 0x80, 0x1f, 0xff, 0xff, 0xe0,
+    0x07, 0xf0, 0x00, 0x00, 0x00, 0x1f, 0xc0, 0x00, 0x1f, 0xff, 0xfc, 0x00, 0x1f, 0xff, 0xff, 0xe0};
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
-void setup() {
-  display.begin(SSD1306_SWITCHCAPVCC, OLED_ADDR);
+void setup()
+{
+
+  Serial.begin(115200);
+
+  pinMode(PIN_OLED_EN, OUTPUT);   // Setup OLED power pin
+  digitalWrite(PIN_OLED_EN, LOW); // Turn on the power
+
+  if (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS))
+  {
+    Serial.println(F("SSD1306 allocation failed"));
+    for (;;)
+      ; // Don't proceed, loop forever
+  }
+
+  display.ssd1306_command(0xA0); // Fix Segment mapping for SSD1312
+
+  // Display logo
   display.clearDisplay();
-  display.setTextSize(2);
-  display.setTextColor(SSD1306_WHITE);
-  display.setCursor(0, 10);
-  display.println("Hello FoBE!");
+  display.drawBitmap(0, 16, fobe_logo, 128, 32, SSD1306_WHITE);
   display.display();
 }
 
-void loop() {}
+void loop()
+{
+}
 ```
 
 ### Power Consumption Verification

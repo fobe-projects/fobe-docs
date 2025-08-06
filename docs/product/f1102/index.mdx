@@ -7,13 +7,19 @@ order: 1
 
 # FoBE Quill ESP32-S3 Mesh
 
-#### A development kit featuring ESP32-S3 and integrated SX1262 LoRa transceiver
+#### A development kit featuring the ESP32-S3 SoC and an integrated SX1262 LoRa® transceiver.
 
 <br/>
 <div style={{ textAlign: 'center' }}>
   <img src="/img/products/f1102-r1a.main.png" alt="FoBE Quill ESP32-S3 Mesh Main" style={{ width: '80%', height: 'auto' }} />
 </div>
 <br/>
+<br/>
+<div className="theme-button-buy" style={{ textAlign: 'center' }}>
+<a href="https://store.fobestudio.com/products/f1102" target="_blank" rel="noopener noreferrer">
+        <button>Buy One 🛍️</button>
+</a>
+</div>
 
 ## Introduction
 
@@ -21,53 +27,177 @@ The FoBE Quill ESP32-S3 Mesh is a compact and feature-rich IoT development platf
 
 This development board features efficient battery charging management, discrete power path, ultra-low quiescent current DC-DC converter, a 1.3-inch 16-pin OLED display (SSD1312 driver), user-programmable LED and button, MFP expansion connector, reversible USB-C connector, and easy-to-expand pin headers, making it ideal for rapid prototyping and development.
 
-## Key Features
+## Tech specs
+<table>
+    <tbody>
+        <tr>
+            <td colspan="1" rowspan="2">Board</td>
+            <td>Name</td>
+            <td>FoBE Quill ESP32-S3 Mesh</td>
+        </tr>
+        <tr>
+            <td>SKU</td>
+            <td>F1102</td>
+        </tr>
+        <tr>
+            <td>Microcontroller</td>
+            <td colspan="2" rowspan="1">Espressif ESP32-S3FH4R2 (Dual-core Xtensa® 32-bit LX7, up to 240 MHz)</td>
+        </tr>
+        <tr>
+            <td>USB</td>
+            <td>USB-C®</td>
+            <td>Native USB OTG (Full Speed) in the ESP32-S3 Processor</td>
+        </tr>
+        <tr>
+            <td colspan="1" rowspan="3">Pins</td>
+            <td>Digital I/O Pins</td>
+            <td>20</td>
+        </tr>
+        <tr>
+            <td>Analog input Pins</td>
+            <td>6 (12-bit ADC)</td>
+        </tr>
+        <tr>
+            <td>PWM Pins</td>
+            <td>8-channel LED, 2-channel Motor</td>
+        </tr>
+        <tr>
+            <td colspan="1" rowspan="5">Communication</td>
+            <td>UART</td>
+            <td>Yes, 3x with GDMA</td>
+        </tr>
+        <tr>
+            <td>I2C</td>
+            <td>Yes, 2x I2C master/slave</td>
+        </tr>
+        <tr>
+            <td>I2S</td>
+            <td>Yes, 2x</td>
+        </tr>
+        <tr>
+            <td>SPI</td>
+            <td>Yes, 2x SPI with GDMA</td>
+        </tr>
+        <tr>
+            <td>CAN</td>
+            <td>Yes, 1x TWAI® ISO 11898-1 CAN 2.0</td>
+        </tr>
+        <tr>
+            <td colspan="1" rowspan="3">Power</td>
+            <td>Circuit operating voltage</td>
+            <td>3.3 V</td>
+        </tr>
+        <tr>
+            <td>Input voltage (VIN)</td>
+            <td>3.7 - 5 V</td>
+        </tr>
+        <tr>
+            <td>DC Current per I/O Pin</td>
+            <td>20 mA</td>
+        </tr>
+        <tr>
+            <td>Clock speed</td>
+            <td>SoC</td>
+            <td>up to 240MHz</td>
+        </tr>
+        <tr>
+            <td>Memory</td>
+            <td>Integrated</td>
+            <td>4 MB Flash + 2 MB PSRAM</td>
+        </tr>
+        <tr>
+            <td colspan="1" rowspan="2">Wireless</td>
+            <td>Integrated</td>
+            <td>Wi-Fi 802.11 b/g/n (2.4 GHz), Bluetooth® 5 (LE)<br/>Embedded SMD ceramic antenna</td>
+        </tr>
+        <tr>
+            <td>SX1262 on Board</td>
+            <td>LoRa® (470 MHz for Model SLT, 868 - 915 MHz for Model SHT)<br/>iPEX-U.FL connector for sub-GHz external antenna</td>
+        </tr>
+        <tr>
+        <td colspan="1" rowspan="4">Display</td>
+            <td>Size</td>
+            <td>1.3 inch</td>
+        </tr>
+        <tr>
+            <td>Panel</td>
+            <td>OLED, Monochrome</td>
+        </tr>
+        <tr>
+            <td>Resolution</td>
+            <td>128 x 64 pixels</td>
+        </tr>
+        <tr>
+            <td>Driver</td>
+            <td>SSD1312</td>
+        </tr>
+        <tr>
+            <td colspan="1" rowspan="2">Buttons</td>
+            <td>Reset</td>
+            <td>Yes, 1x</td>
+        </tr>
+        <tr>
+            <td>User (Boot for Flash)</td>
+            <td>Yes, 1x</td>
+        </tr>
+        <tr>
+            <td colspan="1" rowspan="2">LEDs</td>
+            <td>User</td>
+            <td>Yes, 1x Blue</td>
+        </tr>
+        <tr>
+            <td>Charging</td>
+            <td>Yes, 1x Orange</td>
+        </tr>
+        <tr>
+        <td colspan="1" rowspan="3">Connectivity</td>
+            <td>Battery</td>
+            <td>3.7 V Rechargeable LiPo/Li-ion, JST PH2.0 2-Pin</td>
+        </tr>
+        <tr>
+            <td>MFP (Multi-Function Port)</td>
+            <td>JST SH1.0 6-Pin</td>
+        </tr>
+        <tr>
+            <td>Debugger (JTAG)</td>
+            <td>2.54mm pitch pin header</td>
+        </tr>
+        <tr>
+            <td colspan="1" rowspan="2">Dimensions</td>
+            <td>Width</td>
+            <td>60.96 mm</td>
+        </tr>
+        <tr>
+            <td>Length</td>
+            <td>22.86 mm</td>
+        </tr>
+    </tbody>
+</table>
 
-* Espressif ESP32-S3FH4R2 SoC
-        - Dual-core Xtensa® 32-bit LX7 processor, up to 240 MHz
-        - 4 MB Flash + 2 MB PSRAM
-        - Wi-Fi 802.11 b/g/n (2.4 GHz) and Bluetooth 5 (LE)
-        - Rich hardware encryption engine, secure boot, and flash encryption
-        - Up to 45 programmable GPIOs, supports ADC, UART, SPI, I2C, PWM, and more
-        - Integrated USB OTG (Full Speed)
-
-* Power Management
-        - Supports 5V USB and 3.7V rechargeable Li-ion battery power supply
-        - Flexible power consumption control, ultra-low quiescent current design
-        - 3.3V IO operating voltage
-
-* Connectivity
-        - MFP expansion connector for flexible function extension
-        - Reversible USB-C connector
-        - 2.54mm pitch pin headers for easy prototyping
-        - PH2.0 2-pin battery connector
-        - Up to 21 multi-function GPIOs (7 can be used as ADC inputs)
-
-* Antenna
-        - iPEX-U.FL connector for external sub-GHz antenna
-        - On-board SMD ceramic antenna (for Wi-Fi/Bluetooth)
-
-* Display
-        - 1.3-inch OLED display, 128 x 64 resolution, 16-pin interface
-        - SSD1312 driver, I2C interface
-
-* User Interface
-        - 1 user-programmable LED
-        - 1 user-programmable button
-        - 1 charge status indicator LED
-
-* Debugging & Programming
-        - Supports USB and JTAG debugging interface (edge pins)
-
-* Software Support
-        - ESP-IDF
-        - Zephyr RTOS
-        - MicroPython
-        - Arduino
 
 ## Packing List
 
-| Part                          | Quantity |
-|-------------------------------|----------|
-| FoBE Quill ESP32-S3 Mesh board| 1        |
-| 14-pin 2.54mm THT pin header  | 2        |
+<table>
+    <tbody>
+        <tr>
+            <td>Part</td>
+            <td>Quantity</td>
+        </tr>
+        <tr>
+            <td>FoBE Quill ESP32-S3 Mesh board</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>MFP Cable (JST SH1.0 6-Pin)</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>MFP to IIC Cable (JST SH1.0 6-Pin to JST SH1.0 4-Pin)</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>14 Pin 2.54mm THT Pin Header</td>
+            <td>2</td>
+        </tr>
+    </tbody>
+</table>
