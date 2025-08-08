@@ -1,11 +1,12 @@
 ---
 title: Quick Start
 sidebar_label: Quick Start
+description: Quick start guide for FoBE Breakout ENS160 digital multi-gas sensor.
 ---
 
-This guide introduces the FoBE Breakout ENS160 and how to use it.
+This guide introduces the FoBE Breakout ENS160 and demonstrates how to use it.
 
-## Hardware diagram
+## Hardware Diagram
 
 The following figure illustrates the FoBE Breakout ENS160 hardware diagram.
 
@@ -15,9 +16,9 @@ The following figure illustrates the FoBE Breakout ENS160 hardware diagram.
 </div>
 <br/>
 
-## Mechanical dimensions
+## Mechanical Dimensions
 
-FoBE Breakout ENS160 is a single-sided 25.4mm x 25.4mm (1" x 1") 1.6mm thick PCB with two SH1.0 4-pin connectors and a set of 5-pin 2.54mm header holes. Fixing by 4 x 1.6mm Screw holes.
+The FoBE Breakout ENS160 is a single-sided 25.4mm x 25.4mm (1" x 1") PCB with a thickness of 1.6mm. It features two SH1.0 4-pin connectors and a set of 5-pin 2.54mm header holes. The board can be secured using 4 x 1.6mm mounting holes.
 
 <br/>
 <div style={{ textAlign: 'center' }}>
@@ -27,128 +28,150 @@ FoBE Breakout ENS160 is a single-sided 25.4mm x 25.4mm (1" x 1") 1.6mm thick PCB
 
 ## Interfaces
 
-The board provides two 4-pin SH1.0 connectors, all providing the same IIC connections for MCU control.
+The board provides two 4-pin SH1.0 connectors, both offering the same I2C connections for MCU control.
 
-  |Interface                           |Description |
-  |-------------------------------|---------|
-  |GND  |Ground       |
-  |3V3 |Power supply       |
-  |SDA |I2C bus data line       |
-  |SCL |I2C bus clock line       |
+| Interface | Description |
+|-----------|-------------|
+| GND | Ground |
+| 3V3 | Power supply |
+| SDA | I2C bus data line |
+| SCL | I2C bus clock line |
 
-And a set of 5-pin 2.54mm header holes, providing the same IIC connections for MCU control, plus an interrupt pin.
+Additionally, there is a set of 5-pin 2.54mm header holes that provide the same I2C connections for MCU control, plus an interrupt pin.
 
-  |Interface                           |Description |
-  |-------------------------------|---------|
-  |GND  |Ground       |
-  |3V3 |Power supply       |
-  |SDA |I2C bus data line       |
-  |SCL |I2C bus clock line       |
-  |INT |Interrupt signal: Active Low      |
+| Interface | Description |
+|-----------|-------------|
+| GND | Ground |
+| 3V3 | Power supply |
+| SDA | I2C bus data line |
+| SCL | I2C bus clock line |
+| INT | Interrupt signal (Active Low) |
 
-## Configuration Jumper
+## Configuration Jumpers
 
-The board features two jumper pad:
+The board features two jumper pads:
 
-|Interface                           |Description |
-|-------------------------------|---------|
-|LED-JUMPER |The PPS (Pulse Per Second) LED jumper. To save power, you can physically cut the trace between the pads of this jumper. You can later re-solder the jumper to reconnect the PPS LED. |
-|ENS160-ADDR| The ENS160 I2C address jumper. The ENS160 can be configured to use either the default I2C address (0x53: connect the JUMPER:H) or an alternative address (0x52: connect the JUMPER:L). |
+| Interface | Description |
+|-----------|-------------|
+| LED-JUMPER | The status LED jumper. To save power, you can physically cut the trace between the pads of this jumper. You can later re-solder the jumper to reconnect the status LED. |
+| ENS160-ADDR | The ENS160 I2C address jumper. The ENS160 can be configured to use either the default I2C address (0x53: jumper connected to H) or an alternative address (0x52: jumper connected to L). |
 
 ## Programming
 
-### FoBE Quill ESP32-S3 Mesh Example
-The FoBE Quill ESP32-S3 Mesh development board provides multiple digital gpio; 
+### Running with FoBE Quill ESP32-S3 Mesh
 
-MFP interface is used in the example:
+Let's get started with the FoBE Quill ESP32-S3 Mesh using the MFP interface.
+
+1. Connect the FoBE Breakout ENS160 to the FoBE Quill ESP32-S3 Mesh using the MFP interface.
 <br/>
 <div style={{ textAlign: 'center' }}>
-  <img src="/img/products/f2205-r1a.connection.png" alt="FoBE Breakout L76K Mechanical connection" style={{ width: '80%', height: 'auto' }} />
+  <img src="/img/products/f2205-r1a.connection.png" alt="FoBE Breakout ENS160 Connection" style={{ width: '80%', height: 'auto' }} />
 </div>
 <br/>
 
-Please follow the [FoBE Quill ESP32-S3 Programming Guide](/product/f1102/programming) for pre-configuration.
+2. Create a sketch or PlatformIO project, or follow the [FoBE Quill ESP32-S3 Programming Guide](/product/f1102/programming) for pre-configuration.
 
-And the necessary Library Dependency:
-> sciosense/ScioSense_ENS16x@^2.0.4
+3. Install the necessary library in your project:
+```
+sciosense/ScioSense_ENS16x@^2.0.4
+```
 
-```C++
-#include <Arduino.h>
-#include <Wire.h>
+4. Copy the following code into your sketch or PlatformIO project:
+```cpp
 #include <ScioSense_ENS16x.h>
 
-#define SENDOR_ADDRESS 0x52 // if soldering address resistor: L
-// #define SENDOR_ADDRESS 0x53 // if soldering address resistor: H
+#define I2C_ADDRESS 0x52        // I2C address definition (H: 0x53, L: 0x52), check your jumper settings
+#define I2C_SDA_PIN PIN_MFP3    // SDA pin for MFP to I2C cable, change if needed
+#define I2C_SCL_PIN PIN_MFP4    // SCL pin for MFP to I2C cable, change if needed
+#define PERI_EN_PIN PIN_PERI_EN // Peripheral enable pin, change if needed
 
-#define IIC_SDA_PIN PIN_MFP3
-#define IIC_SCL_PIN PIN_MFP4
-
-#define USE_INTERRUPT
-#define INTN 2
-
-ENS160 ens160;
+ENS160 sensor;
 
 void setup()
 {
-    Serial.begin(9600);
-    ens160.enableDebugging(Serial);
+  // Initialize serial communication
+  Serial.begin(115200);
+  Serial.println("Serial initialized");
 
-    pinMode(PIN_PERI_EN, OUTPUT);
-    digitalWrite(PIN_PERI_EN, HIGH);   // Enable peripheral power
+  // Initialize peripheral power
+  if (PERI_EN_PIN >= 0)
+  {
+    pinMode(PERI_EN_PIN, OUTPUT);
+    digitalWrite(PERI_EN_PIN, HIGH); // Enable peripheral power
+    Serial.println("Peripheral power enabled");
+  }
 
-    Wire.begin(IIC_SDA_PIN, IIC_SCL_PIN);  
-    
-    ens160.begin(&Wire, SENDOR_ADDRESS);
+  // Initialize sensor
+  Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN);
+  sensor.begin(&Wire, I2C_ADDRESS);
+  Serial.println("I2C bus initialized");
+  while (sensor.init() != true)
+  {
+    delay(200);
+  }
+  Serial.println("ENS160 sensor initialized");
 
-    Serial.println("begin..");
-    while (ens160.init() != true)
-    {
-        Serial.print(".");
-        delay(1000);
-    }
-    Serial.println("success");
-
-#ifdef USE_INTERRUPT
-    ens160.setInterruptPin(INTN);
-    ens160.writeConfiguration
-    (
-          ENS16X_CONFIGURATION_INTERRUPT_ENABLE
-        | ENS16X_CONFIGURATION_NEW_GENERAL_PURPOSE_DATA
-        | ENS16X_CONFIGURATION_NEW_DATA
-    );
-#endif
-
-    ens160.startStandardMeasure();
+  // Start measurement
+  sensor.startStandardMeasure();
 }
 
 void loop()
 {
-     ens160.wait();
+  sensor.wait();
 
-     // Enable Tools->Serial Plotter to see the sensor output as a graph
-
-     if (ens160.update() == RESULT_OK)
-     {
-        if (ens160.hasNewData())
-        {
-            Serial.print("Air Quality Index (UBA): "); Serial.print((uint8_t)ens160.getAirQualityIndex_UBA());
-
-            Serial.print("\tTotal Volatile Organic Compounds: "); Serial.print(ens160.getTvoc()); Serial.print(" ppb");
-            Serial.print("\tEquivalent CO2: "); Serial.print(ens160.getEco2()); Serial.println(" ppm");
-        }
-
-        if (ens160.hasNewGeneralPurposeData())
-        {
-            Serial.print("Resistance Sensor 0: "); Serial.print(ens160.getRs0()); Serial.print(" Ohm");
-            Serial.print("\tResistance Sensor 1: "); Serial.print(ens160.getRs1()); Serial.print(" Ohm");
-            Serial.print("\tResistance Sensor 2: "); Serial.print(ens160.getRs2()); Serial.print(" Ohm");
-            Serial.print("\tResistance Sensor 3: "); Serial.print(ens160.getRs3()); Serial.println(" Ohm");
-        }
-     }
+  if (sensor.update() == RESULT_OK)
+  {
+    if (sensor.hasNewData())
+    {
+      // Display data on screen
+      Serial.print("\033[H\033[J");
+      Serial.println("> FoBE Breakout ENS160 Monitor");
+      Serial.println();
+      Serial.print("\033[7m");
+      Serial.printf("%-12s%-12s%-12s\n", "INDEX", "VALUE", "UNIT");
+      Serial.print("\033[0m");
+      Serial.printf("%-12s%-12d%-12s\n", "AQI", sensor.getAirQualityIndex_UBA(), "UBA");
+      Serial.printf("%-12s%-12d%-12s\n", "TVOC", sensor.getTvoc(), "ppb");
+      Serial.printf("%-12s%-12d%-12s\n", "ECO2", sensor.getEco2(), "ppm");
+      if (sensor.hasNewGeneralPurposeData())
+      {
+        Serial.printf("%-12s%-12d%-12s\n", "RS0", sensor.getRs0(), "Ohm");
+        Serial.printf("%-12s%-12d%-12s\n", "RS1", sensor.getRs1(), "Ohm");
+        Serial.printf("%-12s%-12d%-12s\n", "RS2", sensor.getRs2(), "Ohm");
+        Serial.printf("%-12s%-12d%-12s\n", "RS3", sensor.getRs3(), "Ohm");
+      }
+    }
+  }
 }
 ```
 
-Build and flash the project, you should see the air quality index, TVOC, eCO2, and resistance sensor data printed in the serial monitor.
+:::important
+This example code uses ANSI output formatting. Your terminal must support ANSI escape codes to display the output correctly.
 
-> - If you want to use custom PINS, you can change the `IIC_SDA_PIN` and `IIC_SCL_PIN` definitions to your desired GPIO pins.
-> - The Sensor I2C address can be changed by soldering the `ENS160-ADDR` jumper to either H or L, as described in the configuration jumper section.
+```ini
+# platformio.ini
+[env:fobe_quill_esp32s3_mesh]
+platform = FoBE Espressif 32
+board = fobe_quill_esp32s3_mesh
+framework = arduino
+lib_deps = 
+	sciosense/ScioSense_ENS16x@^2.0.4
+monitor_speed = 115200
+monitor_raw = true
+```
+:::
+
+5. Build and upload the project. You should see the FoBE Breakout ENS160 Monitor output in the serial monitor (raw mode).
+
+```bash
+> FoBE Breakout ENS160 Monitor
+
+INDEX       VALUE       UNIT        
+AQI         2           UBA         
+TVOC        109         ppb         
+ECO2        564         ppm         
+RS0         62991       Ohm         
+RS1         1           Ohm         
+RS2         100831      Ohm         
+RS3         22143       Ohm         
+```
