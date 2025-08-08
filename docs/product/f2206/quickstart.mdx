@@ -57,17 +57,76 @@ The board features two jumper pad:
 
 ## Programming
 
-### FoBE Quill nRF52840 Mesh Example
-The FoBE Quill nRF52840 Mesh development board provides multiple digital gpio; pins D2, D1, D0 are used in the example:
+### FoBE Quill ESP32-S3 Mesh Example
+The FoBE Quill ESP32-S3 Mesh development board provides multiple digital gpio; 
 
+MFP interface is used in the example:
 <br/>
 <div style={{ textAlign: 'center' }}>
   <img src="/img/products/f2206-r1a.connection.png" alt="FoBE Breakout AS5600 Mechanical connection" style={{ width: '80%', height: 'auto' }} />
 </div>
 <br/>
 
+Please follow the [FoBE Quill ESP32-S3 Programming Guide](/product/f1102/programming) for pre-configuration.
+
+And the necessary Library Dependency:
+> robtillaart/AS5600@^0.6.6
+
+
 ```C++
-#include <TinyGPSPlus.h>
-#include <SoftwareSerial.h>
-......
+#include <Arduino.h>
+#include "AS5600.h"
+
+AS5600L ASL;
+
+#define SENDOR_ADDRESS 0x36
+
+#define IIC_SDA_PIN PIN_MFP3
+#define IIC_SCL_PIN PIN_MFP4
+
+void setup()
+{
+  while(!Serial);
+  Serial.begin(115200);
+  Serial.println();
+  Serial.println(__FILE__);
+  Serial.print("AS5600_LIB_VERSION: ");
+  Serial.println(AS5600_LIB_VERSION);
+  Serial.println();
+
+  pinMode(PIN_PERI_EN, OUTPUT);
+  digitalWrite(PIN_PERI_EN, HIGH);   // Enable peripheral power
+
+  Wire.begin(IIC_SDA_PIN, IIC_SCL_PIN);  
+
+  ASL.begin(4);  //  set direction pin.
+  ASL.setDirection(AS5600_CLOCK_WISE);  //  default, just be explicit.
+  int b = ASL.isConnected();
+  Serial.print("Connect: ");
+  Serial.println(b);
+
+  Serial.print("ADDR: ");
+  Serial.println(ASL.getAddress());
+
+  ASL.setAddress(SENDOR_ADDRESS);
+
+  Serial.print("ADDR: ");
+  Serial.println(ASL.getAddress());
+}
+
+
+void loop()
+{
+  //  Serial.print(millis());
+  //  Serial.print("\t");
+  Serial.print(ASL.readAngle());
+  Serial.print("\t");
+  Serial.println(ASL.rawAngle() * AS5600_RAW_TO_DEGREES);
+
+  delay(1000);
+}
 ```
+
+Build and flash the project, you should see the angle data printed in the serial monitor.
+
+> - If you want to use custom PINS, you can change the `IIC_SDA_PIN` and `IIC_SCL_PIN` definitions to your desired GPIO pins.

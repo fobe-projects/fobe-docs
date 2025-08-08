@@ -53,8 +53,10 @@ The board features two jumper pads:
 
 ## Programming
 
-### FoBE Quill nRF52840 Mesh Example
-It can be connected through the MFP port of the FoBE Quill nRF52840 Mesh development board.
+### FoBE Quill ESP32-S3 Mesh Example
+The FoBE Quill ESP32-S3 Mesh development board provides multiple digital gpio; 
+
+MFP interface is used in the example:
 
 <br/>
 <div style={{ textAlign: 'center' }}>
@@ -62,10 +64,115 @@ It can be connected through the MFP port of the FoBE Quill nRF52840 Mesh develop
 </div>
 <br/>
 
+Please follow the [FoBE Quill ESP32-S3 Programming Guide](/product/f1102/programming) for pre-configuration.
+
+And the necessary Library Dependency:
+> mikalhart/TinyGPSPlus@^1.1.0
+
+
 ```C++
+#include <Arduino.h>
 #include <TinyGPSPlus.h>
-#include <SoftwareSerial.h>
-......
+
+#define PIN_GNSS_RX PIN_MFP1
+#define PIN_GNSS_TX PIN_MFP2
+#define PIN_GNSS_RST PIN_MFP3
+#define PIN_GNSS_WAKE PIN_MFP4
+#define PIN_GNSS_EN PIN_PERI_EN
+#define GNSS_BAUD (9600)
+
+// The TinyGPSPlus object
+TinyGPSPlus gps;
+
+/*
+   By declaring TinyGPSCustom objects like this, we announce that we
+   are interested in the 15th, 16th, and 17th fields in the $GPGSA
+   sentence, respectively the PDOP (F("positional dilution of precision")),
+   HDOP (F("horizontal...")), and VDOP (F("vertical...")).
+
+   (Counting starts with the field immediately following the sentence name,
+   i.e. $GPGSA.  For more information on NMEA sentences, consult your
+   GPS module's documentation and/or http://aprs.gids.nl/nmea/.)
+
+   If your GPS module doesn't support the $GPGSA sentence, then you
+   won't get any output from this program.
+*/
+
+TinyGPSCustom pdop(gps, "GPGSA", 15); // $GPGSA sentence, 15th element
+TinyGPSCustom hdop(gps, "GPGSA", 16); // $GPGSA sentence, 16th element
+TinyGPSCustom vdop(gps, "GPGSA", 17); // $GPGSA sentence, 17th element
+
+void setup()
+{
+  Serial.begin(115200);
+
+  pinMode(PIN_GNSS_EN, OUTPUT);
+  pinMode(PIN_GNSS_WAKE, OUTPUT);
+  pinMode(PIN_GNSS_RST, OUTPUT);
+  digitalWrite(PIN_GNSS_EN, HIGH);   // Enable GNSS power
+  digitalWrite(PIN_GNSS_WAKE, LOW);  // Wake up GNSS
+  digitalWrite(PIN_GNSS_RST, LOW);   // Reset GNSS
+  delay(100);                        // Wait for GNSS to stabilize
+  digitalWrite(PIN_GNSS_WAKE, HIGH); // Release reset
+  digitalWrite(PIN_GNSS_RST, HIGH);  // Release reset
+
+  Serial1.begin(GNSS_BAUD, SERIAL_8N1, PIN_GNSS_RX, PIN_GNSS_TX);
+
+  Serial.println(F("UsingCustomFields.ino"));
+  Serial.println(F("Demonstrating how to extract any NMEA field using TinyGPSCustom"));
+  Serial.print(F("Testing TinyGPSPlus library v. "));
+  Serial.println(TinyGPSPlus::libraryVersion());
+  Serial.println(F("by Mikal Hart"));
+  Serial.println();
+}
+
+void loop()
+{
+  // Every time anything is updated, print everything.
+  if (gps.altitude.isUpdated() || gps.satellites.isUpdated() ||
+      pdop.isUpdated() || hdop.isUpdated() || vdop.isUpdated())
+  {
+    Serial.print(F("ALT="));
+    Serial.print(gps.altitude.meters());
+    Serial.print(F(" PDOP="));
+    Serial.print(pdop.value());
+    Serial.print(F(" HDOP="));
+    Serial.print(hdop.value());
+    Serial.print(F(" VDOP="));
+    Serial.print(vdop.value());
+    Serial.print(F(" SATS="));
+    Serial.println(gps.satellites.value());
+    // Print the current data time
+    Serial.print(F("TIME="));
+    Serial.print(gps.time.hour());
+    Serial.print(F(":"));
+    Serial.print(gps.time.minute());
+    Serial.print(F(":"));
+    Serial.print(gps.time.second());
+    Serial.print(F("."));
+    Serial.println(gps.time.centisecond());
+    // Print the current date
+    Serial.print(F("DATE="));
+    Serial.print(gps.date.year());
+    Serial.print(F("-"));
+    Serial.print(gps.date.month());
+    Serial.print(F("-"));
+    Serial.println(gps.date.day());
+    // Print the current location
+    Serial.print(F("LOCATION="));
+    if (gps.location.isValid())
+    {
+      Serial.print(gps.location.lat(), 6);
+      Serial.print(F(","));
+      Serial.println(gps.location.lng(), 6);
+    }
+  }
+
+  while (Serial1.available() > 0)
+    gps.encode(Serial1.read());
+}
 ```
 
-Make sure that the GPS module is used in a more open location so that it can get a good GPS signal.
+Build and flash the project, and make sure that the GPS module is used in a more open location so that it can get a good GPS signal. You should see the GPS data printed in the serial monitor.
+
+> - If you want to use custom PINS, you can change the `IIC_SDA_PIN` and `IIC_SCL_PIN` definitions to your desired GPIO pins.

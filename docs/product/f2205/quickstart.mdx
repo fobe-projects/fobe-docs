@@ -57,17 +57,98 @@ The board features two jumper pad:
 
 ## Programming
 
-### FoBE Quill nRF52840 Mesh Example
-The FoBE Quill nRF52840 Mesh development board provides multiple digital gpio; pins D2, D1, D0 are used in the example:
+### FoBE Quill ESP32-S3 Mesh Example
+The FoBE Quill ESP32-S3 Mesh development board provides multiple digital gpio; 
 
+MFP interface is used in the example:
 <br/>
 <div style={{ textAlign: 'center' }}>
   <img src="/img/products/f2205-r1a.connection.png" alt="FoBE Breakout L76K Mechanical connection" style={{ width: '80%', height: 'auto' }} />
 </div>
 <br/>
 
+Please follow the [FoBE Quill ESP32-S3 Programming Guide](/product/f1102/programming) for pre-configuration.
+
+And the necessary Library Dependency:
+> sciosense/ScioSense_ENS16x@^2.0.4
+
 ```C++
-#include <TinyGPSPlus.h>
-#include <SoftwareSerial.h>
-......
+#include <Arduino.h>
+#include <Wire.h>
+#include <ScioSense_ENS16x.h>
+
+#define SENDOR_ADDRESS 0x52 // if soldering address resistor: L
+// #define SENDOR_ADDRESS 0x53 // if soldering address resistor: H
+
+#define IIC_SDA_PIN PIN_MFP3
+#define IIC_SCL_PIN PIN_MFP4
+
+#define USE_INTERRUPT
+#define INTN 2
+
+ENS160 ens160;
+
+void setup()
+{
+    Serial.begin(9600);
+    ens160.enableDebugging(Serial);
+
+    pinMode(PIN_PERI_EN, OUTPUT);
+    digitalWrite(PIN_PERI_EN, HIGH);   // Enable peripheral power
+
+    Wire.begin(IIC_SDA_PIN, IIC_SCL_PIN);  
+    
+    ens160.begin(&Wire, SENDOR_ADDRESS);
+
+    Serial.println("begin..");
+    while (ens160.init() != true)
+    {
+        Serial.print(".");
+        delay(1000);
+    }
+    Serial.println("success");
+
+#ifdef USE_INTERRUPT
+    ens160.setInterruptPin(INTN);
+    ens160.writeConfiguration
+    (
+          ENS16X_CONFIGURATION_INTERRUPT_ENABLE
+        | ENS16X_CONFIGURATION_NEW_GENERAL_PURPOSE_DATA
+        | ENS16X_CONFIGURATION_NEW_DATA
+    );
+#endif
+
+    ens160.startStandardMeasure();
+}
+
+void loop()
+{
+     ens160.wait();
+
+     // Enable Tools->Serial Plotter to see the sensor output as a graph
+
+     if (ens160.update() == RESULT_OK)
+     {
+        if (ens160.hasNewData())
+        {
+            Serial.print("Air Quality Index (UBA): "); Serial.print((uint8_t)ens160.getAirQualityIndex_UBA());
+
+            Serial.print("\tTotal Volatile Organic Compounds: "); Serial.print(ens160.getTvoc()); Serial.print(" ppb");
+            Serial.print("\tEquivalent CO2: "); Serial.print(ens160.getEco2()); Serial.println(" ppm");
+        }
+
+        if (ens160.hasNewGeneralPurposeData())
+        {
+            Serial.print("Resistance Sensor 0: "); Serial.print(ens160.getRs0()); Serial.print(" Ohm");
+            Serial.print("\tResistance Sensor 1: "); Serial.print(ens160.getRs1()); Serial.print(" Ohm");
+            Serial.print("\tResistance Sensor 2: "); Serial.print(ens160.getRs2()); Serial.print(" Ohm");
+            Serial.print("\tResistance Sensor 3: "); Serial.print(ens160.getRs3()); Serial.println(" Ohm");
+        }
+     }
+}
 ```
+
+Build and flash the project, you should see the air quality index, TVOC, eCO2, and resistance sensor data printed in the serial monitor.
+
+> - If you want to use custom PINS, you can change the `IIC_SDA_PIN` and `IIC_SCL_PIN` definitions to your desired GPIO pins.
+> - The Sensor I2C address can be changed by soldering the `ENS160-ADDR` jumper to either H or L, as described in the configuration jumper section.

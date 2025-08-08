@@ -57,17 +57,82 @@ The board features two jumper pad:
 
 ## Programming
 
-### FoBE Quill nRF52840 Mesh Example
-The FoBE Quill nRF52840 Mesh development board provides multiple digital gpio; pins D2, D1, D0 are used in the example:
+### FoBE Quill ESP32-S3 Mesh Example
+The FoBE Quill ESP32-S3 Mesh development board provides multiple digital gpio; 
 
+MFP interface is used in the example:
 <br/>
 <div style={{ textAlign: 'center' }}>
   <img src="/img/products/f2201-r1a.connection.png" alt="FoBE Breakout L76K Mechanical connection" style={{ width: '80%', height: 'auto' }} />
 </div>
 <br/>
 
+Please follow the [FoBE Quill ESP32-S3 Programming Guide](/product/f1102/programming) for pre-configuration.
+
+And the necessary Library Dependency:
+> adafruit/Adafruit LPS2X@^2.0.6
+
+
 ```C++
-#include <TinyGPSPlus.h>
-#include <SoftwareSerial.h>
-......
+#include <Arduino.h>
+#include <Adafruit_LPS2X.h>
+#include <Wire.h>
+
+Adafruit_LPS22 lps;
+Adafruit_Sensor *lps_temp, *lps_pressure;
+
+#define SENDOR_ADDRESS 0x5C // if soldering address-resistor: L
+// #define SENDOR_ADDRESS 0x5D // if soldering address-resistor: H
+
+#define IIC_SDA_PIN PIN_MFP3
+#define IIC_SCL_PIN PIN_MFP4
+
+void setup(void) {
+  Serial.begin(115200);
+  while (!Serial)
+    delay(10); 
+
+  Serial.println("LPS22 test!");
+
+  pinMode(PIN_PERI_EN, OUTPUT);
+  digitalWrite(PIN_PERI_EN, HIGH);   // Enable peripheral power
+
+  Wire.begin(IIC_SDA_PIN, IIC_SCL_PIN);  
+
+  if (!lps.begin_I2C(SENDOR_ADDRESS)) {
+    Serial.println("Failed to find LPS22 chip");
+    while (1) {
+      delay(10);
+    }
+  }
+
+  Serial.println("LPS22 Found!");
+  lps_temp = lps.getTemperatureSensor();
+  lps_temp->printSensorDetails();
+
+  lps_pressure = lps.getPressureSensor();
+  lps_pressure->printSensorDetails();
+}
+
+void loop() {
+  //  /* Get a new normalized sensor event */
+  sensors_event_t pressure;
+  sensors_event_t temp;
+  lps_temp->getEvent(&temp);
+  lps_pressure->getEvent(&pressure);
+
+  Serial.print("\t\tTemperature ");
+  Serial.print(temp.temperature);
+  Serial.println(" deg C");
+
+  /* Display the results (pressure is measured in hPa) */
+  Serial.print("\t\tPressure: ");Serial.print(pressure.pressure);Serial.println(" hPa");
+  Serial.print("\t\tTemperature: ");Serial.print(temp.temperature);Serial.println(" degrees C");
+
+  delay(100);
+}
 ```
+Build and flash the project, you should see the temperature and pressure data printed in the serial monitor.
+
+> - If you want to use custom PINS, you can change the `IIC_SDA_PIN` and `IIC_SCL_PIN` definitions to your desired GPIO pins.
+> - The Sensor I2C address can be changed by soldering the `LPS22-ADDR` jumper to either H or L, as described in the configuration jumper section.

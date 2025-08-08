@@ -47,17 +47,62 @@ The board features two jumper pad:
 
 ## Programming
 
-### FoBE Quill nRF52840 Mesh Example
-The FoBE Quill nRF52840 Mesh development board provides multiple digital gpio; pins D2, D1 are used in the example:
+### FoBE Quill ESP32-S3 Mesh Example
+The FoBE Quill ESP32-S3 Mesh development board provides multiple digital gpio; 
 
+MFP interface is used in the example:
 <br/>
 <div style={{ textAlign: 'center' }}>
   <img src="/img/products/f2203-r1a.connection.png" alt="FoBE Breakout L76K Mechanical connection" style={{ width: '80%', height: 'auto' }} />
 </div>
 <br/>
 
+Please follow the [FoBE Quill ESP32-S3 Programming Guide](/product/f1102/programming) for pre-configuration.
+
+And the necessary Library Dependency:
+> adafruit/Adafruit SSD1306@^2.5.15
+
 ```C++
-#include <TinyGPSPlus.h>
-#include <SoftwareSerial.h>
-......
+#include <Arduino.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+#include <Wire.h>
+
+// Add lib_deps: adafruit/Adafruit SSD1306@^2.5.15
+
+#define SCREEN_ADDRESS 0x3C // Confirm I2C address
+#define IIC_SDA_PIN PIN_MFP3
+#define IIC_SCL_PIN PIN_MFP4
+
+#define SCREEN_WIDTH 40     // OLED display width, in pixels
+#define SCREEN_HEIGHT 72    // OLED display height, in pixels
+#define OLED_RESET -1       // Reset pin # (or -1 if sharing Arduino reset pin)
+
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+
+void setup() {
+  Serial.begin(115200);
+
+  Wire.begin(IIC_SDA_PIN, IIC_SCL_PIN);
+
+  pinMode(PIN_PERI_EN, OUTPUT);    // Setup OLED power pin
+  digitalWrite(PIN_PERI_EN, HIGH); // Turn on the power
+  
+  if (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
+    Serial.println(F("SSD1306 allocation failed"));
+    for (;;)
+      ; // Don't proceed, loop forever
+  }
+
+  // Display logo
+  display.clearDisplay();
+  display.drawRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, SSD1306_WHITE);
+  display.display();
+}
+
+void loop() {}
 ```
+
+Build and flash the project, you should see the OLED display showing a rectangle.
+
+> - If you want to use custom PINS, you can change the `IIC_SDA_PIN` and `IIC_SCL_PIN` definitions to your desired GPIO pins.
