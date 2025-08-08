@@ -53,126 +53,244 @@ The board features two jumper pads:
 
 ## Programming
 
-### FoBE Quill ESP32-S3 Mesh Example
-The FoBE Quill ESP32-S3 Mesh development board provides multiple digital gpio; 
+### Running with FoBE Quill ESP32S3 Mesh
 
-MFP interface is used in the example:
+Let's get started with the FoBE Quill ESP32S3 Mesh using the MFP interface.
 
+1. Connect the FoBE Breakout L76K to the FoBE Quill ESP32S3 Mesh using the MFP interface.
 <br/>
 <div style={{ textAlign: 'center' }}>
-  <img src="/img/products/f2207-r1a.connection.png" alt="FoBE Breakout L76K Mechanical connection" style={{ width: '100%', height: 'auto' }} />
+  <img src="/img/products/f2207-r1a.connection.png" alt="FoBE Breakout L76K Connection" style={{ width: '80%', height: 'auto' }} />
 </div>
 <br/>
 
-Please follow the [FoBE Quill ESP32-S3 Programming Guide](/product/f1102/programming) for pre-configuration.
+2. Create a sketch or PlatformIO project, or follow the [FoBE Quill ESP32S3 Programming Guide](/product/f1102/programming) for pre-configuration.
 
-And the necessary Library Dependency:
-> mikalhart/TinyGPSPlus@^1.1.0
+3. Install the necessary library in your project:
+```ini
+mikalhart/TinyGPSPlus@^1.1.0
+```
 
-
-```C++
-#include <Arduino.h>
+4. Copy the following code into your sketch or PlatformIO project:
+```cpp
 #include <TinyGPSPlus.h>
 
-#define PIN_GNSS_RX PIN_MFP1
-#define PIN_GNSS_TX PIN_MFP2
-#define PIN_GNSS_RST PIN_MFP3
-#define PIN_GNSS_WAKE PIN_MFP4
-#define PIN_GNSS_EN PIN_PERI_EN
-#define GNSS_BAUD (9600)
+#define GNSS_BAUD 9600          // GNSS module baud rate
+#define GNSS_RX_PIN PIN_MFP1    // RX pin for GNSS communication, change if needed
+#define GNSS_TX_PIN PIN_MFP2    // TX pin for GNSS communication, change if needed
+#define GNSS_RST_PIN PIN_MFP3   // Reset pin for GNSS, change if needed
+#define GNSS_WAKE_PIN PIN_MFP4  // Wake pin for GNSS, change if needed
+#define PERI_EN_PIN PIN_PERI_EN // Peripheral enable pin, change if needed
 
-// The TinyGPSPlus object
-TinyGPSPlus gps;
+TinyGPSPlus sensor;
 
-/*
-   By declaring TinyGPSCustom objects like this, we announce that we
-   are interested in the 15th, 16th, and 17th fields in the $GPGSA
-   sentence, respectively the PDOP (F("positional dilution of precision")),
-   HDOP (F("horizontal...")), and VDOP (F("vertical...")).
+// Buffer to store the latest NMEA sentence
+String latestNmeaSentence = "";
+char nmeaBuffer[128];
+int bufferIndex = 0;
 
-   (Counting starts with the field immediately following the sentence name,
-   i.e. $GPGSA.  For more information on NMEA sentences, consult your
-   GPS module's documentation and/or http://aprs.gids.nl/nmea/.)
-
-   If your GPS module doesn't support the $GPGSA sentence, then you
-   won't get any output from this program.
-*/
-
-TinyGPSCustom pdop(gps, "GPGSA", 15); // $GPGSA sentence, 15th element
-TinyGPSCustom hdop(gps, "GPGSA", 16); // $GPGSA sentence, 16th element
-TinyGPSCustom vdop(gps, "GPGSA", 17); // $GPGSA sentence, 17th element
+// Time tracking variables
+unsigned long startupTime = 0;
+unsigned long firstFixTime = 0;
+bool firstFixAchieved = false;
 
 void setup()
 {
+  // Initialize serial communication
   Serial.begin(115200);
+  Serial.println("Serial initialized");
 
-  pinMode(PIN_GNSS_EN, OUTPUT);
-  pinMode(PIN_GNSS_WAKE, OUTPUT);
-  pinMode(PIN_GNSS_RST, OUTPUT);
-  digitalWrite(PIN_GNSS_EN, HIGH);   // Enable GNSS power
-  digitalWrite(PIN_GNSS_WAKE, LOW);  // Wake up GNSS
-  digitalWrite(PIN_GNSS_RST, LOW);   // Reset GNSS
-  delay(100);                        // Wait for GNSS to stabilize
-  digitalWrite(PIN_GNSS_WAKE, HIGH); // Release reset
-  digitalWrite(PIN_GNSS_RST, HIGH);  // Release reset
+  // Initialize peripheral power
+  if (PERI_EN_PIN >= 0)
+  {
+    pinMode(PERI_EN_PIN, OUTPUT);
+    digitalWrite(PERI_EN_PIN, HIGH); // Enable peripheral power
+    Serial.println("Peripheral power enabled");
+  }
 
-  Serial1.begin(GNSS_BAUD, SERIAL_8N1, PIN_GNSS_RX, PIN_GNSS_TX);
+  // Initialize GNSS module (optional, if you want to test searching time cost)
+  pinMode(GNSS_RST_PIN, OUTPUT);
+  pinMode(GNSS_WAKE_PIN, OUTPUT);
+  digitalWrite(GNSS_RST_PIN, LOW); // Reset the GNSS module
+  delay(100);
+  digitalWrite(GNSS_RST_PIN, HIGH);  // Release reset
+  digitalWrite(GNSS_WAKE_PIN, HIGH); // Wake the GNSS module
 
-  Serial.println(F("UsingCustomFields.ino"));
-  Serial.println(F("Demonstrating how to extract any NMEA field using TinyGPSCustom"));
-  Serial.print(F("Testing TinyGPSPlus library v. "));
-  Serial.println(TinyGPSPlus::libraryVersion());
-  Serial.println(F("by Mikal Hart"));
-  Serial.println();
+  Serial1.begin(GNSS_BAUD, SERIAL_8N1, GNSS_RX_PIN, GNSS_TX_PIN);
+  Serial.println("GNSS bus initialized");
+
+  // Wait a moment for module to fully initialize
+  delay(1000);
+
+  // Record startup time
+  startupTime = millis();
+  Serial.printf("Startup time recorded: %lu ms\n", startupTime);
+
+  // Wait for GNSS to be ready (equivalent to sensor init loop)
+  Serial.println("Waiting for GNSS data...");
+  unsigned long startTime = millis();
+  while (millis() - startTime < 10000) // Wait up to 10 seconds
+  {
+    while (Serial1.available() > 0)
+    {
+      sensor.encode(Serial1.read());
+    }
+    if (sensor.location.isValid() || sensor.time.isValid() || sensor.satellites.value() > 0)
+    {
+      break;
+    }
+    delay(200);
+  }
+  Serial.println("GNSS sensor initialized");
+
+  // Start measurement (GNSS automatically starts after initialization)
 }
 
 void loop()
 {
-  // Every time anything is updated, print everything.
-  if (gps.altitude.isUpdated() || gps.satellites.isUpdated() ||
-      pdop.isUpdated() || hdop.isUpdated() || vdop.isUpdated())
+  delay(100); // Wait equivalent to sensor.wait()
+
+  // Read data from GNSS (equivalent to sensor.update())
+  bool dataUpdated = false;
+  while (Serial1.available() > 0)
   {
-    Serial.print(F("ALT="));
-    Serial.print(gps.altitude.meters());
-    Serial.print(F(" PDOP="));
-    Serial.print(pdop.value());
-    Serial.print(F(" HDOP="));
-    Serial.print(hdop.value());
-    Serial.print(F(" VDOP="));
-    Serial.print(vdop.value());
-    Serial.print(F(" SATS="));
-    Serial.println(gps.satellites.value());
-    // Print the current data time
-    Serial.print(F("TIME="));
-    Serial.print(gps.time.hour());
-    Serial.print(F(":"));
-    Serial.print(gps.time.minute());
-    Serial.print(F(":"));
-    Serial.print(gps.time.second());
-    Serial.print(F("."));
-    Serial.println(gps.time.centisecond());
-    // Print the current date
-    Serial.print(F("DATE="));
-    Serial.print(gps.date.year());
-    Serial.print(F("-"));
-    Serial.print(gps.date.month());
-    Serial.print(F("-"));
-    Serial.println(gps.date.day());
-    // Print the current location
-    Serial.print(F("LOCATION="));
-    if (gps.location.isValid())
+    char c = Serial1.read();
+
+    // Build NMEA sentence buffer
+    if (c == '$')
     {
-      Serial.print(gps.location.lat(), 6);
-      Serial.print(F(","));
-      Serial.println(gps.location.lng(), 6);
+      bufferIndex = 0;
+      nmeaBuffer[bufferIndex++] = c;
+    }
+    else if (bufferIndex > 0 && bufferIndex < 127)
+    {
+      nmeaBuffer[bufferIndex++] = c;
+      if (c == '\n')
+      {
+        nmeaBuffer[bufferIndex] = '\0';
+        latestNmeaSentence = String(nmeaBuffer);
+      }
+    }
+
+    if (sensor.encode(c))
+    {
+      dataUpdated = true;
     }
   }
 
-  while (Serial1.available() > 0)
-    gps.encode(Serial1.read());
+  if (dataUpdated) // Equivalent to sensor.update() == RESULT_OK
+  {
+    if (sensor.location.isValid() || sensor.time.isValid()) // Equivalent to sensor.hasNewData()
+    {
+      // Check for first fix achievement
+      if (!firstFixAchieved && sensor.location.isValid())
+      {
+        firstFixTime = millis();
+        firstFixAchieved = true;
+      }
+
+      // Display data on screen
+      Serial.print("\033[H\033[J");
+      Serial.println("> FoBE Breakout L76K Monitor");
+      Serial.println();
+      Serial.print("\033[7m");
+      Serial.printf("%-12s%-12s%-12s\n", "INDEX", "VALUE", "UNIT");
+      Serial.print("\033[0m");
+
+      if (sensor.location.isValid())
+      {
+        Serial.printf("%-12s%-12.6f%-12s\n", "LATITUDE", sensor.location.lat(), "°");
+        Serial.printf("%-12s%-12.6f%-12s\n", "LONGITUDE", sensor.location.lng(), "°");
+      }
+
+      if (sensor.altitude.isValid())
+      {
+        Serial.printf("%-12s%-12.2f%-12s\n", "ALTITUDE", sensor.altitude.meters(), "m");
+      }
+
+      if (sensor.speed.isValid())
+      {
+        Serial.printf("%-12s%-12.2f%-12s\n", "SPEED", sensor.speed.kmph(), "km/h");
+      }
+
+      if (sensor.satellites.isValid())
+      {
+        Serial.printf("%-12s%-12d%-12s\n", "SATELLITES", sensor.satellites.value(), "");
+      }
+
+      if (sensor.hdop.isValid())
+      {
+        Serial.printf("%-12s%-12.2f%-12s\n", "HDOP", sensor.hdop.hdop(), "");
+      }
+
+      // Add GPS time display
+      if (sensor.time.isValid() && sensor.date.isValid())
+      {
+        Serial.printf("%-12s%02d:%02d:%02d%-12s\n", "TIME", sensor.time.hour(), sensor.time.minute(), sensor.time.second(), "UTC");
+        Serial.printf("%-12s%04d-%02d-%02d%-12s\n", "DATE", sensor.date.year(), sensor.date.month(), sensor.date.day(), "");
+      }
+
+      // Add Time to First Fix Information
+      if (firstFixAchieved)
+      {
+        unsigned long timeToFirstFix = firstFixTime - startupTime;
+        Serial.printf("%-12s%-12.3f%-12s\n", "TTFF", timeToFirstFix / 1000.0, "SEC");
+      }
+      else
+      {
+        unsigned long currentTime = millis();
+        unsigned long timeElapsed = currentTime - startupTime;
+        Serial.printf("%-12s%-12.3f%-12s\n", "SEARCHING", timeElapsed / 1000.0, "SEC");
+      }
+
+      // Print latest NMEA data stream below the table
+      Serial.println();
+      Serial.println("Latest NMEA Data Stream:");
+      if (latestNmeaSentence.length() > 0)
+      {
+        Serial.print(latestNmeaSentence);
+      }
+      else
+      {
+        Serial.println("No NMEA data received yet");
+      }
+    }
+  }
 }
 ```
 
-Build and flash the project, and make sure that the GPS module is used in a more open location so that it can get a good GPS signal. You should see the GPS data printed in the serial monitor.
+:::important
+This example code uses ANSI output formatting. Your terminal must support ANSI escape codes to display the output correctly.
 
-> - If you want to use custom PINS, you can change the `IIC_SDA_PIN` and `IIC_SCL_PIN` definitions to your desired GPIO pins.
+```ini
+# platformio.ini
+[env:fobe_quill_esp32s3_mesh]
+platform = FoBE Espressif 32
+board = fobe_quill_esp32s3_mesh
+framework = arduino
+lib_deps = 
+	mikalhart/TinyGPSPlus@^1.1.0
+monitor_speed = 115200
+monitor_raw = true
+```
+:::
+
+5. Build and upload the project. You should see the FoBE Breakout L76K Monitor output in the serial monitor (raw mode).
+
+```bash
+> FoBE Breakout L76K Monitor
+
+INDEX       VALUE       UNIT        
+LATITUDE    22.123456   °          
+LONGITUDE   114.123456  °          
+ALTITUDE    71.20       m           
+SPEED       17.33       km/h        
+SATELLITES  15                       
+HDOP        24.80                   
+TIME        19:59:03UTC         
+DATE        2025-08-08            
+TTFF        3.236       SEC         
+
+Latest NMEA Data Stream:
+$GNGSA,A,1,,,,,,,,,,,,,25.5,24.8,25.5,1*0D                
+```

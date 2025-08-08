@@ -57,82 +57,116 @@ The board features two jumper pad:
 
 ## Programming
 
-### FoBE Quill ESP32-S3 Mesh Example
-The FoBE Quill ESP32-S3 Mesh development board provides multiple digital gpio; 
+### Running with FoBE Quill ESP32S3 Mesh
 
-MFP interface is used in the example:
+Let's get started with the FoBE Quill ESP32S3 Mesh using the MFP interface.
+
+1. Connect the FoBE Breakout LPS22 to the FoBE Quill ESP32S3 Mesh using the MFP interface.
 <br/>
 <div style={{ textAlign: 'center' }}>
-  <img src="/img/products/f2201-r1a.connection.png" alt="FoBE Breakout L76K Mechanical connection" style={{ width: '80%', height: 'auto' }} />
+  <img src="/img/products/f2201-r1a.connection.png" alt="FoBE Breakout LPS22 Connection" style={{ width: '80%', height: 'auto' }} />
 </div>
 <br/>
 
-Please follow the [FoBE Quill ESP32-S3 Programming Guide](/product/f1102/programming) for pre-configuration.
+2. Create a sketch or PlatformIO project, or follow the [FoBE Quill ESP32S3 Programming Guide](/product/f1102/programming) for pre-configuration.
 
-And the necessary Library Dependency:
-> adafruit/Adafruit LPS2X@^2.0.6
+3. Install the necessary library in your project:
+```ini
+adafruit/Adafruit LPS2X@^2.0.6
+```
 
-
-```C++
-#include <Arduino.h>
+4. Copy the following code into your sketch or PlatformIO project:
+```cpp
 #include <Adafruit_LPS2X.h>
-#include <Wire.h>
 
-Adafruit_LPS22 lps;
-Adafruit_Sensor *lps_temp, *lps_pressure;
+#define I2C_ADDRESS 0x5C        // I2C address definition for LPS22
+#define I2C_SDA_PIN PIN_MFP3    // SDA pin for MFP to I2C cable, change if needed
+#define I2C_SCL_PIN PIN_MFP4    // SCL pin for MFP to I2C cable, change if needed
+#define PERI_EN_PIN PIN_PERI_EN // Peripheral enable pin, change if needed
 
-#define SENDOR_ADDRESS 0x5C // if soldering address-resistor: L
-// #define SENDOR_ADDRESS 0x5D // if soldering address-resistor: H
+Adafruit_LPS22 sensor;
 
-#define IIC_SDA_PIN PIN_MFP3
-#define IIC_SCL_PIN PIN_MFP4
-
-void setup(void) {
+void setup()
+{
+  // Initialize serial communication
   Serial.begin(115200);
-  while (!Serial)
-    delay(10); 
+  Serial.println("Serial initialized");
 
-  Serial.println("LPS22 test!");
-
-  pinMode(PIN_PERI_EN, OUTPUT);
-  digitalWrite(PIN_PERI_EN, HIGH);   // Enable peripheral power
-
-  Wire.begin(IIC_SDA_PIN, IIC_SCL_PIN);  
-
-  if (!lps.begin_I2C(SENDOR_ADDRESS)) {
-    Serial.println("Failed to find LPS22 chip");
-    while (1) {
-      delay(10);
-    }
+  // Initialize peripheral power
+  if (PERI_EN_PIN >= 0)
+  {
+    pinMode(PERI_EN_PIN, OUTPUT);
+    digitalWrite(PERI_EN_PIN, HIGH); // Enable peripheral power
+    Serial.println("Peripheral power enabled");
   }
 
-  Serial.println("LPS22 Found!");
-  lps_temp = lps.getTemperatureSensor();
-  lps_temp->printSensorDetails();
+  // Initialize sensor
+  Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN);
+  sensor.begin_I2C(I2C_ADDRESS);
+  Serial.println("I2C bus initialized");
+  while (!sensor.begin_I2C(I2C_ADDRESS))
+  {
+    delay(200);
+  }
+  Serial.println("LPS22 sensor initialized");
 
-  lps_pressure = lps.getPressureSensor();
-  lps_pressure->printSensorDetails();
+  // Start measurement
+  // LPS22 is ready for measurements after initialization
 }
 
-void loop() {
-  //  /* Get a new normalized sensor event */
-  sensors_event_t pressure;
-  sensors_event_t temp;
-  lps_temp->getEvent(&temp);
-  lps_pressure->getEvent(&pressure);
+void loop()
+{
+  delay(1000); // Wait equivalent to sensor.wait()
 
-  Serial.print("\t\tTemperature ");
-  Serial.print(temp.temperature);
-  Serial.println(" deg C");
-
-  /* Display the results (pressure is measured in hPa) */
-  Serial.print("\t\tPressure: ");Serial.print(pressure.pressure);Serial.println(" hPa");
-  Serial.print("\t\tTemperature: ");Serial.print(temp.temperature);Serial.println(" degrees C");
-
-  delay(100);
+  sensors_event_t temp, pressure;
+  Adafruit_Sensor *temp_sensor = sensor.getTemperatureSensor();
+  Adafruit_Sensor *pressure_sensor = sensor.getPressureSensor();
+  
+  // Equivalent to sensor.update() == RESULT_OK
+  if (temp_sensor && pressure_sensor)
+  {
+    temp_sensor->getEvent(&temp);
+    pressure_sensor->getEvent(&pressure);
+    
+    // Equivalent to sensor.hasNewData()
+    if (temp.temperature != 0.0 || pressure.pressure != 0.0)
+    {
+      // Display data on screen
+      Serial.print("\033[H\033[J");
+      Serial.println("> FoBE Breakout LPS22 Monitor");
+      Serial.println();
+      Serial.print("\033[7m");
+      Serial.printf("%-12s%-12s%-12s\n", "INDEX", "VALUE", "UNIT");
+      Serial.print("\033[0m");
+      Serial.printf("%-12s%-12.2f%-12s\n", "TEMP", temp.temperature, "°C");
+      Serial.printf("%-12s%-12.2f%-12s\n", "PRESSURE", pressure.pressure, "hPa");
+    }
+  }
 }
 ```
-Build and flash the project, you should see the temperature and pressure data printed in the serial monitor.
 
-> - If you want to use custom PINS, you can change the `IIC_SDA_PIN` and `IIC_SCL_PIN` definitions to your desired GPIO pins.
-> - The Sensor I2C address can be changed by soldering the `LPS22-ADDR` jumper to either H or L, as described in the configuration jumper section.
+:::important
+This example code uses ANSI output formatting. Your terminal must support ANSI escape codes to display the output correctly.
+
+```ini
+# platformio.ini
+[env:fobe_quill_esp32s3_mesh]
+platform = FoBE Espressif 32
+board = fobe_quill_esp32s3_mesh
+framework = arduino
+lib_deps = 
+	adafruit/Adafruit LPS2X@^2.0.6
+monitor_speed = 115200
+monitor_raw = true
+```
+:::
+
+5. Build and upload the project. You should see the FoBE Breakout LPS22 Monitor output in the serial monitor (raw mode).
+
+```bash
+> FoBE Breakout LPS22 Monitor
+
+INDEX       VALUE       UNIT        
+TEMP        27.60       °C         
+PRESSURE    1001.28     hPa                    
+```

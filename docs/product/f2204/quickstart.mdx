@@ -58,168 +58,124 @@ The board features two jumper pad:
 
 ## Programming
 
-### FoBE Quill ESP32-S3 Mesh Example
-The FoBE Quill ESP32-S3 Mesh development board provides multiple digital gpio; 
+### Running with FoBE Quill ESP32S3 Mesh
 
-MFP interface is used in the example:
+Let's get started with the FoBE Quill ESP32S3 Mesh using the MFP interface.
+
+1. Connect the FoBE Breakout BM8563 to the FoBE Quill ESP32S3 Mesh using the MFP interface.
 <br/>
 <div style={{ textAlign: 'center' }}>
-  <img src="/img/products/f2204-r1a.connection.png" alt="FoBE Breakout BM8563 Mechanical connection" style={{ width: '80%', height: 'auto' }} />
+  <img src="/img/products/f2204-r1a.connection.png" alt="FoBE Breakout BM8563 Connection" style={{ width: '80%', height: 'auto' }} />
 </div>
 <br/>
 
-Please follow the [FoBE Quill ESP32-S3 Programming Guide](/product/f1102/programming) for pre-configuration.
+2. Create a sketch or PlatformIO project, or follow the [FoBE Quill ESP32S3 Programming Guide](/product/f1102/programming) for pre-configuration.
 
-And the necessary Library Dependency:
-> makuna/RTC@^2.5.0
+3. Install the necessary library in your project:
+```ini
+makuna/RTC@^2.5.0
+```
 
-```C++
-#include <Arduino.h>
+4. Copy the following code into your sketch or PlatformIO project:
+```cpp
 #include <RtcPCF8563.h>
-#include <Wire.h>
 
-RtcPCF8563<TwoWire> Rtc(Wire);
+#define I2C_SDA_PIN PIN_MFP3    // SDA pin for MFP to I2C cable, change if needed
+#define I2C_SCL_PIN PIN_MFP4    // SCL pin for MFP to I2C cable, change if needed
+#define PERI_EN_PIN PIN_PERI_EN // Peripheral enable pin, change if needed
 
-#define IIC_SDA_PIN PIN_MFP3
-#define IIC_SCL_PIN PIN_MFP4
+RtcPCF8563<TwoWire> rtcSensor(Wire);
 
-bool wasError(const char *errorTopic = "") {
-  uint8_t error = Rtc.LastError();
-  if (error != 0) {
-    // we have a communications error
-    // see
-    // https://www.arduino.cc/reference/en/language/functions/communication/wire/endtransmission/
-    // for what the number means
-    Serial.print("[");
-    Serial.print(errorTopic);
-    Serial.print("] WIRE communications error (");
-    Serial.print(error);
-    Serial.print(") : ");
-
-    switch (error) {
-    case Rtc_Wire_Error_None:
-      Serial.println("(none?!)");
-      break;
-    case Rtc_Wire_Error_TxBufferOverflow:
-      Serial.println("transmit buffer overflow");
-      break;
-    case Rtc_Wire_Error_NoAddressableDevice:
-      Serial.println("no device responded");
-      break;
-    case Rtc_Wire_Error_UnsupportedRequest:
-      Serial.println("device doesn't support request");
-      break;
-    case Rtc_Wire_Error_Unspecific:
-      Serial.println("unspecified error");
-      break;
-    case Rtc_Wire_Error_CommunicationTimeout:
-      Serial.println("communications timed out");
-      break;
-    }
-    return true;
-  }
-  return false;
-}
-
-void printDateTime(const RtcDateTime &dt) {
-  char datestring[26];
-
-  snprintf_P(datestring, countof(datestring),
-             PSTR("%02u/%02u/%04u %02u:%02u:%02u"), dt.Month(), dt.Day(),
-             dt.Year(), dt.Hour(), dt.Minute(), dt.Second());
-  Serial.print(datestring);
-}
-
-void setup() {
+void setup()
+{
+  // Initialize serial communication
   Serial.begin(115200);
+  Serial.println("Serial initialized");
 
-  Serial.print("compiled: ");
-  Serial.print(__DATE__);
-  Serial.println(__TIME__);
+  // Initialize peripheral power
+  if (PERI_EN_PIN >= 0)
+  {
+    pinMode(PERI_EN_PIN, OUTPUT);
+    digitalWrite(PERI_EN_PIN, HIGH); // Enable peripheral power
+    Serial.println("Peripheral power enabled");
+  }
 
-  pinMode(PIN_PERI_EN, OUTPUT);
-  digitalWrite(PIN_PERI_EN, HIGH);   // Enable peripheral power
+  // Initialize I2C bus
+  Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN);
+  rtcSensor.Begin();
+  Serial.println("I2C bus initialized");
 
-  Wire.begin(IIC_SDA_PIN, IIC_SCL_PIN);  
-
-  Rtc.Begin();
+  // Initialize RTC sensor
 #if defined(WIRE_HAS_TIMEOUT)
   Wire.setWireTimeout(3000 /* us */, true /* reset_on_timeout */);
 #endif
+  Serial.println("BM8563 RTC sensor initialized");
 
+  // Configure RTC if needed
   RtcDateTime compiled = RtcDateTime(__DATE__, __TIME__);
-  printDateTime(compiled);
-  Serial.println();
-
-  if (!Rtc.IsDateTimeValid()) {
-    if (!wasError("setup IsDateTimeValid")) {
-      // Common Causes:
-      //    1) first time you ran and the device wasn't running yet
-      //    2) the battery on the device is low or even missing
-
-      Serial.println("RTC lost confidence in the DateTime!");
-
-      // following line sets the RTC to the date & time this sketch was compiled
-      // it will also reset the valid flag internally unless the Rtc device is
-      // having an issue
-
-      Rtc.SetDateTime(compiled);
-    }
+  if (!rtcSensor.IsDateTimeValid() || rtcSensor.GetDateTime() < compiled)
+  {
+    rtcSensor.SetDateTime(compiled);
   }
 
-  if (!Rtc.GetIsRunning()) {
-    if (!wasError("setup GetIsRunning")) {
-      Serial.println("RTC was not actively running, starting now");
-      Rtc.SetIsRunning(true);
-    }
+  if (!rtcSensor.GetIsRunning())
+  {
+    rtcSensor.SetIsRunning(true);
   }
 
-  RtcDateTime now = Rtc.GetDateTime();
-  if (!wasError("setup GetDateTime")) {
-    if (now < compiled) {
-      Serial.println("RTC is older than compile time, updating DateTime");
-      Rtc.SetDateTime(compiled);
-    } else if (now > compiled) {
-      Serial.println("RTC is newer than compile time, this is expected");
-    } else if (now == compiled) {
-      Serial.println("RTC is the same as compile time, while not expected all "
-                     "is still fine");
-    }
-  }
-
-  // never assume the Rtc was last configured by you, so
-  // just clear them to your needed state
-  Rtc.StopAlarm();
-  wasError("setup StopAlarm");
-  Rtc.StopTimer();
-  wasError("setup StopTimer");
-  Rtc.SetSquareWavePin(PCF8563SquareWavePinMode_None);
-  wasError("setup SetSquareWavePin");
+  // Clear alarms and timers
+  rtcSensor.StopAlarm();
+  rtcSensor.StopTimer();
+  rtcSensor.SetSquareWavePin(PCF8563SquareWavePinMode_None);
 }
 
-void loop() {
-  if (!Rtc.IsDateTimeValid()) {
-    if (!wasError("loop IsDateTimeValid")) {
-      // Common Causes:
-      //    1) the battery on the device is low or even missing and the power
-      //    line was disconnected
-      Serial.println("RTC lost confidence in the DateTime!");
-    }
-  }
+void loop()
+{
+  delay(1000); // Wait 1 second between readings
 
-  RtcDateTime now = Rtc.GetDateTime();
-  if (!wasError("loop GetDateTime")) {
-    printDateTime(now);
+  if (rtcSensor.IsDateTimeValid())
+  {
+    RtcDateTime now = rtcSensor.GetDateTime();
+
+    // Display data on screen
+    Serial.print("\033[H\033[J");
+    Serial.println("> FoBE Breakout BM8563 RTC Monitor");
     Serial.println();
+    Serial.print("\033[7m");
+    Serial.printf("%-12s%-12s\n", "INDEX", "VALUE");
+    Serial.print("\033[0m");
+    Serial.printf("%-12s%02u/%02u/%04u\n", "Date", now.Month(), now.Day(), now.Year());
+    Serial.printf("%-12s%02u:%02u:%02u\n", "Time", now.Hour(), now.Minute(), now.Second());
+    Serial.printf("%-12s%-12s\n", "Status", rtcSensor.GetIsRunning() ? "Running" : "Stopped");
+    Serial.printf("%-12s%-12s\n", "Valid", rtcSensor.IsDateTimeValid() ? "Yes" : "No");
   }
-
-  delay(5000); // five seconds
 }
-
-#define countof(a) (sizeof(a) / sizeof(a[0]))
-
 ```
 
-Build and flash the project, you should see the current date and time printed in the serial monitor.
+:::important
+This example code uses ANSI output formatting. Your terminal must support ANSI escape codes to display the output correctly.
 
-> - If you want to use custom PINS, you can change the `IIC_SDA_PIN` and `IIC_SCL_PIN` definitions to your desired GPIO pins.
+```ini
+# platformio.ini
+[env:fobe_quill_esp32s3_mesh]
+platform = FoBE Espressif 32
+board = fobe_quill_esp32s3_mesh
+framework = arduino
+lib_deps = 
+	makuna/RTC@^2.5.0
+monitor_speed = 115200
+monitor_raw = true
+```
+:::
+
+5. Build and upload the project. You should see the FoBE Breakout BM8563 Monitor output in the serial monitor (raw mode).
+
+```bash
+> FoBE Breakout BM8563 RTC Monitor
+
+INDEX       VALUE       
+Date        08/09/2025
+Time        02:04:48
+Status      Running     
+Valid       Yes         
+```

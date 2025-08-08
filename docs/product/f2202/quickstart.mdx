@@ -46,88 +46,112 @@ The board features a jumper pad:
 
 ## Programming
 
-### FoBE Quill ESP32-S3 Mesh Example
-The FoBE Quill ESP32-S3 Mesh development board provides multiple digital gpio; 
+### Running with FoBE Quill ESP32S3 Mesh
 
-MFP interface is used in the example:
+Let's get started with the FoBE Quill ESP32S3 Mesh using the MFP interface.
+
+1. Connect the FoBE Breakout SHT40 to the FoBE Quill ESP32S3 Mesh using the MFP interface.
 <br/>
 <div style={{ textAlign: 'center' }}>
-  <img src="/img/products/f2202-r1a.connection.png" alt="FoBE Breakout L76K Mechanical connection" style={{ width: '80%', height: 'auto' }} />
+  <img src="/img/products/f2202-r1a.connection.png" alt="FoBE Breakout SHT40 Connection" style={{ width: '80%', height: 'auto' }} />
 </div>
 <br/>
 
-Please follow the [FoBE Quill ESP32-S3 Programming Guide](/product/f1102/programming) for pre-configuration.
+2. Create a sketch or PlatformIO project, or follow the [FoBE Quill ESP32S3 Programming Guide](/product/f1102/programming) for pre-configuration.
 
-And the necessary Library Dependency:
-> sensirion/Sensirion I2C SHT4x@^1.1.2
+3. Install the necessary library in your project:
+```ini
+sensirion/Sensirion I2C SHT4x@^1.1.2
+```
 
-```C++
-#include <Arduino.h>
+4. Copy the following code into your sketch or PlatformIO project:
+```cpp
 #include <SensirionI2cSht4x.h>
-#include <Wire.h>
 
-// macro definitions
-// make sure that we use the proper definition of NO_ERROR
-#ifdef NO_ERROR
-#undef NO_ERROR
-#endif
-#define NO_ERROR 0
-
-#define IIC_SDA_PIN PIN_MFP3
-#define IIC_SCL_PIN PIN_MFP4
+#define I2C_SDA_PIN PIN_MFP3    // SDA pin for MFP to I2C cable, change if needed
+#define I2C_SCL_PIN PIN_MFP4    // SCL pin for MFP to I2C cable, change if needed
+#define PERI_EN_PIN PIN_PERI_EN // Peripheral enable pin, change if needed
 
 SensirionI2cSht4x sensor;
 
-static char errorMessage[64];
-static int16_t error;
+void setup()
+{
+  // Initialize serial communication
+  Serial.begin(115200);
+  Serial.println("Serial initialized");
 
-void setup() {
-    Serial.begin(115200);
-    while (!Serial) {
-        delay(100);
-    }
+  // Initialize peripheral power
+  if (PERI_EN_PIN >= 0)
+  {
+    pinMode(PERI_EN_PIN, OUTPUT);
+    digitalWrite(PERI_EN_PIN, HIGH); // Enable peripheral power
+    Serial.println("Peripheral power enabled");
+  }
 
-    pinMode(PIN_PERI_EN, OUTPUT);
-    digitalWrite(PIN_PERI_EN, HIGH);   // Enable peripheral power
+  // Initialize sensor
+  Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN);
+  sensor.begin(Wire, SHT40_I2C_ADDR_44);
+  Serial.println("I2C bus initialized");
+  
+  // Initialize SHT4x sensor
+  sensor.softReset();
+  delay(10);
+  Serial.println("SHT4x sensor initialized");
 
-    Wire.begin(IIC_SDA_PIN, IIC_SCL_PIN);  
-    sensor.begin(Wire, SHT40_I2C_ADDR_44);
-
-    sensor.softReset();
-    delay(10);
-    uint32_t serialNumber = 0;
-    error = sensor.serialNumber(serialNumber);
-    if (error != NO_ERROR) {
-        Serial.print("Error trying to execute serialNumber(): ");
-        errorToString(error, errorMessage, sizeof errorMessage);
-        Serial.println(errorMessage);
-        return;
-    }
-    Serial.print("serialNumber: ");
-    Serial.print(serialNumber);
-    Serial.println();
+  // Start measurement (equivalent to startStandardMeasure)
+  // SHT4x is ready for measurements after reset
 }
 
-void loop() {
-    float aTemperature = 0.0;
-    float aHumidity = 0.0;
-    delay(20);
-    error = sensor.measureLowestPrecision(aTemperature, aHumidity);
-    if (error != NO_ERROR) {
-        Serial.print("Error trying to execute measureLowestPrecision(): ");
-        errorToString(error, errorMessage, sizeof errorMessage);
-        Serial.println(errorMessage);
-        return;
+void loop()
+{
+  delay(1000); // Wait equivalent to sensor.wait()
+
+  float temperature = 0.0;
+  float humidity = 0.0;
+  
+  // Equivalent to sensor.update() == RESULT_OK
+  int16_t error = sensor.measureLowestPrecision(temperature, humidity);
+  if (error == 0) // 0 means no error
+  {
+    // Equivalent to sensor.hasNewData()
+    if (temperature != 0.0 || humidity != 0.0)
+    {
+      // Display data on screen
+      Serial.print("\033[H\033[J");
+      Serial.println("> FoBE Breakout SHT40 Monitor");
+      Serial.println();
+      Serial.print("\033[7m");
+      Serial.printf("%-12s%-12s%-12s\n", "INDEX", "VALUE", "UNIT");
+      Serial.print("\033[0m");
+      Serial.printf("%-12s%-12.2f%-12s\n", "TEMP", temperature, "°C");
+      Serial.printf("%-12s%-12.2f%-12s\n", "HUMIDITY", humidity, "%RH");
     }
-    Serial.print("aTemperature: ");
-    Serial.print(aTemperature);
-    Serial.print("\t");
-    Serial.print("aHumidity: ");
-    Serial.print(aHumidity);
-    Serial.println();
+  }
 }
 ```
 
-Build and flash the project, you should see the temperature and humidity data printed in the serial monitor.
+:::important
+This example code uses ANSI output formatting. Your terminal must support ANSI escape codes to display the output correctly.
 
-> If you wannt to use custom PINS, you can change the `IIC_SDA_PIN` and `IIC_SCL_PIN` definitions to your desired GPIO pins.
+```ini
+# platformio.ini
+[env:fobe_quill_esp32s3_mesh]
+platform = FoBE Espressif 32
+board = fobe_quill_esp32s3_mesh
+framework = arduino
+lib_deps = 
+	sensirion/Sensirion I2C SHT4x@^1.1.2
+monitor_speed = 115200
+monitor_raw = true
+```
+:::
+
+5. Build and upload the project. You should see the FoBE Breakout SHT40 Monitor output in the serial monitor (raw mode).
+
+```bash
+> FoBE Breakout SHT40 Monitor
+
+INDEX       VALUE       UNIT        
+TEMP        26.65       °C         
+HUMIDITY    66.84       %RH              
+```

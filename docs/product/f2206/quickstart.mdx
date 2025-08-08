@@ -57,76 +57,154 @@ The board features two jumper pad:
 
 ## Programming
 
-### FoBE Quill ESP32-S3 Mesh Example
-The FoBE Quill ESP32-S3 Mesh development board provides multiple digital gpio; 
+### Running with FoBE Quill ESP32S3 Mesh
 
-MFP interface is used in the example:
+Let's get started with the FoBE Quill ESP32S3 Mesh using the MFP interface.
+
+1. Connect the FoBE Breakout AS5600 to the FoBE Quill ESP32S3 Mesh using the MFP interface.
 <br/>
 <div style={{ textAlign: 'center' }}>
-  <img src="/img/products/f2206-r1a.connection.png" alt="FoBE Breakout AS5600 Mechanical connection" style={{ width: '80%', height: 'auto' }} />
+  <img src="/img/products/f2206-r1a.connection.png" alt="FoBE Breakout AS5600 Connection" style={{ width: '80%', height: 'auto' }} />
 </div>
 <br/>
 
-Please follow the [FoBE Quill ESP32-S3 Programming Guide](/product/f1102/programming) for pre-configuration.
+2. Create a sketch or PlatformIO project, or follow the [FoBE Quill ESP32S3 Programming Guide](/product/f1102/programming) for pre-configuration.
 
-And the necessary Library Dependency:
-> robtillaart/AS5600@^0.6.6
+3. Install the necessary library in your project:
+```ini
+robtillaart/AS5600@^0.6.6
+```
 
-
-```C++
+4. Copy the following code into your sketch or PlatformIO project:
+```cpp
 #include <Arduino.h>
 #include "AS5600.h"
 
-AS5600L ASL;
+#define I2C_ADDRESS 0x36        // I2C address definition for AS5600L
+#define I2C_SDA_PIN PIN_MFP3    // SDA pin for MFP to I2C cable, change if needed
+#define I2C_SCL_PIN PIN_MFP4    // SCL pin for MFP to I2C cable, change if needed
+#define PERI_EN_PIN PIN_PERI_EN // Peripheral enable pin, change if needed
 
-#define SENDOR_ADDRESS 0x36
+AS5600L sensor;
 
-#define IIC_SDA_PIN PIN_MFP3
-#define IIC_SCL_PIN PIN_MFP4
+// Variables for speed calculation
+float lastAngle = 0.0;
+unsigned long lastTime = 0;
+float angularVelocity = 0.0;
 
 void setup()
 {
-  while(!Serial);
+  // Initialize serial communication
   Serial.begin(115200);
-  Serial.println();
-  Serial.println(__FILE__);
-  Serial.print("AS5600_LIB_VERSION: ");
-  Serial.println(AS5600_LIB_VERSION);
-  Serial.println();
+  Serial.println("Serial initialized");
 
-  pinMode(PIN_PERI_EN, OUTPUT);
-  digitalWrite(PIN_PERI_EN, HIGH);   // Enable peripheral power
+  // Initialize peripheral power
+  if (PERI_EN_PIN >= 0)
+  {
+    pinMode(PERI_EN_PIN, OUTPUT);
+    digitalWrite(PERI_EN_PIN, HIGH); // Enable peripheral power
+    Serial.println("Peripheral power enabled");
+  }
 
-  Wire.begin(IIC_SDA_PIN, IIC_SCL_PIN);  
+  // Initialize sensor
+  Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN);
+  sensor.begin(4);
+  Serial.println("I2C bus initialized");
+  
+  // Configure sensor first
+  sensor.setDirection(AS5600_CLOCK_WISE);
+  sensor.setAddress(I2C_ADDRESS);
+  
+  while (!sensor.isConnected())
+  {
+    delay(200);
+  }
+  Serial.println("AS5600L sensor initialized");
 
-  ASL.begin(4);  //  set direction pin.
-  ASL.setDirection(AS5600_CLOCK_WISE);  //  default, just be explicit.
-  int b = ASL.isConnected();
-  Serial.print("Connect: ");
-  Serial.println(b);
-
-  Serial.print("ADDR: ");
-  Serial.println(ASL.getAddress());
-
-  ASL.setAddress(SENDOR_ADDRESS);
-
-  Serial.print("ADDR: ");
-  Serial.println(ASL.getAddress());
+  // Initialize timing for speed calculation
+  lastTime = millis();
 }
 
 
 void loop()
 {
-  //  Serial.print(millis());
-  //  Serial.print("\t");
-  Serial.print(ASL.readAngle());
-  Serial.print("\t");
-  Serial.println(ASL.rawAngle() * AS5600_RAW_TO_DEGREES);
+  delay(50); // Wait equivalent to sensor.wait()
 
-  delay(1000);
+  // Equivalent to sensor.update() == RESULT_OK
+  if (sensor.isConnected())
+  {
+    unsigned long currentTime = millis();
+    uint16_t angle = sensor.readAngle();
+    float degrees = sensor.rawAngle() * AS5600_RAW_TO_DEGREES;
+    
+    // Calculate angular velocity (degrees per second)
+    float deltaTime = (currentTime - lastTime) / 1000.0; // Convert to seconds
+    float deltaAngle = degrees - lastAngle;
+    
+    // Handle angle wraparound (0-360 degrees)
+    if (deltaAngle > 180.0) {
+      deltaAngle -= 360.0;
+    } else if (deltaAngle < -180.0) {
+      deltaAngle += 360.0;
+    }
+    
+    if (deltaTime > 0) {
+      angularVelocity = deltaAngle / deltaTime;
+    }
+    
+    // Update last values
+    lastAngle = degrees;
+    lastTime = currentTime;
+    
+    // Get additional sensor parameters
+    uint16_t magnitude = sensor.readMagnitude();
+    uint8_t status = sensor.readStatus();
+    uint8_t agc = sensor.readAGC();
+    
+    // Always display data (remove the condition check that was blocking output)
+    // Display data on screen
+    Serial.print("\033[H\033[J");
+    Serial.println("> FoBE Breakout AS5600 Monitor");
+    Serial.println();
+    Serial.print("\033[7m");
+    Serial.printf("%-12s%-12s%-12s\n", "INDEX", "VALUE", "UNIT");
+    Serial.print("\033[0m");
+    Serial.printf("%-12s%-12d%-12s\n", "ANGLE", angle, "RAW");
+    Serial.printf("%-12s%-12.2f%-12s\n", "DEGREES", degrees, "°");
+    Serial.printf("%-12s%-12.2f%-12s\n", "VELOCITY", angularVelocity, "°/s");
+    Serial.printf("%-12s%-12d%-12s\n", "MAGNITUDE", magnitude, "");
+    Serial.printf("%-12s%-12d%-12s\n", "STATUS", status, "");
+    Serial.printf("%-12s%-12d%-12s\n", "AGC", agc, "");
+  }
 }
 ```
 
-Build and flash the project, you should see the angle data printed in the serial monitor.
+:::important
+This example code uses ANSI output formatting. Your terminal must support ANSI escape codes to display the output correctly.
 
-> - If you want to use custom PINS, you can change the `IIC_SDA_PIN` and `IIC_SCL_PIN` definitions to your desired GPIO pins.
+```ini
+# platformio.ini
+[env:fobe_quill_esp32s3_mesh]
+platform = FoBE Espressif 32
+board = fobe_quill_esp32s3_mesh
+framework = arduino
+lib_deps = 
+	robtillaart/AS5600@^0.6.6
+monitor_speed = 115200
+monitor_raw = true
+```
+:::
+
+5. Build and upload the project. You should see the FoBE Breakout AS5600 Monitor output in the serial monitor (raw mode).
+
+```bash
+> FoBE Breakout AS5600 Monitor
+
+INDEX       VALUE       UNIT        
+ANGLE       2665        RAW         
+DEGREES     234.23      °          
+VELOCITY    0.00        °/s        
+MAGNITUDE   1122                    
+STATUS      51                      
+AGC         128                              
+```
