@@ -70,17 +70,78 @@ The board features six jumper pad:
 
 ## Programming
 
-### FoBE Quill nRF52840 Mesh Example
-The FoBE Quill nRF52840 Mesh development board provides multiple digital gpio; pins D2, D1, D0 are used in the example:
+### FoBE Quill ESP32-S3 Mesh Example
+The FoBE Quill ESP32-S3 Mesh development board provides multiple digital gpio; 
 
+MFP interface is used in the example:
 <br/>
 <div style={{ textAlign: 'center' }}>
   <img src="/img/products/f2210-r1a.connection.png" alt="FoBE Breakout GP8403 Mechanical connection" style={{ width: '80%', height: 'auto' }} />
 </div>
 <br/>
 
+Please follow the [FoBE Quill ESP32-S3 Programming Guide](/product/f1102/programming) for pre-configuration.
+
 ```C++
-#include <TinyGPSPlus.h>
-#include <SoftwareSerial.h>
-......
+#include <Arduino.h>
+#include <Wire.h>
+
+#define GP8403_ADDR 0x58
+#define GP8403_MODE_005V                0x00
+#define GP8403_MODE_010V                0x11
+#define GP8403_MODE_ADDRESS             0x01
+
+#define GP8403_CHANNEL0_ADDRESS 0x02        // Channel 0 data register
+#define GP8403_CHANNEL1_ADDRESS 0x04        // Channel 1 data register
+
+#define IIC_SDA_PIN PIN_MFP3
+#define IIC_SCL_PIN PIN_MFP4
+
+void setDACVoltage(uint16_t voltage, uint8_t channel) {
+    voltage &= 0x0FFF;  // Ensure 12-bit data
+    Wire.beginTransmission(GP8403_ADDR);
+    Wire.write(channel == 0 ? GP8403_CHANNEL0_ADDRESS : GP8403_CHANNEL1_ADDRESS);
+    Wire.write(voltage & 0xFF);        // Low 8 bits
+    Wire.write((voltage >> 8) & 0xFF); // High 8 bits
+    Wire.endTransmission();
+}
+
+void setup() {
+    Serial.begin(115200);
+    
+    pinMode(PIN_PERI_EN, OUTPUT);
+    digitalWrite(PIN_PERI_EN, HIGH);
+
+    Wire.begin(IIC_SDA_PIN, IIC_SCL_PIN);
+    
+    Wire.beginTransmission(GP8403_ADDR);
+    Wire.write(GP8403_MODE_ADDRESS);
+    Wire.write(GP8403_MODE_010V);  // Set 0-10V range for both channels
+    Wire.endTransmission();
+    
+    // Set channel 0 to output 3V (in 0-10V range)
+    uint16_t dacValue0 = (3 * 4095) / 10;  // 3V in 0-10V range
+    setDACVoltage(dacValue0, 0);
+    
+    // Set channel 1 to output 8V (in 0-10V range)
+    uint16_t dacValue1 = (8 * 4095) / 10;  // 8V in 0-10V range
+    setDACVoltage(dacValue1, 1);
+    
+    Serial.println("DAC configuration completed:");
+    Serial.print("Channel 0: 3V (DAC value: ");
+    Serial.print(dacValue0);
+    Serial.println(")");
+    Serial.print("Channel 1: 8V (DAC value: ");
+    Serial.print(dacValue1);
+    Serial.println(")");
+}
+
+void loop() {
+  delay(1000);
+}
 ```
+
+Build and flash the project, you should measured 3V on channel 0 and 8V on channel 1 using a multimeter.
+
+> - If you want to use custom PINS, you can change the `IIC_SDA_PIN` and `IIC_SCL_PIN` definitions to your desired GPIO pins.
+> - The DAC I2C address can be changed by soldering [the `GP8403-ADDR` jumper](/product/f2210/quickstart#configuration-jumper).

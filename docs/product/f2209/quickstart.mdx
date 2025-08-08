@@ -70,17 +70,59 @@ The board features six jumper pad:
 
 ## Programming
 
-### FoBE Quill nRF52840 Mesh Example
-The FoBE Quill nRF52840 Mesh development board provides multiple digital gpio; pins D2, D1, D0 are used in the example:
+### FoBE Quill ESP32-S3 Mesh Example
+The FoBE Quill ESP32-S3 Mesh development board provides multiple digital gpio; 
 
+MFP interface is used in the example:
 <br/>
 <div style={{ textAlign: 'center' }}>
   <img src="/img/products/f2209-r1a.connection.png" alt="FoBE Breakout GP8303 Mechanical connection" style={{ width: '80%', height: 'auto' }} />
 </div>
 <br/>
 
+Please follow the [FoBE Quill ESP32-S3 Programming Guide](/product/f1102/programming) for pre-configuration.
+
 ```C++
-#include <TinyGPSPlus.h>
-#include <SoftwareSerial.h>
-......
+#include <Arduino.h>
+#include <Wire.h>
+
+// GP8303 I2C Address and Registers
+#define GP8303_ADDR    0x58
+#define REG_DAC_DATA   0x02    // DAC data register
+
+#define IIC_SDA_PIN    PIN_MFP3
+#define IIC_SCL_PIN    PIN_MFP4
+
+void setup() {
+  Serial.begin(115200);
+  
+  pinMode(PIN_PERI_EN, OUTPUT);
+  digitalWrite(PIN_PERI_EN, HIGH);   // Enable peripheral power
+
+  Wire.begin(IIC_SDA_PIN, IIC_SCL_PIN);
+  
+  // Calculate DAC value for 16mA (4-20mA range)
+  uint16_t dacValue = (uint16_t)((16.0 - 4.0) * 4095.0 / 16.0);
+  dacValue = dacValue << 4;  // Left shift 4 bits for 12-bit DAC
+  
+  // Write DAC data to register 0x02
+  Wire.beginTransmission(GP8303_ADDR);
+  Wire.write(REG_DAC_DATA);
+  Wire.write(dacValue & 0xFF);       // Low byte
+  Wire.write((dacValue >> 8) & 0xFF);// High byte
+  Wire.endTransmission();
+  
+  Serial.print("DAC value set to: ");
+  Serial.print(dacValue >> 4);
+  Serial.println(" (16mA)");
+}
+
+void loop() {
+  delay(1000);
+}
 ```
+
+Build and flash the project, you should measured 16mA output on the output terminal.
+
+> - If you want to use custom PINS, you can change the `IIC_SDA_PIN` and `IIC_SCL_PIN` definitions to your desired GPIO pins.
+> - The DAC I2C address can be changed by soldering [the `GP8303-ADDR` jumper](/product/f2209/quickstart#configuration-jumper).
