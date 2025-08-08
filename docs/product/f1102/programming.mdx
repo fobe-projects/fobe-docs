@@ -8,7 +8,7 @@ This guide describes how to program the FoBE Quill ESP32S3 Mesh.
 
 If you use the Arduino IDE for programming, please see [Quick Start - Setup the board](/product/f1102/quickstart#setup-the-board).
 
-The following describes how to program the FoBE Quill nRF52840 Mesh with Arduino using PlatformIO.
+The following describes how to program the FoBE Quill ESP32S3 Mesh with Arduino using PlatformIO.
 
 ### Install PlatformIO
 
@@ -54,42 +54,34 @@ The following describes how to program the FoBE Quill ESP32S3 Mesh with MicroPyt
 
 #### Releases
 
-[FoBE MicroPython Index](https://micropython.fobestudio.com/?path=firmwares/fobe_quill_nrf52840_mesh)
+[FoBE MicroPython Index](https://micropython.fobestudio.com/?path=firmwares/fobe_quill_esp32s3_mesh)
 
 #### Preview builds
 
-[v1.26.0-preview(2025-07-19).uf2](https://raw.githubusercontent.com/fobe-projects/fobe-micropython-index/refs/heads/gh-pages/firmwares/fobe_quill_nrf52840_mesh/FOBE_QUILL_NRF52840_MESH-20250719-v1.26.0-preview.uf2) / [[.hex]](https://raw.githubusercontent.com/fobe-projects/fobe-micropython-index/refs/heads/gh-pages/firmwares/fobe_quill_nrf52840_mesh/FOBE_QUILL_NRF52840_MESH-20250719-v1.26.0-preview.hex)
+[v1.26.0-preview(2025-08-07).bin](https://raw.githubusercontent.com/fobe-projects/fobe-micropython-index/refs/heads/gh-pages/firmwares/fobe_quill_esp32s3_mesh/FOBE_QUILL_ESP32S3_MESH-20250807-v1.26.0-preview.bin) / [[.elf]](https://raw.githubusercontent.com/fobe-projects/fobe-micropython-index/refs/heads/gh-pages/firmwares/fobe_quill_esp32s3_mesh/FOBE_QUILL_ESP32S3_MESH-20250807-v1.26.0-preview.elf) / [[.map]](https://raw.githubusercontent.com/fobe-projects/fobe-micropython-index/refs/heads/gh-pages/firmwares/fobe_quill_esp32s3_mesh/FOBE_QUILL_ESP32S3_MESH-20250807-v1.26.0-preview.map)
 
 ### Install
 
 To install the MicroPython firmware, follow these steps:
 
-#### UF2 with USB Storage
+#### BIN with esptool
 
-    1. Download the latest firmware file with the `.uf2` extension.
-    2. Connect the FoBE Quill nRF52840 Mesh to your computer.
-    3. Double-click the reset button on the device to enter bootloader mode.
+:::important
+Program your board using the esptool.py program, found [here](https://docs.espressif.com/projects/esptool/en/latest/esp32s3/).
+:::
 
-<br/><div style={{ textAlign: 'center' }}><img src="/img/screenshot/2025-07-21-10-48-27.png" alt="2025-07-21-10-48-27.png" style={{ width: '80%', height: 'auto' }} /></div><br/>
-
-    3. Copy the `.uf2` file to the device storage "FOBE BOOT".
-    4. The device will reboot automatically, and the MicroPython firmware will be installed.
-
-#### HEX with OpenOCD (CMSIS-DAP)
-
-Hex files are used for programming the device using OpenOCD. Please make sure OpenOCD is installed and configured correctly.
-
-    1. Download the latest firmware file with the `.hex` extension.
-    2. Connect the FoBE Quill nRF52840 Mesh to your computer.
-    3. Connect the debug interface (CMSIS-DAP) to the FoBE Quill nRF52840 Mesh.
-    4. Open a terminal and run the following command:
-
+    1. Download the latest firmware file with the `.bin` extension.
+    2. Connect the FoBE Quill ESP32S3 Mesh to your computer.
+    3. If you are putting MicroPython on your board for the first time then you should first erase the entire flash using:
     ```bash
-    openocd -f interface/cmsis-dap.cfg -f target/nrf52.cfg \
-    -c "init" -c "program <path_to_firmware.hex> verify reset" -c "exit"
+    python3 -m esptool erase-flash
     ```
-
-    Replace `<path_to_firmware.hex>` with the path to the downloaded `.hex` file.
+    4. Flash the firmware to the device using the following command:
+    ```bash
+    python3 -m esptool --chip esp32s3 -b 921600 --before default-reset --after hard-reset \
+    write-flash --flash-mode dio --flash-size 4MB --flash-freq 80m 0x0 [firmware].bin
+    ```
+    5. The device will reboot automatically, and the MicroPython firmware will be installed.
 
 ### Create a new project
 
@@ -274,7 +266,7 @@ Before you start, make sure you have Python installed on your system.
 
     ```bash
     # Build the project for the FoBE Quill ESP32S3 Mesh board
-    west build -b fobe_quill_esp32s3/esp32s3/procpu/w ./app
+    west build -b fobe_quill_esp32s3_mesh/esp32s3/procpu ./app
 
     # Flash the project to the board
     west flash
