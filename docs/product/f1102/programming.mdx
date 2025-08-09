@@ -18,7 +18,7 @@ You can follow the official guide of [PlatformIO](https://platformio.org/platfor
 
     1. Open the **PlatformIO Home** and navigate to **Platforms**.
     2. Click "Advanced Installation" button.
-    3. Input the git repository url ```https://github.com/fobe-projects/fobe-esp32-platformio.git#develop``` then click "Install" button, and wait for the installation to complete.
+    3. Input the git repository URL ```https://github.com/fobe-projects/fobe-esp32-platformio.git#develop``` then click "Install" button, and wait for the installation to complete.
 
 <br/><div style={{ textAlign: 'center' }}><img src="/img/screenshot/2025-08-06-21-34-37.png" alt="2025-08-06-21-34-37.png" style={{ width: '80%', height: 'auto' }} /></div><br/>
 
@@ -71,7 +71,7 @@ Program your board using the esptool.py program, found [here](https://docs.espre
 :::
 
     1. Download the latest firmware file with the `.bin` extension.
-    2. Connect the FoBE Quill ESP32S3 Mesh to your computer.
+    2. Connect the FoBE Quill ESP32S3 Mesh to your computer using a USB-C cable.
     3. If you are putting MicroPython on your board for the first time then you should first erase the entire flash using:
     ```bash
     python3 -m esptool erase-flash
@@ -131,26 +131,26 @@ Before you start, make sure you have Python installed on your system.
     2. Create a virtual environment for the project:
 
     ```bash
-        # Create a new directory for the project
-        python3 -m venv .venv
+    # Create a virtual environment
+    python3 -m venv .venv
 
-        # Activate the virtual environment
-        source .venv/bin/activate
+    # Activate the virtual environment
+    source .venv/bin/activate
 
-        # Install the required packages
-        pip install west
+    # Install the required packages
+    pip install west
     ```
 
     3. Create `.west/config` file in the project directory with the following content:
 
     ```ini
-        [manifest]
-        path = app
-        file = west.yml
+    [manifest]
+    path = app
+    file = west.yml
 
-        [zephyr]
-        base = zephyr
-        ```
+    [zephyr]
+    base = zephyr
+    ```
     4. Create app folder and add some files like:
 
     ```
@@ -262,7 +262,7 @@ Before you start, make sure you have Python installed on your system.
 
     6. Build and flash the project:
 
-    Double-click the reset button on the device to enter bootloader mode, then run the following commands in the terminal:
+    Put the device into bootloader mode (hold the BOOT button while pressing RESET), then run the following commands in the terminal:
 
     ```bash
     # Build the project for the FoBE Quill ESP32S3 Mesh board

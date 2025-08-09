@@ -18,7 +18,7 @@ You can follow the official guide of [PlatformIO](https://platformio.org/platfor
 
     1. Open the **PlatformIO Home** and navigate to **Platforms**.
     2. Click "Advanced Installation" button.
-    3. Input the git repository url ```https://github.com/fobe-projects/fobe-nrf52-platformio.git#develop``` then click "Install" button, and wait for the installation to complete.
+    3. Input the git repository URL ```https://github.com/fobe-projects/fobe-nrf52-platformio.git#develop``` then click "Install" button, and wait for the installation to complete.
 
     <br/><div style={{ textAlign: 'center' }}><img src="/img/screenshot/2025-07-19-02-24-59.png" alt="2025-07-19-02-24-59.png" style={{ width: '80%', height: 'auto' }} /></div><br/>
 
@@ -67,20 +67,20 @@ To install the MicroPython firmware, follow these steps:
 #### UF2 with USB Storage
 
     1. Download the latest firmware file with the `.uf2` extension.
-    2. Connect the FoBE Quill nRF52840 Mesh to your computer.
+    2. Connect the FoBE Quill nRF52840 Mesh to your computer using a USB-C cable.
     3. Double-click the reset button on the device to enter bootloader mode.
 
 <br/><div style={{ textAlign: 'center' }}><img src="/img/screenshot/2025-07-21-10-48-27.png" alt="2025-07-21-10-48-27.png" style={{ width: '80%', height: 'auto' }} /></div><br/>
 
-    3. Copy the `.uf2` file to the device storage "FoBE Boot".
-    4. The device will reboot automatically, and the MicroPython firmware will be installed.
+    4. Copy the `.uf2` file to the device storage "FoBE Boot".
+    5. The device will reboot automatically, and the MicroPython firmware will be installed.
 
 #### HEX with OpenOCD (CMSIS-DAP)
 
 Hex files are used for programming the device using OpenOCD. Please make sure OpenOCD is installed and configured correctly.
 
     1. Download the latest firmware file with the `.hex` extension.
-    2. Connect the FoBE Quill nRF52840 Mesh to your computer.
+    2. Connect the FoBE Quill nRF52840 Mesh to your computer using a USB-C cable.
     3. Connect the debug interface (CMSIS-DAP) to the FoBE Quill nRF52840 Mesh.
     4. Open a terminal and run the following command:
 
@@ -139,122 +139,122 @@ Before you start, make sure you have Python installed on your system.
     2. Create a virtual environment for the project:
 
     ```bash
-        # Create a new directory for the project
-        python3 -m venv .venv
+    # Create a virtual environment
+    python3 -m venv .venv
 
-        # Activate the virtual environment
-        source .venv/bin/activate
+    # Activate the virtual environment
+    source .venv/bin/activate
 
-        # Install the required packages
-        pip install west
+    # Install the required packages
+    pip install west
     ```
 
     3. Create `.west/config` file in the project directory with the following content:
 
     ```ini
-        [manifest]
-        path = app
-        file = west.yml
+    [manifest]
+    path = app
+    file = west.yml
 
-        [zephyr]
-        base = zephyr
-        ```
+    [zephyr]
+    base = zephyr
+    ```
     4. Create app folder and add some files like:
 
-        ```
-        .west/
-        └── config
-        app/
-        ├── CMakeLists.txt
-        ├── prj.conf
-        ├── west.yml
-        └── src
-            └── main.c
-        ```
+    ```
+    .west/
+    └── config
+    app/
+    ├── CMakeLists.txt
+    ├── prj.conf
+    ├── west.yml
+    └── src
+        └── main.c
+    ```
 
-        Add `CMakeLists.txt` file with the following content:
+    Add `CMakeLists.txt` file with the following content:
 
-        ```cmake
-        cmake_minimum_required(VERSION 3.20.0)
-        find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
-        project(app)
+    ```cmake
+    cmake_minimum_required(VERSION 3.20.0)
+    find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
+    project(app)
 
-        target_sources(app PRIVATE src/main.c)
-        ```
+    target_sources(app PRIVATE src/main.c)
+    ```
 
-        Add `prj.conf` file with the following content:
+    Add `prj.conf` file with the following content:
 
-        ```ini
-        CONFIG_GPIO=y
-        ```
+    ```ini
+    CONFIG_GPIO=y
+    ```
 
-        Add `west.yml` file with the following content:
+    Add `west.yml` file with the following content:
 
-        ```yaml
-        manifest:
-        remotes:
-            - name: zephyr
-                url-base: https://github.com/zephyrproject-rtos
-            - name: fobe
-                url-base: https://github.com/fobe-projects
-        projects:
-            - name: zephyr
-                remote: zephyr
-                revision: main
-                path: zephyr
-                import: true
-            - name: fobe-zephyr-sdk
-                remote: fobe
-                path: fobe
-                revision: main
-        ```
+    ```yaml
+    manifest:
+    remotes:
+        - name: zephyr
+            url-base: https://github.com/zephyrproject-rtos
+        - name: fobe
+            url-base: https://github.com/fobe-projects
+    projects:
+        - name: zephyr
+            remote: zephyr
+            revision: main
+            path: zephyr
+            import: true
+        - name: fobe-zephyr-sdk
+            remote: fobe
+            path: fobe
+            revision: main
+    ```
 
-        Add `src/main.c` file with the following content:
+    Add `src/main.c` file with the following content:
 
-        ```c
-        #include <stdio.h>
-        #include <zephyr/kernel.h>
-        #include <zephyr/drivers/gpio.h>
+    ```c
+    #include <stdio.h>
+    #include <zephyr/kernel.h>
+    #include <zephyr/drivers/gpio.h>
 
-        /* 1000 msec = 1 sec */
-        #define SLEEP_TIME_MS 1000
+    /* 1000 msec = 1 sec */
+    #define SLEEP_TIME_MS 1000
 
-        /* The devicetree node identifier for the "led0" alias. */
-        #define LED0_NODE DT_ALIAS(led0)
+    /* The devicetree node identifier for the "led0" alias. */
+    #define LED0_NODE DT_ALIAS(led0)
 
-        /*
-        * A build error on this line means your board is unsupported.
-        * See the sample documentation for information on how to fix this.
-        */
-        static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
+    /*
+    * A build error on this line means your board is unsupported.
+    * See the sample documentation for information on how to fix this.
+    */
+    static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
 
-        int main(void)
-        {
-            int ret;
-            bool led_state = true;
+    int main(void)
+    {
+        int ret;
+        bool led_state = true;
 
-            if (!gpio_is_ready_dt(&led)) {
-                return 0;
-            }
+        if (!gpio_is_ready_dt(&led)) {
+            return 0;
+        }
 
-            ret = gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
+        ret = gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
+        if (ret < 0) {
+            return 0;
+        }
+
+        while (1) {
+            ret = gpio_pin_toggle_dt(&led);
             if (ret < 0) {
                 return 0;
             }
 
-            while (1) {
-                ret = gpio_pin_toggle_dt(&led);
-                if (ret < 0) {
-                    return 0;
-                }
-
-                led_state = !led_state;
-                printf("LED state: %s\n", led_state ? "ON" : "OFF");
-                k_msleep(SLEEP_TIME_MS);
-            }
-            return 0;
+            led_state = !led_state;
+            printf("LED state: %s\n", led_state ? "ON" : "OFF");
+            k_msleep(SLEEP_TIME_MS);
         }
-        ```
+        return 0;
+    }
+    ```
     5. Install and configure the Zephyr SDK:
 
     ```bash
