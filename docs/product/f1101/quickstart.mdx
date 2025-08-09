@@ -59,11 +59,15 @@ Power consumption measurements were performed while powering the board with a si
 
 Battery voltage is measured using a voltage divider with high-precision thick film resistors. The high-side resistor (R1) is 1M Ohm, and the low-side resistor (R2) is 1.5M Ohm. The SoC's **P0.05** GPIO is connected to the measurement point.
 
-For a voltage divider circuit with two resistors, R1 and R2, in series, where Vin is the input voltage and Vout is the voltage across R2:
+For a voltage divider circuit with two resistors, R1 and R2, in series, where Vin is the input voltage (battery voltage) and Vout is the voltage across R2 (measured by the ADC):
 
 **Vout = Vin * (R2 / (R1 + R2))**
 
-By reading the voltage at the measurement point with the ADC, the battery voltage can be calculated using this formula.
+In this case: **Vout = Vin * (1.5M / (1M + 1.5M)) = Vin * 0.6**
+
+Therefore: **Vin = Vout / 0.6 = Vout * 1.667**
+
+By reading the voltage at the measurement point with the ADC, the battery voltage can be calculated by multiplying the measured voltage by 1.667.
 
 ## General purpose I/Os
 
@@ -245,8 +249,8 @@ void loop()
   // Read battery voltage
   int raw = analogRead(PIN_VBAT);
   float vref = 3.0; // ADC reference voltage
-  float vmeas = raw * vref / 4095.0;
-  float voltage = vmeas * 1.72; // Adjusted for the voltage divider, assuming r1 and r2 are not used here
+  float vmeas = raw * vref / 4095.0; // Measured voltage at ADC pin
+  float voltage = vmeas * 1.667; // Calculate actual battery voltage using voltage divider ratio
   Serial.print("Battery voltage: ");
   Serial.print(voltage);
   Serial.println(" V");

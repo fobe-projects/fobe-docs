@@ -82,7 +82,7 @@ mikalhart/TinyGPSPlus@^1.1.0
 #define GNSS_WAKE_PIN PIN_MFP4  // Wake pin for GNSS, change if needed
 #define PERI_EN_PIN PIN_PERI_EN // Peripheral enable pin, change if needed
 
-TinyGPSPlus sensor;
+TinyGPSPlus gnss;
 
 // Buffer to store the latest NMEA sentence
 String latestNmeaSentence = "";
@@ -120,7 +120,7 @@ void setup()
   Serial.println("GNSS bus initialized");
 
   // Wait a moment for module to fully initialize
-  delay(1000);
+  delay(200);
 
   // Record startup time
   startupTime = millis();
@@ -133,14 +133,25 @@ void setup()
   {
     while (Serial1.available() > 0)
     {
-      sensor.encode(Serial1.read());
+      gnss.encode(Serial1.read());
     }
-    if (sensor.location.isValid() || sensor.time.isValid() || sensor.satellites.value() > 0)
+    if (gnss.location.isValid() || gnss.time.isValid() || gnss.satellites.value() > 0)
     {
       break;
     }
     delay(200);
   }
+
+  // Configure GNSS settings, calculate checksum reference https://www.hhhh.org/wiml/proj/nmeaxor.html
+  Serial1.write("$PCAS04,7*1E\r\n"); // Configure satellite constellation
+  delay(250);
+  Serial1.write("$PCAS11,3*1E\r\n"); // Configure positioning mode
+  delay(250);
+  Serial1.write("$PCAS03,1,0,0,0,1,0,0,0,0,0,,,0,0*02\r\n"); // Configure positioning frequency
+  delay(250);
+  Serial1.write("$PCAS02,200*1D\r\n"); // Configure positioning frequency
+  delay(250);
+
   Serial.println("GNSS sensor initialized");
 
   // Start measurement (GNSS automatically starts after initialization)
@@ -148,9 +159,9 @@ void setup()
 
 void loop()
 {
-  delay(100); // Wait equivalent to sensor.wait()
+  delay(50); // Wait equivalent to gnss.wait()
 
-  // Read data from GNSS (equivalent to sensor.update())
+  // Read data from GNSS (equivalent to gnss.update())
   bool dataUpdated = false;
   while (Serial1.available() > 0)
   {
@@ -172,18 +183,18 @@ void loop()
       }
     }
 
-    if (sensor.encode(c))
+    if (gnss.encode(c))
     {
       dataUpdated = true;
     }
   }
 
-  if (dataUpdated) // Equivalent to sensor.update() == RESULT_OK
+  if (dataUpdated) // Equivalent to gnss.update() == RESULT_OK
   {
-    if (sensor.location.isValid() || sensor.time.isValid()) // Equivalent to sensor.hasNewData()
+    if (gnss.location.isValid() || gnss.time.isValid()) // Equivalent to gnss.hasNewData()
     {
       // Check for first fix achievement
-      if (!firstFixAchieved && sensor.location.isValid())
+      if (!firstFixAchieved && gnss.location.isValid())
       {
         firstFixTime = millis();
         firstFixAchieved = true;
@@ -197,37 +208,37 @@ void loop()
       Serial.printf("%-12s%-12s%-12s\n", "INDEX", "VALUE", "UNIT");
       Serial.print("\033[0m");
 
-      if (sensor.location.isValid())
+      if (gnss.location.isValid())
       {
-        Serial.printf("%-12s%-12.6f%-12s\n", "LATITUDE", sensor.location.lat(), "°");
-        Serial.printf("%-12s%-12.6f%-12s\n", "LONGITUDE", sensor.location.lng(), "°");
+        Serial.printf("%-12s%-12.6f%-12s\n", "LATITUDE", gnss.location.lat(), "°");
+        Serial.printf("%-12s%-12.6f%-12s\n", "LONGITUDE", gnss.location.lng(), "°");
       }
 
-      if (sensor.altitude.isValid())
+      if (gnss.altitude.isValid())
       {
-        Serial.printf("%-12s%-12.2f%-12s\n", "ALTITUDE", sensor.altitude.meters(), "m");
+        Serial.printf("%-12s%-12.2f%-12s\n", "ALTITUDE", gnss.altitude.meters(), "m");
       }
 
-      if (sensor.speed.isValid())
+      if (gnss.speed.isValid())
       {
-        Serial.printf("%-12s%-12.2f%-12s\n", "SPEED", sensor.speed.kmph(), "km/h");
+        Serial.printf("%-12s%-12.2f%-12s\n", "SPEED", gnss.speed.kmph(), "km/h");
       }
 
-      if (sensor.satellites.isValid())
+      if (gnss.satellites.isValid())
       {
-        Serial.printf("%-12s%-12d%-12s\n", "SATELLITES", sensor.satellites.value(), "");
+        Serial.printf("%-12s%-12d%-12s\n", "SATELLITES", gnss.satellites.value(), "");
       }
 
-      if (sensor.hdop.isValid())
+      if (gnss.hdop.isValid())
       {
-        Serial.printf("%-12s%-12.2f%-12s\n", "HDOP", sensor.hdop.hdop(), "");
+        Serial.printf("%-12s%-12.2f%-12s\n", "HDOP", gnss.hdop.hdop(), "");
       }
 
       // Add GPS time display
-      if (sensor.time.isValid() && sensor.date.isValid())
+      if (gnss.time.isValid() && gnss.date.isValid())
       {
-        Serial.printf("%-12s%02d:%02d:%02d%-12s\n", "TIME", sensor.time.hour(), sensor.time.minute(), sensor.time.second(), "UTC");
-        Serial.printf("%-12s%04d-%02d-%02d%-12s\n", "DATE", sensor.date.year(), sensor.date.month(), sensor.date.day(), "");
+        Serial.printf("%-12s%02d:%02d:%02d%-12s\n", "TIME", gnss.time.hour(), gnss.time.minute(), gnss.time.second(), "UTC");
+        Serial.printf("%-12s%04d-%02d-%02d%-12s\n", "DATE", gnss.date.year(), gnss.date.month(), gnss.date.day(), "");
       }
 
       // Add Time to First Fix Information

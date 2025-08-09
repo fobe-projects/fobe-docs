@@ -46,11 +46,15 @@ A high-efficiency step-down converter (TPS62825) with a low quiescent current ge
 
 Battery voltage measurement is performed using a set of high-precision thick film resistors. The high-side resistor (R1) is 1M Ohm, and the low-side resistor (R2) is 1.5M Ohm. The SoC's ADC pin (GPIO0) is connected to the measurement point:
 
-For a voltage divider circuit with two resistors R1 and R2 in series, where Vin is the total input voltage across both resistors, and Vout is the voltage across R2:
+For a voltage divider circuit with two resistors R1 and R2 in series, where Vin is the input voltage (battery voltage) and Vout is the voltage across R2 (measured by the ADC):
 
 **Vout = Vin * (R2 / (R1 + R2))**
 
-By acquiring the voltage at the measurement point using the ADC, the current battery voltage can be obtained according to the formula.
+In this case: **Vout = Vin * (1.5M / (1M + 1.5M)) = Vin * 0.6**
+
+Therefore: **Vin = Vout / 0.6 = Vout * 1.667**
+
+By reading the voltage at the measurement point with the ADC, the battery voltage can be calculated by multiplying the measured voltage by 1.667.
 
 ## General purpose I/Os
 
@@ -60,7 +64,7 @@ The MFP additionally provides 4 GPIO pins, or directly connected to modules supp
 
 ## Display
 
-The FoBE Quill ESP32S3 Mesh features an onboard 1.3-inch monochrome OLED display, 128 x 64 resolution, 16-pin FPC, driven by an SSD1312 controller via I2C.
+The FoBE Quill ESP32S3 Mesh features an onboard 1.3-inch monochrome OLED display, 128 x 64 resolution, driven by an SSD1306 compatible controller via I2C.
 
 ## Buttons and LEDs
 
@@ -195,7 +199,7 @@ Once the upload is complete, the onboard blue LED should start blinking, indicat
 
 ### Measuring battery status
 
-The battery voltage can be measured using the ADC (Analog-to-Digital Converter) on the nRF52840 SoC. The measurement is performed through a voltage divider circuit, as described in the Power Supply section.
+The battery voltage can be measured using the ADC (Analog-to-Digital Converter) on the ESP32-S3 SoC. The measurement is performed through a voltage divider circuit, as described in the Power Supply section.
 
 #### Measuring battery voltage
 
@@ -217,8 +221,8 @@ void loop()
   // Read battery voltage
   int raw = analogRead(PIN_VBAT);
   float vref = 3.3; // ADC reference voltage for ESP32-S3
-  float vmeas = raw * vref / 4095.0;
-  float voltage = vmeas * 1.77; // Adjusted for the voltage divider, assuming r1 and r2 are not used here
+  float vmeas = raw * vref / 4095.0; // Measured voltage at ADC pin
+  float voltage = vmeas * 1.667; // Calculate actual battery voltage using voltage divider ratio
   
   Serial.print("Battery voltage: ");
   Serial.print(voltage);
