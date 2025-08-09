@@ -274,10 +274,10 @@ Before you start, make sure you have Python installed on your system.
 
     ```bash
     # Build the project for the FoBE Quill nRF52840 Mesh board
-    west build -b fobe_quill_nrf52840/nrf52840/uf2 ./app
+    west build -b quill_nrf52840_mesh ./app
 
     # Flash the project to the board
-    west flash
+    west flash --runner uf2
     ```
 
     Now you have a simple LED blinking example (Zephyr RTOS Standalone project) running on the **FoBE Quill nRF52840 Mesh**.
