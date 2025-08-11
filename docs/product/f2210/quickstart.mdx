@@ -88,7 +88,7 @@ Let's get started with the FoBE Quill ESP32S3 Mesh using the MFP interface.
 1. Connect the **FoBE Breakout GP8403** to the FoBE Quill ESP32S3 Mesh using the MFP interface.
 <br/>
 <div style={{ textAlign: 'center' }}>
-  <img src="/img/products/f2210-r1a.connection.png" alt="FoBE Breakout GP8403 Connection" style={{ width: '80%', height: 'auto' }} />
+  <img src="/img/products/breakout-debugger-connection1.png" alt="FoBE Breakout GP8403 Connection" style={{ width: '80%', height: 'auto' }} />
 </div>
 <br/>
 
@@ -102,6 +102,8 @@ Let's get started with the FoBE Quill ESP32S3 Mesh using the MFP interface.
 
 #define GP8403_ADDR 0x58
 #define GP8403_MODE_005V                0x00
+#define GP8403_MODE_005_010V            0x01
+#define GP8403_MODE_010_005V            0x10
 #define GP8403_MODE_010V                0x11
 #define GP8403_MODE_ADDRESS             0x01
 
