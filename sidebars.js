@@ -163,7 +163,7 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Breakout O-LED 0.42inch",
+          label: "Breakout OLED 0.42inch",
           link: { type: "doc", id: "product/f2203/index" },
           items: ["product/f2203/quickstart", "product/f2203/resources"],
         },

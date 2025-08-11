@@ -38,7 +38,8 @@
     "pico",
     "meshtastic",
     "ecommerce",
-    "cmsis-dap"
+    "cmsis-dap",
+    "oled"
   ],
   "allowCompoundWords": true,
   "useGitignore": true,
