@@ -211,7 +211,7 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Breakout CM-SIS-DAP",
+          label: "Breakout CMSIS-DAP",
           link: { type: "doc", id: "product/f2211/index" },
           items: ["product/f2211/quickstart", "product/f2211/resources"],
         },
