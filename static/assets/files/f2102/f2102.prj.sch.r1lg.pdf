@@ -1,5 +1,5 @@
 %PDF-1.4
-%ºß¬à
+%ï¿½ß¬ï¿½
 3 0 obj
 <</Type /Page
 /Parent 1 0 R
@@ -987,7 +987,7 @@ BT
 12.00 TL
 0.000 g
 769.17 127.08 Td
-([F2102] FoBE Base Cube nRF52840) Tj
+([F2102] FoBE IDEA Mesh Tracker C1) Tj
 82.38 -12.00 Td
 (R1LG) Tj
 ET
@@ -1229,7 +1229,7 @@ BT
 9.00 TL
 0.000 g
 780.68 100.08 Td
-([F2102] FoBE Base Cube nRF52840 R1LG) Tj
+([F2102] FoBE IDEA Mesh Tracker C1 R1LG) Tj
 ET
 1 J
 1 j
@@ -1782,7 +1782,7 @@ BT
 9.00 TL
 0.000 g
 687.64 25.38 Td
-([F2102] FoBE Base Cube nRF52840) Tj
+([F2102] FoBE IDEA Mesh Tracker C1) Tj
 61.79 -9.00 Td
 (R1LG) Tj
 ET
@@ -27195,7 +27195,7 @@ BT
 12.00 TL
 0.000 g
 769.17 127.08 Td
-([F2102] FoBE Base Cube nRF52840) Tj
+([F2102] FoBE IDEA Mesh Tracker C1) Tj
 82.38 -12.00 Td
 (R1LG) Tj
 ET
@@ -27437,7 +27437,7 @@ BT
 9.00 TL
 0.000 g
 780.68 100.08 Td
-([F2102] FoBE Base Cube nRF52840 R1LG) Tj
+([F2102] FoBE IDEA Mesh Tracker C1 R1LG) Tj
 ET
 1 J
 1 j
@@ -27976,7 +27976,7 @@ BT
 9.00 TL
 0.000 g
 687.64 25.38 Td
-([F2102] FoBE Base Cube nRF52840) Tj
+([F2102] FoBE IDEA Mesh Tracker C1) Tj
 61.79 -9.00 Td
 (R1LG) Tj
 ET
@@ -36201,7 +36201,7 @@ endobj
 
 17 0 obj
 <<
-/Title (SCH_[F2102] FoBE Base Cube nRF52840 R1LG 1-Schematic)
+/Title (SCH_[F2102] FoBE IDEA Mesh Tracker C1 R1LG 1-Schematic)
 /Parent 16 0 R
 /Next 18 0 R
 /Dest [3 0 R /XYZ 0 848.16 0]
@@ -36210,7 +36210,7 @@ endobj
 
 18 0 obj
 <<
-/Title (SCH_[F2102] FoBE Base Cube nRF52840 R1LG 2-Schematic2)
+/Title (SCH_[F2102] FoBE IDEA Mesh Tracker C1 R1LG 2-Schematic2)
 /Parent 16 0 R
 /Prev 17 0 R
 /Dest [5 0 R /XYZ 0 848.16 0]
