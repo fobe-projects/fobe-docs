@@ -37,7 +37,8 @@
     "Blik",
     "pico",
     "meshtastic",
-    "ecommerce"
+    "ecommerce",
+    "cmsis-dap"
   ],
   "allowCompoundWords": true,
   "useGitignore": true,
