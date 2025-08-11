@@ -40,29 +40,29 @@ module.exports = {
         icon: "home",
       },
     },
-    {
-      type: "category",
-      label: "Solutions",
-      link: { type: "doc", id: "solutions/index" },
-      items: [
-        "solutions/meshbus",
-        "solutions/dtu",
-        "solutions/env-telemetry",
-        "solutions/dpc",
-        {
-          type: "category",
-          label: "Meshtastic",
-          link: { type: "doc", id: "solutions/meshtastic" },
-          items: [
-            "solutions/meshtastic/idea-cube",
-            "solutions/meshtastic/solar-power",
-          ],
-        },
-      ],
-      customProps: {
-        icon: "platform",
-      },
-    },
+    // {
+    //   type: "category",
+    //   label: "Solutions",
+    //   link: { type: "doc", id: "solutions/index" },
+    //   items: [
+    //     "solutions/meshbus",
+    //     "solutions/dtu",
+    //     "solutions/env-telemetry",
+    //     "solutions/dpc",
+    //     {
+    //       type: "category",
+    //       label: "Meshtastic",
+    //       link: { type: "doc", id: "solutions/meshtastic" },
+    //       items: [
+    //         "solutions/meshtastic/idea-cube",
+    //         "solutions/meshtastic/solar-power",
+    //       ],
+    //     },
+    //   ],
+    //   customProps: {
+    //     icon: "platform",
+    //   },
+    // },
 
     title("Development Boards"),
     {
@@ -115,13 +115,13 @@ module.exports = {
       items: [
         {
           type: "category",
-          label: "Idea Quill Solar Power",
+          label: "IDEA Mesh Solar Power",
           link: { type: "doc", id: "product/f2101/index" },
           items: ["product/f2101/quickstart", "product/f2101/resources"],
         },
         {
           type: "category",
-          label: "Idea Mesh Cube",
+          label: "IDEA Mesh Tracker C1",
           link: { type: "doc", id: "product/f2102/index" },
           items: ["product/f2102/quickstart", "product/f2102/resources"],
         },
