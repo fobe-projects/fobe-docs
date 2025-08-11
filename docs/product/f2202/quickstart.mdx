@@ -3,11 +3,11 @@ title: Quick Start
 sidebar_label: Quick Start
 ---
 
-This guide introduces the FoBE Breakout SHT40 and how to use it.
+This guide introduces the **FoBE Breakout SHT40** and how to use it.
 
 ## Hardware diagram
 
-The following figure illustrates the FoBE Breakout SHT40 hardware diagram.
+The following figure illustrates the **FoBE Breakout SHT40** hardware diagram.
 
 <br/>
 <div style={{ textAlign: 'center' }}>
@@ -17,7 +17,7 @@ The following figure illustrates the FoBE Breakout SHT40 hardware diagram.
 
 ## Mechanical dimensions
 
-FoBE Breakout SHT40 is a single-sided 25.4mm x 25.4mm (1" x 1") 1.6mm thick PCB with two SH1.0 4-pin connectors and a set of 4-pin 2.54mm header holes. Fixing by 4 x 1.6mm Screw holes.
+**FoBE Breakout SHT40** is a single-sided 25.4mm x 25.4mm (1" x 1") 1.6mm thick PCB with two SH1.0 4-pin connectors and a set of 4-pin 2.54mm header holes. Fixing by 4 x 1.6mm Screw holes.
 
 <br/>
 <div style={{ textAlign: 'center' }}>
@@ -27,22 +27,24 @@ FoBE Breakout SHT40 is a single-sided 25.4mm x 25.4mm (1" x 1") 1.6mm thick PCB 
 
 ## Interfaces
 
-The board provides two 4-pin SH1.0 connectors and a set of 4-pin 2.54mm header holes, all providing the same IIC connections for MCU control.
+The module provides dual 4-Pin JST SH1.0 connectors, compatible with STEMMA QT / Qwiic.
 
-  |Interface                           |Description |
-  |-------------------------------|---------|
-  |3V3 |Power supply       |
-  |GND  |Ground       |
-  |SDA |I2C bus data line       |
-  |SCL |I2C bus clock line       |
+|2.54mm 4-Pin |JST-SH1.0 |Features |
+|-----------------------|--------|---------|
+|GND |GND |Ground |
+|3V3 |3V3 |Power supply, Only 3.3V |
+|SDA |SDA |I2C-Data line |
+|SCL |SCL |I2C-Clock line |
 
-## Configuration Jumper
+## Advanced
 
-The board features a jumper pad:
+### Jumper
 
-|Interface                           |Description |
+The module features one jumper pad:
+
+|Interface |Description |
 |-------------------------------|---------|
-|LED-JUMPER |The PPS (Pulse Per Second) LED jumper. To save power, you can physically cut the trace between the pads of this jumper. You can later re-solder the jumper to reconnect the PPS LED. |
+|LED-JUMPER |Disconnect this jumper to turn off the power LED for further power saving |
 
 ## Programming
 
@@ -50,7 +52,7 @@ The board features a jumper pad:
 
 Let's get started with the FoBE Quill ESP32S3 Mesh using the MFP interface.
 
-1. Connect the FoBE Breakout SHT40 to the FoBE Quill ESP32S3 Mesh using the MFP interface.
+1. Connect the **FoBE Breakout SHT40** to the FoBE Quill ESP32S3 Mesh using the MFP interface.
 <br/>
 <div style={{ textAlign: 'center' }}>
   <img src="/img/products/breakout-debugger-connection.png" alt="FoBE Breakout SHT40 Connection" style={{ width: '80%', height: 'auto' }} />
@@ -146,7 +148,7 @@ monitor_raw = true
 ```
 :::
 
-5. Build and upload the project. You should see the FoBE Breakout SHT40 Monitor output in the serial monitor (raw mode).
+5. Build and upload the project. You should see the **FoBE Breakout SHT40** Monitor output in the serial monitor (raw mode).
 
 ```bash
 > FoBE Breakout SHT40 Monitor

@@ -3,11 +3,11 @@ title: Quick Start
 sidebar_label: Quick Start
 ---
 
-This guide introduces the FoBE Breakout L76K and how to use it.
+This guide introduces the **FoBE Breakout L76K** and how to use it.
 
 ## Hardware diagram
 
-The following figure illustrates the FoBE Breakout L76K hardware diagram.
+The following figure illustrates the **FoBE Breakout L76K** hardware diagram.
 
 <br/>
 <div style={{ textAlign: 'center' }}>
@@ -17,7 +17,7 @@ The following figure illustrates the FoBE Breakout L76K hardware diagram.
 
 ## Mechanical dimensions
 
-FoBE Breakout L76K is a single-sided 25.4mm x 25.4mm (1" x 1") 1.6mm thick PCB with a SH1.0 6-pin connector and a set of 6-pin 2.54mm header holes. Fixing by 4 x 1.6mm Screw holes.
+**FoBE Breakout L76K** is a single-sided 25.4mm x 25.4mm (1" x 1") 1.6mm thick PCB with a SH1.0 6-pin connector and a set of 6-pin 2.54mm header holes. Fixing by 4 x 1.6mm Screw holes.
 
 <br/>
 <div style={{ textAlign: 'center' }}>
@@ -26,38 +26,42 @@ FoBE Breakout L76K is a single-sided 25.4mm x 25.4mm (1" x 1") 1.6mm thick PCB w
 <br/>
 
 ## Interfaces
-SH1.0 6Pin Connector and Reserved 6Pin Header Holes provide the following interfaces:
 
-  |Interface                           |Description |
-  |-------------------------------|---------|
-  |3V3 |Power supply       |
-  |GND  |Ground       |
-  |TX |UART data output       |
-  |RX |UART command input       |
-  |RST |Reset IC, Low-active      |
-  |WAKE |Enable IC's Standby mode, Low-active       |
+The module provides a 6-Pin JST SH1.0 connector and corresponding 2.54mm header holes.
 
-## Configuration Jumper
+|2.54mm 6-Pin |JST-SH1.0 |Features |
+|-----------------------|--------|---------|
+|3V3 |3V3 |Power supply, Only 3.3V |
+|GND |GND |Ground |
+|TX |TX |UART data output |
+|RX |RX |UART command input |
+|RST |RST |Reset IC, Active Low |
+|WAKE |WAKE |Standby mode control, Active Low |
 
-The board features two jumper pads:
+## Advanced
 
-|Interface                           |Description |
+### Jumper
+
+The module features two jumper pads:
+
+|Interface |Description |
 |-------------------------------|---------|
-|CONSTELLATION |Soldering this pad configures the module to use GPS + GLONASS. By default, the pad is not soldered, and the module uses BeiDou + GPS. |
-|LED-JUMPER |The PPS (Pulse Per Second) LED jumper. To save power, you can physically cut the trace between the pads of this jumper. You can later re-solder the jumper to reconnect the PPS LED. |
+|CONSTELLATION |Satellite constellation selector:<br/>Soldered: GPS + GLONASS<br/>Open: BeiDou + GPS (Default) |
+|LED-JUMPER |Disconnect this jumper to turn off the PPS LED for further power saving |
 
-## Other
-- Build-in 3.1V Rechargeable Button Cell Battery for Data Retention.
-- If using an active antenna, the "ACTIVE-ANT PWR" pad needs to be connected to 3V3.
-- PPS-PULSE: Outputs a pulse per second, works concurrently with the PPS LED, but not affected by JP2.
+### Additional Features
 
-## Programming
+- **Built-in Battery**: 3.1V rechargeable button cell for data retention
+- **Active Antenna Support**: Connect "ACTIVE-ANT PWR" pad to 3V3 when using active antenna
+- **PPS Output**: Pulse-per-second signal output, independent of LED jumper control
+
+### Programming
 
 ### Running with FoBE Quill ESP32S3 Mesh
 
 Let's get started with the FoBE Quill ESP32S3 Mesh using the MFP interface.
 
-1. Connect the FoBE Breakout L76K to the FoBE Quill ESP32S3 Mesh using the MFP interface.
+1. Connect the **FoBE Breakout L76K** to the FoBE Quill ESP32S3 Mesh using the MFP interface.
 <br/>
 <div style={{ textAlign: 'center' }}>
   <img src="/img/products/breakout-debugger-connection.png" alt="FoBE Breakout L76K Connection" style={{ width: '80%', height: 'auto' }} />

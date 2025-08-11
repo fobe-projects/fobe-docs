@@ -17,48 +17,47 @@ order: 1
 
 ## Introduction
 
-FoBE Breakout GP8403 can convert I2C signals into analog signals, and can linearly convert 12-bit digital values 0x000-0xFFF into 0-5V or 0-10V analog Voltage; The Output voltage error: < 0.5%.
-
-There is an eeprom on board, can store the calibration parameter.
+The **FoBE Breakout GP8403** integrates the [Linearin GP8403](https://atta.szlcsc.com/upload/public/pdf/source/20230324/119C3D24177D38ACF0484191557FF3D8.pdf) I2C to dual-channel voltage DAC converter and the [ST M24C64](https://atta.szlcsc.com/upload/public/pdf/source/20190505/C143943_93BB3DF2AB70DCE689FCC99F0548A5AE.pdf) EEPROM for calibration data storage. The module converts 12-bit digital values (0x000-0xFFF) to precise 0-5V or 0-10V analog voltage output with excellent linearity and accuracy. Multiple connectivity options are provided for easy integration into various applications.
 
 ## Applications
-- General signal conversion
-- Motor speed regulation, LED dimming
-- Inverter, power supply
-- Industrial analog signal isolation
+
+- General signal conversion and conditioning
+- Motor speed regulation and LED dimming control
+- Inverter and power supply control systems
+- Industrial analog signal isolation and processing
 
 ## Key Features
 
-*   **GP8403:**
-    - GP8403 uses I2C interface to linearly convert two analog voltage outputs of 0-5V or 0-10V.
-    - Input signal range 12Bit, 0x000-0xFFF
-    - 0-5V/0-10V output voltage is controlled by internal data
-    - Input I2C signal high level: 2.7V-5.5V
-    - Output voltage error: < 0.5% (can reach 0.1% TPY after two-point calibration)
-    - Output voltage linearity error: 0.1% (TPY)
-    - Output short circuit protection, when the output pin is short-circuited to ground, the chip enters protection mode and stops output.
-    - Power supply voltage: 9V-36V
-    - Power consumption: < 5mA
-    - Start-up time: < 2ms
-    - Operating temperature: -40°C to 85°C
+**GP8403**
+    - Dual-channel 12-bit DAC resolution (0x000-0xFFF input range)
+    - Selectable output ranges: 0-5V or 0-10V per channel
+    - Excellent output voltage accuracy: < 0.5% (0.1% with calibration)
+    - Outstanding voltage linearity: 0.1%
+    - Output short circuit protection with automatic recovery
+    - I²C interface with programmable address
+    - Input I²C signal high level: 2.7V to 5.5V
+    - Power supply voltage: 9V to 36V
+    - Low power consumption: < 5mA
+    - Fast startup time: < 2ms
+    - Wide operating temperature: -40°C to +85°C
 
-*   **EEPROM:**
-    - 64 Kbit (8 Kbyte) of EEPROM
-    - Page size: 32 byte
-    - Write protect of the whole memory array
+**M24C64 EEPROM**
+    - 64Kbit (8KB) data storage capacity
+    - 32-byte page size for efficient writing
+    - Write protection for entire memory array
     - Enhanced ESD/Latch-Up protection
-    - More than 4 million Write cycles
+    - More than 4 million write cycles endurance
     - More than 200-years data retention
 
-*   **Connectivity:**
-    -  Two 4Pin SH1.0 Connectors(IIC)
-    -  6Pin 2.54mm Header Holes (IIC + 2 x NC)
-    -  Output by 4 x 3.81mm Screw terminal block
+**Connectivity**
+    - Dual 4-Pin JST SH1.0 Connectors (IIC)
+    - 6-Pin 2.54mm Header Holes
+    - 4 x 3.81mm Screw Terminal Block (Power + Dual Output)
 
 
 ## Packing List
 
-|Part                           |Quantity |
-|-------------------------------|---------|
-|FoBE Breakout GP8403 board |1        |
-|SH1.0mm 4 Pin Connector Plug Male with 100mm Wire  |2        |
+|Part                      |Quantity |
+|--------------------------|---------|
+|FoBE Breakout GP8403 board|1        |
+|JST SH1.0 4-Pin IIC Cable |2        |

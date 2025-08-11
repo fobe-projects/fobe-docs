@@ -17,45 +17,52 @@ order: 1
 
 ## Introduction
 
-FoBE Breakout ADS1115 is a multifunctional analog-to-digital converter module that uses the ADS1115 IC and provides three different measurement inputs: 0-10V voltage measurement, 4-20MA current measurement, and NTC temperature measurement.
-
-This board offers flexible connectivity with two 4-pin SH1.0 connectors and a set of 6-pin 2.54mm header holes, all providing IIC connections. The header holes also include an INT pin for ADC conversion triggering. 
-
+The **FoBE Breakout ADS1115** integrates the [TI ADS1115](https://www.ti.com.cn/cn/lit/ds/symlink/ads1115.pdf) 16-bit ADC with programmable gain amplifier and the EEPROM for calibration data storage. The module provides multiple measurement capabilities including 0-10V voltage measurement, 4-20mA current measurement, and NTC temperature measurement with built-in 2.5V reference. Multiple connectivity options are provided for easy integration into various applications.
 
 ## Applications
-- Portable instrumentation
-- Battery monitoring
-- Temperature measurement
+
+- Portable instrumentation and measurement systems
+- Battery monitoring and power management
+- Temperature sensing and monitoring
 - Factory automation and process controls
 
 ## Key Features
 
-*   **ADC Module:**
-    - Wide supply range: 2.0V ~ 5.5V, support 3.3 or 5V system
-    - 16-bit high resolution ADC
-    - Programmable Data Rate: 8 SPS to 860 SPS
-    - Internal Programmable Gain: x16 with Internal low-drift voltage reference and oscillator
-    - The built-in PGA is gain-adjustable and can be controlled by software
-    - 4 Single-Ended Inputs or 2 Differential Inputs
+**ADS1115**
+    - 16-bit high resolution analog-to-digital conversion
+    - 4 single-ended inputs or 2 differential inputs
+    - Programmable data rate: 8 SPS to 860 SPS
+    - Internal programmable gain amplifier (PGA): up to x16
+    - Internal low-drift voltage reference and oscillator
+    - Wide supply range: 2.0V to 5.5V
+    - I²C interface with programmable address
+    - Interrupt/ready pin for conversion completion
 
-*   **Reference voltage:**
-    *   Build-in 2.5V voltage reference for NTC measure and ADC calibration.
+**M24C64 EEPROM**
+    - 64Kbit (8KB) data storage capacity
+    - I²C interface with programmable address
+    - Calibration data storage capability
 
-*   **EEPROM:**
-    *   Onboard EEPROM for calibration data storage
+**Built-in Reference**
+    - 2.5V precision voltage reference
+    - NTC measurement and ADC calibration support
+
+**Connectivity**
+    - Dual 4-Pin JST SH1.0 Connectors (IIC)
+    - 6-Pin 2.54mm Header Holes
 
 ## Measure Channels
 
-|Channel                          | Measure |
-|-------------------------------|---------|
-| 0 | 4-20mA current measurement |
-| 1 | Voltage measurement (0-10V) |
-| 2 | NTC thermistor measurement |
-| 3 | ADC calibration (connected to internal voltage reference) |
+|Channel |Measurement Type |Description |
+|--------|-----------------|------------|
+|0 |4-20mA current |Measured via 120Ω shunt resistor to ground |
+|1 |0-10V voltage |Measured through voltage divider (10kΩ/39kΩ) |
+|2 |NTC temperature |Measured via voltage divider with 100kΩ resistor and 2.5V reference |
+|3 |ADC calibration |Connected to internal 2.5V voltage reference |
 
 ## Packing List
 
-|Part                           |Quantity |
-|-------------------------------|---------|
-|FoBE Breakout ADS1115 board |1        |
-|SH1.0mm 4 Pin Connector Plug Male with 100mm Wire  |2        |
+|Part                      |Quantity |
+|--------------------------|---------|
+|FoBE Breakout ADS1115 board|1        |
+|JST SH1.0 4-Pin IIC Cable |2        |

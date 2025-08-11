@@ -3,11 +3,11 @@ title: Quick Start
 sidebar_label: Quick Start
 ---
 
-This guide introduces the FoBE Breakout OLED 0.42 inch and how to use it.
+This guide introduces the **FoBE Breakout OLED 0.42 inch** and how to use it.
 
 ## Hardware diagram
 
-The following figure illustrates the FoBE Breakout OLED 0.42 inch hardware diagram.
+The following figure illustrates the **FoBE Breakout OLED 0.42 inch** hardware diagram.
 
 <br/>
 <div style={{ textAlign: 'center' }}>
@@ -17,7 +17,7 @@ The following figure illustrates the FoBE Breakout OLED 0.42 inch hardware diagr
 
 ## Mechanical dimensions
 
-FoBE Breakout OLED 0.42 inch is a single-sided 25.4mm x 25.4mm (1" x 1") 1.6mm thick PCB with two SH1.0 4-pin connectors and a set of 4-pin 2.54mm header holes. Fixing by 4 x 1.6mm Screw holes.
+**FoBE Breakout OLED 0.42 inch** is a single-sided 25.4mm x 25.4mm (1" x 1") 1.6mm thick PCB with two SH1.0 4-pin connectors and a set of 4-pin 2.54mm header holes. Fixing by 4 x 1.6mm Screw holes.
 
 <br/>
 <div style={{ textAlign: 'center' }}>
@@ -27,23 +27,25 @@ FoBE Breakout OLED 0.42 inch is a single-sided 25.4mm x 25.4mm (1" x 1") 1.6mm t
 
 ## Interfaces
 
-The board provides two 4-pin SH1.0 connectors and a set of 4-pin 2.54mm header holes, all providing the same IIC connections for MCU control.
+The module provides dual 4-Pin JST SH1.0 connectors, compatible with STEMMA QT / Qwiic.
 
-  |Interface                           |Description |
-  |-------------------------------|---------|
-  |3V3 |Power supply       |
-  |GND  |Ground       |
-  |SDA |I2C bus data line       |
-  |SCL |I2C bus clock line       |
+|2.54mm 4-Pin |JST-SH1.0 |Features |
+|-----------------------|--------|---------|
+|GND |GND |Ground |
+|3V3 |3V3 |Power supply, Only 3.3V |
+|SDA |SDA |I2C-Data line |
+|SCL |SCL |I2C-Clock line |
 
-## Configuration Jumper
+## Advanced
 
-The board features two jumper pad:
+### Jumper
 
-|Interface                           |Description |
+The module features two jumper pad:
+
+|Interface |Description |
 |-------------------------------|---------|
-|LED-JUMPER |The PPS (Pulse Per Second) LED jumper. To save power, you can physically cut the trace between the pads of this jumper. You can later re-solder the jumper to reconnect the PPS LED. |
-|IIC PULL-UP |By default, sda/scl are pulled up, you can physically cut the trace between the pads of this jumper if you don't need them.|
+|LED-JUMPER |Disconnect this jumper to turn off the power LED for further power saving |
+|IIC PULL-UP |By default, SDA/SCL are pulled up, you can physically cut the trace between the pads of this jumper if you don't need them |
 
 ## Programming
 
@@ -51,7 +53,7 @@ The board features two jumper pad:
 
 Let's get started with the FoBE Quill ESP32S3 Mesh using the MFP interface.
 
-1. Connect the FoBE Breakout OLED 0.42 inch to the FoBE Quill ESP32S3 Mesh using the MFP interface.
+1. Connect the **FoBE Breakout OLED 0.42 inch** to the FoBE Quill ESP32S3 Mesh using the MFP interface.
 <br/>
 <div style={{ textAlign: 'center' }}>
   <img src="/img/products/breakout-debugger-connection.png" alt="FoBE Breakout OLED 0.42 inch Connection" style={{ width: '80%', height: 'auto' }} />

@@ -3,11 +3,11 @@ title: Quick Start
 sidebar_label: Quick Start
 ---
 
-This guide introduces the FoBE Breakout BM8563 and how to use it.
+This guide introduces the **FoBE Breakout BM8563** and how to use it.
 
 ## Hardware diagram
 
-The following figure illustrates the FoBE Breakout BM8563 hardware diagram.
+The following figure illustrates the **FoBE Breakout BM8563** hardware diagram.
 
 <br/>
 <div style={{ textAlign: 'center' }}>
@@ -17,7 +17,7 @@ The following figure illustrates the FoBE Breakout BM8563 hardware diagram.
 
 ## Mechanical dimensions
 
-FoBE Breakout BM8563 is a single-sided 25.4mm x 25.4mm (1" x 1") 1.6mm thick PCB with two SH1.0 4-pin connectors and a set of 4-pin 2.54mm header holes. Fixing by 6 x 1.6mm Screw holes.
+**FoBE Breakout BM8563** is a single-sided 25.4mm x 25.4mm (1" x 1") 1.6mm thick PCB with two SH1.0 4-pin connectors and a set of 6-pin 2.54mm header holes. Fixing by 6 x 1.6mm Screw holes.
 
 <br/>
 <div style={{ textAlign: 'center' }}>
@@ -27,34 +27,31 @@ FoBE Breakout BM8563 is a single-sided 25.4mm x 25.4mm (1" x 1") 1.6mm thick PCB
 
 ## Interfaces
 
-The board provides two 4-pin SH1.0 connectors, all providing the same IIC connections for MCU control:
+The module provides dual 4-Pin JST SH1.0 connectors, compatible with STEMMA QT / Qwiic.
 
-  |Interface                           |Description |
-  |-------------------------------|---------|
-  |3V3 |Power supply       |
-  |GND  |Ground       |
-  |SDA |I2C bus data line       |
-  |SCL |I2C bus clock line       |
+|2.54mm 6-Pin |JST-SH1.0 |Features |
+|-----------------------|--------|---------|
+|INT |— |Interrupt, Active Low |
+|GND |GND |Ground |
+|3V3 |3V3 |Power supply, Only 3.3V |
+|SDA |SDA |I2C-Data line |
+|SCL |SCL |I2C-Clock line |
+|OUT |— |Clock output, programmable frequency |
 
-And a set of 6-pin 2.54mm header holes, providing the same IIC connections for MCU control, plus an interrupt pin and a programmable output pin.
+## Backup Power
 
-  |Interface                           |Description |
-  |-------------------------------|---------|
-  |INT  |Trigger when the programmed timing conditions are met: Active Low      |
-  |GND  |Ground       |
-  |3V3 |Power supply       |
-  |SDA |I2C bus data line       |
-  |SCL |I2C bus clock line       |
-  |OUT  |CLK_OUT: Can output programmable square wave: Active Low       |
+The **FoBE Breakout BM8563** module can be powered by a backup battery (CR1220). The backup power supply ensures that the real-time clock continues to keep time even when the main power is disconnected.
 
-## Configuration Jumper
+## Advanced
 
-The board features two jumper pad:
+### Jumper
 
-|Interface                           |Description |
+The module features two jumper pads:
+
+|Interface |Description |
 |-------------------------------|---------|
-|LED-JUMPER |The PPS (Pulse Per Second) LED jumper. To save power, you can physically cut the trace between the pads of this jumper. You can later re-solder the jumper to reconnect the PPS LED. |
-|IIC PULL-UP |By default, sda/scl are pulled up, you can physically cut the trace between the pads of this jumper if you don't need them.|
+|LED-JUMPER |Disconnect this jumper to turn off the power LED for further power saving |
+|IIC PULL-UP |Disconnect this jumper to disable I2C pull-up resistors if external pull-ups are used |
 
 ## Programming
 
@@ -62,7 +59,8 @@ The board features two jumper pad:
 
 Let's get started with the FoBE Quill ESP32S3 Mesh using the MFP interface.
 
-1. Connect the FoBE Breakout BM8563 to the FoBE Quill ESP32S3 Mesh using the MFP interface.
+1. Connect the **FoBE Breakout BM8563** to the FoBE Quill ESP32S3 Mesh using the MFP interface.
+
 <br/>
 <div style={{ textAlign: 'center' }}>
   <img src="/img/products/breakout-debugger-connection.png" alt="FoBE Breakout BM8563 Connection" style={{ width: '80%', height: 'auto' }} />
@@ -168,7 +166,7 @@ monitor_raw = true
 ```
 :::
 
-5. Build and upload the project. You should see the FoBE Breakout BM8563 Monitor output in the serial monitor (raw mode).
+5. Build and upload the project. You should see the **FoBE Breakout BM8563** Monitor output in the serial monitor (raw mode).
 
 ```bash
 > FoBE Breakout BM8563 RTC Monitor

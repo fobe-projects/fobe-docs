@@ -4,11 +4,11 @@ sidebar_label: Quick Start
 description: Quick start guide for FoBE Breakout ENS160 digital multi-gas sensor.
 ---
 
-This guide introduces the FoBE Breakout ENS160 and demonstrates how to use it.
+This guide introduces the **FoBE Breakout ENS160** and how to use it.
 
-## Hardware Diagram
+## Hardware diagram
 
-The following figure illustrates the FoBE Breakout ENS160 hardware diagram.
+The following figure illustrates the **FoBE Breakout ENS160** hardware diagram.
 
 <br/>
 <div style={{ textAlign: 'center' }}>
@@ -16,9 +16,9 @@ The following figure illustrates the FoBE Breakout ENS160 hardware diagram.
 </div>
 <br/>
 
-## Mechanical Dimensions
+## Mechanical dimensions
 
-The FoBE Breakout ENS160 is a single-sided 25.4mm x 25.4mm (1" x 1") PCB with a thickness of 1.6mm. It features two SH1.0 4-pin connectors and a set of 5-pin 2.54mm header holes. The board can be secured using 4 x 1.6mm mounting holes.
+**FoBE Breakout ENS160** is a single-sided 25.4mm x 25.4mm (1" x 1") 1.6mm thick PCB with two SH1.0 4-pin connectors and a set of 5-pin 2.54mm header holes. Fixing by 4 x 1.6mm Screw holes.
 
 <br/>
 <div style={{ textAlign: 'center' }}>
@@ -28,33 +28,26 @@ The FoBE Breakout ENS160 is a single-sided 25.4mm x 25.4mm (1" x 1") PCB with a 
 
 ## Interfaces
 
-The board provides two 4-pin SH1.0 connectors, both offering the same I2C connections for MCU control.
+The module provides dual 4-Pin JST SH1.0 connectors, compatible with STEMMA QT / Qwiic.
 
-| Interface | Description |
-|-----------|-------------|
-| GND | Ground |
-| 3V3 | Power supply |
-| SDA | I2C bus data line |
-| SCL | I2C bus clock line |
+|2.54mm 5-Pin |JST-SH1.0 |Features |
+|-----------------------|--------|---------|
+|GND |GND |Ground |
+|3V3 |3V3 |Power supply, Only 3.3V |
+|SDA |SDA |I2C-Data line |
+|SCL |SCL |I2C-Clock line |
+|INT |— |Interrupt, Active Low |
 
-Additionally, there is a set of 5-pin 2.54mm header holes that provide the same I2C connections for MCU control, plus an interrupt pin.
+## Advanced
 
-| Interface | Description |
-|-----------|-------------|
-| GND | Ground |
-| 3V3 | Power supply |
-| SDA | I2C bus data line |
-| SCL | I2C bus clock line |
-| INT | Interrupt signal (Active Low) |
+### Jumper
 
-## Configuration Jumpers
+The module features two jumper pads:
 
-The board features two jumper pads:
-
-| Interface | Description |
-|-----------|-------------|
-| LED-JUMPER | The status LED jumper. To save power, you can physically cut the trace between the pads of this jumper. You can later re-solder the jumper to reconnect the status LED. |
-| ENS160-ADDR | The ENS160 I2C address jumper. The ENS160 can be configured to use either the default I2C address (0x53: jumper connected to H) or an alternative address (0x52: jumper connected to L). |
+|Interface |Description |
+|-------------------------------|---------|
+|LED-JUMPER |Disconnect this jumper to turn off the power LED for further power saving |
+|ENS160-ADDR |I2C address selector:<br/>0x53 ```Set JUMPER:H```<br/>0x52 ```Set JUMPER:L``` |
 
 ## Programming
 
@@ -62,7 +55,7 @@ The board features two jumper pads:
 
 Let's get started with the FoBE Quill ESP32S3 Mesh using the MFP interface.
 
-1. Connect the FoBE Breakout ENS160 to the FoBE Quill ESP32S3 Mesh using the MFP interface.
+1. Connect the **FoBE Breakout ENS160** to the FoBE Quill ESP32S3 Mesh using the MFP interface.
 <br/>
 <div style={{ textAlign: 'center' }}>
   <img src="/img/products/breakout-debugger-connection.png" alt="FoBE Breakout ENS160 Connection" style={{ width: '80%', height: 'auto' }} />
@@ -161,7 +154,7 @@ monitor_raw = true
 ```
 :::
 
-5. Build and upload the project. You should see the FoBE Breakout ENS160 Monitor output in the serial monitor (raw mode).
+5. Build and upload the project. You should see the **FoBE Breakout ENS160** Monitor output in the serial monitor (raw mode).
 
 ```bash
 > FoBE Breakout ENS160 Monitor
