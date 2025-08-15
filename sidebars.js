@@ -215,6 +215,12 @@ module.exports = {
           link: { type: "doc", id: "product/f2211/index" },
           items: ["product/f2211/quickstart", "product/f2211/resources"],
         },
+        {
+          type: "category",
+          label: "Breakout MFP-HUB",
+          link: { type: "doc", id: "product/f2212/index" },
+          items: ["product/f2212/quickstart", "product/f2212/resources"],
+        },
       ],
     },
     {
