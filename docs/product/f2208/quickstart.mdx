@@ -147,11 +147,31 @@ void loop() {
   volts2 = ads.computeVolts(adc2);
   volts3 = ads.computeVolts(adc3);
 
-  Serial.println("-----------------------------------------------------------");
-  Serial.print("AIN0: "); Serial.print(adc0); Serial.print("  "); Serial.print(volts0); Serial.println("V");
-  Serial.print("AIN1: "); Serial.print(adc1); Serial.print("  "); Serial.print(volts1); Serial.println("V");
-  Serial.print("AIN2: "); Serial.print(adc2); Serial.print("  "); Serial.print(volts2); Serial.println("V");
-  Serial.print("AIN3: "); Serial.print(adc3); Serial.print("  "); Serial.print(volts3); Serial.println("V");
+  Serial.println("> FoBE Breakout - ADS1115");
+  Serial.print("\033[H\033[J"); // Clear terminal
+  Serial.printf("\033[7m%-12s%-12s%-12s%-12s%-12s\033[0m",
+              "Channel", "Value", "Voltage", "Result", "-");
+  Serial.println();
+  Serial.print("\033[0m");
+  
+  Serial.printf("%-12s%-12d%-12.6f%-12s%-12.6f", "AIN0", adc0, volts0, "4-20ma:", volts0/120*1000);
+  Serial.println();
+
+  Serial.printf("%-12s%-12d%-12.6f%-12s%-12.6f", "AIN1", adc0, volts1, "0-10V:", volts1 * (100000.0f + 39000.0f) / 39000.0f);
+  Serial.println();
+
+  const double Rp = 100000.0;  // 分压电阻
+  const double R0 = 10000.0;  // 10k NTC 
+  const double T0 = 273.15 + 25.0; // 25℃
+  const double Bx = 3950.0;
+  const double Vref = 3.056250;     // 参考电压
+  double Rt = volts2 / ((Vref - volts2) / Rp); 
+  double tempK = 1.0 / ( (1.0/T0) + (1.0/Bx) * log10(Rt / R0) );
+  double tempC = tempK - 273.15;
+  Serial.printf("%-12s%-12d%-12.6f%-12s%-12.6f", "AIN2", adc2, volts2, "NTC(˚C):", tempC);
+  Serial.println();
+
+  Serial.printf("%-12s%-12d%-12.6f%-12s%-12.6f", "AIN3", adc3, volts3, "REF-3V", volts3);
 
   delay(1000);
 }
@@ -176,11 +196,11 @@ monitor_raw = true
 5. Build and upload the project. You should see the **FoBE Breakout ADS1115** ADC channel data output in the serial monitor (raw mode).
 
 ```bash
------------------------------------------------------------
-AIN0: 1234  0.123V
-AIN1: 5678  0.567V
-AIN2: 9012  0.901V
-AIN3: 25000  2.500V
+Channel     Value       Voltage     Result      -           
+AIN0        0           0.000000    4-20ma:     0.000000    
+AIN1        0           0.002625    0-10V:      0.009356    
+AIN2        1136        0.213000    NTC(˚C):   27.849865   
+AIN3        16300       3.056250    REF-3V      3.056250      
 ```
 
 :::note
