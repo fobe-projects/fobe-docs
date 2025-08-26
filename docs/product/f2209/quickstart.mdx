@@ -101,11 +101,22 @@ Let's get started with the FoBE Quill ESP32S3 Mesh using the MFP interface.
 #include <Wire.h>
 
 // GP8303 I2C Address and Registers
-#define GP8303_ADDR    0x58
+#define GP8303_ADDR 0x58
 #define REG_DAC_DATA   0x02    // DAC data register
 
 #define IIC_SDA_PIN    PIN_MFP3
 #define IIC_SCL_PIN    PIN_MFP4
+
+bool setDACCurrent(uint8_t address, uint16_t cur_levl) {
+    uint8_t hibyte = ((cur_levl << 4) & 0xff00) >> 8; 
+    uint8_t lobyte = ((cur_levl << 4) & 0xff);
+    cur_levl = lobyte << 8 | hibyte;
+    Wire.beginTransmission(address);
+    Wire.write((uint8_t)REG_DAC_DATA);
+    Wire.write((uint8_t)(cur_levl >> 8));
+    Wire.write((uint8_t)(cur_levl & 0xFF));
+    return (Wire.endTransmission() == 0);
+}
 
 void setup() {
   Serial.begin(115200);
@@ -115,20 +126,17 @@ void setup() {
 
   Wire.begin(IIC_SDA_PIN, IIC_SCL_PIN);
   
-  // Calculate DAC value for 16mA (4-20mA range)
-  uint16_t dacValue = (uint16_t)((16.0 - 4.0) * 4095.0 / 16.0);
-  dacValue = dacValue << 4;  // Left shift 4 bits for 12-bit DAC
-  
-  // Write DAC data to register 0x02
   Wire.beginTransmission(GP8303_ADDR);
-  Wire.write(REG_DAC_DATA);
-  Wire.write(dacValue & 0xFF);       // Low byte
-  Wire.write((dacValue >> 8) & 0xFF);// High byte
-  Wire.endTransmission();
-  
-  Serial.print("DAC value set to: ");
-  Serial.print(dacValue >> 4);
-  Serial.println(" (16mA)");
+  if (Wire.endTransmission() == 0) {
+      Serial.println("GP8303 DAC found.");
+  } else {
+      Serial.println("GP8303 DAC not found. Check connections.");
+      while (1) delay(1000);
+  }
+
+  // set output current of 0-20ma(0-4095)
+  setDACCurrent(GP8303_ADDR, 1024);
+  Serial.println("DAC current set to 1024 (approx. 5mA).");
 }
 
 void loop() {
@@ -153,7 +161,8 @@ monitor_raw = true
 4. Build and upload the project. You should measure 16mA output on the output terminal.
 
 ```bash
-DAC value set to: 3072 (16mA)
+GP8303 DAC found.
+DAC current set to 1024 (approx. 5mA).
 ```
 
 :::note

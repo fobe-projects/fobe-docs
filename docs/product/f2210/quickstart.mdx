@@ -101,25 +101,27 @@ Let's get started with the FoBE Quill ESP32S3 Mesh using the MFP interface.
 #include <Wire.h>
 
 #define GP8403_ADDR 0x58
-#define GP8403_MODE_005V                0x00
-#define GP8403_MODE_005_010V            0x01
-#define GP8403_MODE_010_005V            0x10
-#define GP8403_MODE_010V                0x11
-#define GP8403_MODE_ADDRESS             0x01
+#define GP8403_MODE_005V                0x00 // 0-5V output
+#define GP8403_MODE_005_010V            0x10 // 0-5V and 0-10V output
+#define GP8403_MODE_010_005V            0x01 // 0-10V and 0-5V output
+#define GP8403_MODE_010V                0x11 // 0-10V output
 
+#define GP8403_MODE_ADDRESS             0x01
 #define GP8403_CHANNEL0_ADDRESS 0x02        // Channel 0 data register
 #define GP8403_CHANNEL1_ADDRESS 0x04        // Channel 1 data register
 
 #define IIC_SDA_PIN PIN_MFP3
 #define IIC_SCL_PIN PIN_MFP4
 
-void setDACVoltage(uint16_t voltage, uint8_t channel) {
-    voltage &= 0x0FFF;  // Ensure 12-bit data
-    Wire.beginTransmission(GP8403_ADDR);
-    Wire.write(channel == 0 ? GP8403_CHANNEL0_ADDRESS : GP8403_CHANNEL1_ADDRESS);
-    Wire.write(voltage & 0xFF);        // Low 8 bits
-    Wire.write((voltage >> 8) & 0xFF); // High 8 bits
-    Wire.endTransmission();
+bool setDACVoltage(uint8_t address, uint16_t vol_levl, uint8_t channel_reg) {
+    uint8_t hibyte = ((vol_levl << 4) & 0xff00) >> 8; 
+    uint8_t lobyte = ((vol_levl << 4) & 0xff);
+    vol_levl = lobyte << 8 | hibyte;
+    Wire.beginTransmission(address);
+    Wire.write((uint8_t)channel_reg);
+    Wire.write((uint8_t)(vol_levl >> 8));
+    Wire.write((uint8_t)(vol_levl & 0xFF));
+    return (Wire.endTransmission() == 0);
 }
 
 void setup() {
@@ -131,25 +133,28 @@ void setup() {
     Wire.begin(IIC_SDA_PIN, IIC_SCL_PIN);
     
     Wire.beginTransmission(GP8403_ADDR);
-    Wire.write(GP8403_MODE_ADDRESS);
-    Wire.write(GP8403_MODE_010V);  // Set 0-10V range for both channels
-    Wire.endTransmission();
-    
-    // Set channel 0 to output 3V (in 0-10V range)
-    uint16_t dacValue0 = (3 * 4095) / 10;  // 3V in 0-10V range
-    setDACVoltage(dacValue0, 0);
-    
-    // Set channel 1 to output 8V (in 0-10V range)
-    uint16_t dacValue1 = (8 * 4095) / 10;  // 8V in 0-10V range
-    setDACVoltage(dacValue1, 1);
-    
-    Serial.println("DAC configuration completed:");
-    Serial.print("Channel 0: 3V (DAC value: ");
-    Serial.print(dacValue0);
-    Serial.println(")");
-    Serial.print("Channel 1: 8V (DAC value: ");
-    Serial.print(dacValue1);
-    Serial.println(")");
+    if (Wire.endTransmission() == 0) {
+        Serial.println("GP8403 DAC found.");
+    } else {
+        Serial.println("GP8403 DAC not found. Check connections.");
+        while (1) delay(1000);
+    }
+
+    Wire.beginTransmission(GP8403_ADDR);
+    Wire.write((uint8_t)GP8403_MODE_ADDRESS);
+    Wire.write((uint8_t)GP8403_MODE_005_010V);
+    if(Wire.endTransmission() == 0){
+        Serial.println("GP8403 mode set to 0-5V and 0-10V output.");
+    } else {
+        Serial.println("Failed to set GP8403 mode.");
+        while (1) delay(1000);
+    }
+
+    setDACVoltage(GP8403_ADDR, 2047, GP8403_CHANNEL0_ADDRESS);
+    Serial.println("Channel 0 set to approximately 2.5V.");
+
+    setDACVoltage(GP8403_ADDR, 2047, GP8403_CHANNEL1_ADDRESS);
+    Serial.println("Channel 1 set to approximately 5V.");
 }
 
 void loop() {
@@ -174,9 +179,10 @@ monitor_raw = true
 4. Build and upload the project. You should measure 3V on channel 0 and 8V on channel 1 using a multimeter.
 
 ```bash
-DAC configuration completed:
-Channel 0: 3V (DAC value: 1228)
-Channel 1: 8V (DAC value: 3276)
+GP8403 DAC found.
+GP8403 mode set to 0-5V and 0-10V output.
+Channel 0 set to approximately 2.5V.
+Channel 1 set to approximately 5V.
 ```
 
 :::note
