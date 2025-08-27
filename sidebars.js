@@ -128,20 +128,20 @@ module.exports = {
       ],
     },
 
-    title("Modules"),
-    {
-      type: "category",
-      label: "Core",
-      link: { type: "doc", id: "product/core" },
-      items: [
-        {
-          type: "category",
-          label: "F6001",
-          link: { type: "doc", id: "product/f6001/index" },
-          items: ["product/f6001/quickstart", "product/f6001/resources"],
-        },
-      ],
-    },
+    // title("Modules"),
+    // {
+    //   type: "category",
+    //   label: "Core",
+    //   link: { type: "doc", id: "product/core" },
+    //   items: [
+    //     {
+    //       type: "category",
+    //       label: "F6001",
+    //       link: { type: "doc", id: "product/f6001/index" },
+    //       items: ["product/f6001/quickstart", "product/f6001/resources"],
+    //     },
+    //   ],
+    // },
 
     title("Extensions"),
     {
@@ -223,12 +223,12 @@ module.exports = {
         },
       ],
     },
-    {
-      type: "category",
-      label: "Shield",
-      link: { type: "doc", id: "product/shield" },
-      items: [],
-    },
+    // {
+    //   type: "category",
+    //   label: "Shield",
+    //   link: { type: "doc", id: "product/shield" },
+    //   items: [],
+    // },
 
     title("Platforms"),
     {
