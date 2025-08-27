@@ -230,19 +230,19 @@ module.exports = {
     //   items: [],
     // },
 
-    title("Platforms"),
-    {
-      type: "doc",
-      id: "platform/arduino",
-    },
-    {
-      type: "doc",
-      id: "platform/micropython",
-    },
-    {
-      type: "doc",
-      id: "platform/zephyr",
-    },
+    // title("Platforms"),
+    // {
+    //   type: "doc",
+    //   id: "platform/arduino",
+    // },
+    // {
+    //   type: "doc",
+    //   id: "platform/micropython",
+    // },
+    // {
+    //   type: "doc",
+    //   id: "platform/zephyr",
+    // },
 
     title("Additional Resources"),
     {
