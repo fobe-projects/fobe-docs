@@ -110,7 +110,7 @@ module.exports = {
     // },
     {
       type: "category",
-      label: "Idea Series",
+      label: "IDEA Series",
       link: { type: "doc", id: "product/idea" },
       items: [
         {
