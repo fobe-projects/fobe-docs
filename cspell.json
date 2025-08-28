@@ -39,7 +39,12 @@
     "meshtastic",
     "ecommerce",
     "cmsis-dap",
-    "oled"
+    "oled",
+    "QSPI",
+    "EEPROM",
+    "UART",
+    "lipoly",
+    "Qwiic"
   ],
   "allowCompoundWords": true,
   "useGitignore": true,

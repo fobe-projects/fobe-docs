@@ -54,7 +54,7 @@ html[data-theme="light"] .store-button-cta:hover {
 }
 
 html[data-theme="dark"] .store-button-cta:hover {
-  background-color: transparent;
+  background-color: var(--macaw-ui-black-hover);
   color: var(--macaw-ui-white);
 }
 

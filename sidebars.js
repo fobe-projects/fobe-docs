@@ -40,6 +40,14 @@ module.exports = {
         icon: "home",
       },
     },
+    {
+      type: "doc",
+      id: "firmware-hub",
+      label: "Firmware Hub",
+      customProps: {
+        icon: "box",
+      },
+    },
     // {
     //   type: "category",
     //   label: "Solutions",

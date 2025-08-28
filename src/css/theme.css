@@ -431,21 +431,30 @@ div.theme-announcement-bar .close:hover svg {
 div.theme-button-buy {
   > a {
     > button {
-      font-size: 20px;
-      padding: 12px 20px;
-      background-color: transparent;
-      border: #02844c solid 2px;
-      border-radius: 30px;
-      font-weight: 500;
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
+      margin-left: 0.75rem;
+      border-radius: 2rem;
+      font-weight: 600;
+      letter-spacing: 0.35px;
+      transition: 0.2s;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      border: 1px solid;
+      background-color: var(--macaw-ui-black);
+      color: var(--macaw-ui-white);
+      font-size: var(--font-size-base);
     }
 
     > button:hover {
-      color: white;
+      background-color: var(--macaw-ui-white);
+      color: var(--macaw-ui-black);
       cursor: pointer;
     }
 
     > button:active {
-      color: white;
+      background-color: var(--macaw-ui-white);
+      color: var(--macaw-ui-black);
     }
   }
 }
