@@ -139,9 +139,7 @@ const EspFlasher = ({ isShow, onClose, packageInfo }) => {
         >
           <div className={styles.modalContent}>
             <div className={styles.modalHeader}>
-              <h3>
-                {packageInfo.ascription} {packageInfo.version}
-              </h3>
+              <h3>{packageInfo.title}</h3>
               <span className={styles.closeButton} onClick={closeModal}>
                 &times;
               </span>

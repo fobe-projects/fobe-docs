@@ -17,7 +17,7 @@
       },
       {
         "version": "10.0.0-beta.2",
-        "uf2": false,
+        "uf2": true,
         "bin": true
       }
     ]
