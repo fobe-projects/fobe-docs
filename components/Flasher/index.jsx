@@ -1,5 +1,6 @@
 import EspFlasher from "@site/components/EspFlasher";
 import FirmwareCard from "@site/components/FirmwareCard";
+import Monitor from "@site/components/Monitor";
 import React, { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -183,7 +184,10 @@ const Flasher = (args) => {
     };
   }, []);
   return id == null ? (
-    <BoardGrid path={args.boards_path} />
+    <>
+      <BoardGrid path={args.boards_path} />
+      <Monitor />
+    </>
   ) : (
     <Board path={`/boards/${id}`} />
   );

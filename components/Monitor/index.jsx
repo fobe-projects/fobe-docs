@@ -131,7 +131,7 @@ const Monitor = () => {
 
   return (
     <>
-      <div className={styles.getStarted}>
+      <div className={styles.modalTrigger}>
         <button onClick={openModal}>Serial Monitor</button>
       </div>
 

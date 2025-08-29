@@ -2,6 +2,7 @@
   {
     "id": "seeed-xiao-esp32s3",
     "name": "Board Name ame me e",
-    "manufacturer": "Sample"
+    "manufacturer": "Sample",
+    "image": "https://circuitpython.org/assets/images/boards/large/raspberry_pi_pico.jpg"
   }
 ]
