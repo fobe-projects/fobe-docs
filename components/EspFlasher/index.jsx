@@ -2,7 +2,6 @@ import "xterm/css/xterm.css";
 
 import { ESPLoader, Transport } from "esptool-js";
 import React, { useEffect, useRef, useState } from "react";
-import { Terminal } from "xterm";
 
 import styles from "./styles.module.css";
 
@@ -11,14 +10,22 @@ const EspFlasher = ({ isShow, onClose, packageInfo }) => {
   const termRef = useRef(null);
   const transportRef = useRef(null);
 
+  const [TerminalClass, setTerminalClass] = useState(null);
+
   const [baudRate, setBaudRate] = useState(115200);
   const [erase, setErase] = useState(false);
   const [firmwareContent, setFirmwareContent] = useState(null);
   const [flashing, setFlashing] = useState(false);
 
   useEffect(() => {
-    if (isShow && terminalRef.current && !termRef.current) {
-      const term = new Terminal({ convertEol: true });
+    import("xterm").then((mod) => {
+      setTerminalClass(() => mod.Terminal);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (isShow && TerminalClass && terminalRef.current && !termRef.current) {
+      const term = new TerminalClass({ convertEol: true });
       term.open(terminalRef.current);
       termRef.current = term;
       termRef.current.clear();
@@ -33,7 +40,7 @@ const EspFlasher = ({ isShow, onClose, packageInfo }) => {
         setFirmwareContent(null);
       }
     };
-  }, [isShow]);
+  }, [isShow, TerminalClass]);
 
   useEffect(() => {
     console.log(packageInfo);

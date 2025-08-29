@@ -1,7 +1,6 @@
 import "xterm/css/xterm.css";
 
 import React, { useEffect, useRef, useState } from "react";
-import { Terminal } from "xterm";
 
 import styles from "./styles.module.css";
 
@@ -16,10 +15,17 @@ const Monitor = () => {
   const [connected, setConnected] = useState(false);
   const [baudRate, setBaudRate] = useState(115200);
   const [showModal, setShowModal] = useState(false);
+  const [TerminalClass, setTerminalClass] = useState(null);
 
   useEffect(() => {
-    if (showModal && terminalRef.current && !termRef.current) {
-      const term = new Terminal({ convertEol: true });
+    import("xterm").then((mod) => {
+      setTerminalClass(() => mod.Terminal);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (showModal && TerminalClass && terminalRef.current && !termRef.current) {
+      const term = new TerminalClass({ convertEol: true });
       term.open(terminalRef.current);
       term.onData(async (data) => {
         if (portRef.current && portRef.current.writable) {
@@ -38,7 +44,7 @@ const Monitor = () => {
         termRef.current = null;
       }
     };
-  }, [showModal]);
+  }, [showModal, TerminalClass]);
 
   const readFromPort = async () => {
     if (!portRef.current || !portRef.current.readable) return;
