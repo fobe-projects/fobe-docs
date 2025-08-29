@@ -1,3 +1,4 @@
+import EspFlasher from "@site/components/EspFlasher";
 import React, { useEffect, useState } from "react";
 import { FaExternalLinkAlt, FaGithub } from "react-icons/fa";
 import ReactMarkdown from "react-markdown";
@@ -42,11 +43,7 @@ const BoardGrid = ({ path }) => {
             >
               <a>
                 <div className={styles.boardGridImage}>
-                  <img
-                    src="https://circuitpython.org/assets/images/boards/large/raspberry_pi_pico.jpg"
-                    alt="Image of Board"
-                    loading="lazy"
-                  />
+                  <img src={board.image} alt={board.name} loading="lazy" />
                 </div>
                 <strong title={board.name}>{board.name}</strong>
                 <span>By {board.manufacturer}</span>
@@ -60,9 +57,14 @@ const BoardGrid = ({ path }) => {
 };
 
 const Board = ({ path }) => {
-  const [description, setMarkdown] = useState("");
-  const [board_attr, setBoards] = useState({});
+  const [description, setDescription] = useState("");
+  const [boardAttr, setBoardAttr] = useState({});
   const [loading, setLoading] = useState(true);
+  const [selectedCpyVer, setSelectCpyVer] = useState({});
+  const [selectedMpyVer, setSelectMpyVer] = useState({});
+
+  const [showFlasher, setShowFlasher] = useState(false);
+  const [flasherInfo, setFlasherInfo] = useState({});
 
   useEffect(() => {
     setLoading(true);
@@ -72,14 +74,24 @@ const Board = ({ path }) => {
       fetch(`${path}/README.md`).then((res) => res.text()),
     ])
       .then(([boardsData, markdownText]) => {
-        setBoards(boardsData);
-        setMarkdown(markdownText);
+        setBoardAttr(boardsData);
+        setSelectCpyVer({
+          version: boardsData.circuitpython.packages[0].version,
+          bin: boardsData.circuitpython.packages[0].bin,
+          uf2: boardsData.circuitpython.packages[0].uf2,
+        });
+        setSelectMpyVer({
+          version: boardsData.micropython.packages[0].version,
+          bin: boardsData.micropython.packages[0].bin,
+          uf2: boardsData.micropython.packages[0].uf2,
+        });
+        setDescription(markdownText);
         console.log("boards / markdown loaded");
       })
       .catch((err) => {
         console.error("加载失败", err);
-        setBoards([]);
-        setMarkdown("");
+        setBoardAttr([]);
+        setDescription("");
       })
       .finally(() => setLoading(false));
   }, [path]);
@@ -88,12 +100,22 @@ const Board = ({ path }) => {
     return <p>Loading boards…</p>;
   }
 
+  const openFlasher = ({ ascription, version, url }) => {
+    setShowFlasher(true);
+    setFlasherInfo({
+      ascription: ascription,
+      version: version,
+      url: url,
+    });
+  };
+
+  console.log(boardAttr);
   return (
     <div className={styles.board}>
       <div className={styles.boardDescription}>
         <div className={styles.boardDescriptionImage}>
-          <img src={board_attr.image} alt={board_attr.name} loading="lazy" />
-          <h1>{board_attr.name}</h1>
+          <img src={boardAttr.image} alt={boardAttr.name} loading="lazy" />
+          <h1>{boardAttr.name}</h1>
         </div>
         <div className={styles.boardDescriptionContent}>
           <ReactMarkdown remarkPlugins={[remarkGfm]}>
@@ -102,17 +124,20 @@ const Board = ({ path }) => {
         </div>
       </div>
 
-      {board_attr.circuitpython.enabled ? (
-        <div className={styles.boardFirmware}>
+      <div className={styles.boardFirmware}>
+        {boardAttr.circuitpython.enabled ? (
           <div className={styles.boardFirmwareContent}>
             <div className={styles.boardFirmwareTitle}>
               <h2>CircuitPython</h2>
               <div>
-                <a>
+                <a
+                  href="https://github.com/adafruit/circuitpython"
+                  target="_blank" rel="noreferrer"
+                >
                   {" "}
                   <FaGithub size={20} />
                 </a>
-                <a>
+                <a href="https://circuitpython.org/" target="_blank" rel="noreferrer">
                   {" "}
                   <FaExternalLinkAlt size={20} />
                 </a>
@@ -123,34 +148,195 @@ const Board = ({ path }) => {
               CircuitPython is a programming language designed to simplify
               experimenting and learning to code on low-cost microcontroller
               boards, This is the firmware of CircuitPython that will work with
-              the <b>{board_attr.name}</b> Board.
+              the <b>{boardAttr.name}</b> Board.
             </p>
             <p>
-              <small>Last Update: 2025-01-01</small>
+              <small>Last Update: {boardAttr.circuitpython.last_update}</small>
             </p>
 
             <div className={styles.boardFirmwareNote}>
-              <a>Release Notes for 9.2.8</a>
+              <a
+                href={`https://github.com/adafruit/circuitpython/releases/tag/${selectedCpyVer.version}`}
+                target="_blank" rel="noreferrer"
+              >
+                Release Notes
+              </a>
               <div>
-                <a>[.bin]</a>
-                <a>[.uf2]</a>
+                <span>{selectedCpyVer.version}</span>
+                {/* TODO */}
+                {selectedCpyVer.bin ? (
+                  <a href="" download>
+                    bin
+                  </a>
+                ) : null}
+                {selectedCpyVer.uf2 ? (
+                  <a href="" download>
+                    uf2
+                  </a>
+                ) : null}
               </div>
             </div>
             <div className={styles.boardFirmwareSelect}>
-              <select>
-                <option value="v1.0.0">ENGLISH</option>
-                <option value="v2.0.0">CHINESE (PINYIN)</option>
+              <select
+                onChange={(e) => {
+                  setSelectCpyVer({
+                    version: e.target.value,
+                    bin:
+                      e.target.selectedOptions[0].dataset.bin.toLowerCase() ===
+                      "true",
+                    uf2:
+                      e.target.selectedOptions[0].dataset.uf2.toLowerCase() ===
+                      "true",
+                  });
+                }}
+              >
+                {boardAttr.circuitpython.packages.map((pkg, index) => (
+                  <option
+                    key={index}
+                    value={pkg.version}
+                    data-bin={pkg.bin}
+                    data-uf2={pkg.uf2}
+                  >
+                    {pkg.version}
+                  </option>
+                ))}
               </select>
-              <select>
-                <option value="v1.0.0">v1.0.0</option>
-                <option value="v1.1.0">v1.1.0</option>
-                <option value="v2.0.0">v2.0.0</option>
-              </select>
-              <button>Flash</button>
+
+              {boardAttr.mcu.toLowerCase().includes("esp32") &&
+              selectedCpyVer.bin ? (
+                <button
+                  onClick={() =>
+                    openFlasher({
+                      ascription: "Circuitpython",
+                      version: selectedCpyVer.version,
+                      url: "/temp/adafruit-circuitpython-makergo_esp32c3_supermini-en_x_pirate-9.2.8.bin",
+                    })
+                  }
+                >
+                  Flash
+                </button>
+              ) : (
+                // TODO
+                <a
+                  href="/temp/adafruit-circuitpython-makergo_esp32c3_supermini-en_x_pirate-9.2.8.bin"
+                  download
+                >
+                  Download
+                </a>
+              )}
             </div>
           </div>
-        </div>
-      ) : null}
+        ) : null}
+
+        {boardAttr.micropython.enabled ? (
+          <div className={styles.boardFirmwareContent}>
+            <div className={styles.boardFirmwareTitle}>
+              <h2>Micropython</h2>
+              <div>
+                <a
+                  href="https://github.com/micropython/micropython"
+                  target="_blank" rel="noreferrer"
+                >
+                  {" "}
+                  <FaGithub size={20} />
+                </a>
+                <a href="https://micropython.org/" target="_blank" rel="noreferrer">
+                  {" "}
+                  <FaExternalLinkAlt size={20} />
+                </a>
+              </div>
+            </div>
+
+            <p>
+              Micropython is a programming language designed to simplify
+              experimenting and learning to code on low-cost microcontroller
+              boards, This is the firmware of Micropython that will work with
+              the <b>{boardAttr.name}</b> Board.
+            </p>
+            <p>
+              <small>Last Update: {boardAttr.micropython.last_update}</small>
+            </p>
+
+            <div className={styles.boardFirmwareNote}>
+              <a
+                href={`https://github.com/micropython/micropython/releases/tag/${selectedMpyVer.version}`}
+                target="_blank" rel="noreferrer"
+              >
+                Release Notes
+              </a>
+              <div>
+                <span>{selectedMpyVer.version}</span>
+                {/* TODO */}
+                {selectedMpyVer.bin ? (
+                  <a href="" download>
+                    bin
+                  </a>
+                ) : null}
+                {selectedMpyVer.uf2 ? (
+                  <a href="" download>
+                    uf2
+                  </a>
+                ) : null}
+              </div>
+            </div>
+            <div className={styles.boardFirmwareSelect}>
+              <select
+                onChange={(e) => {
+                  setSelectMpyVer({
+                    version: e.target.value,
+                    bin:
+                      e.target.selectedOptions[0].dataset.bin.toLowerCase() ===
+                      "true",
+                    uf2:
+                      e.target.selectedOptions[0].dataset.uf2.toLowerCase() ===
+                      "true",
+                  });
+                }}
+              >
+                {boardAttr.micropython.packages.map((pkg, index) => (
+                  <option
+                    key={index}
+                    value={pkg.version}
+                    data-bin={pkg.bin}
+                    data-uf2={pkg.uf2}
+                  >
+                    {pkg.version}
+                  </option>
+                ))}
+              </select>
+
+              {boardAttr.mcu.toLowerCase().includes("esp32") &&
+              selectedMpyVer.bin ? (
+                <button
+                  onClick={() => {
+                    openFlasher({
+                      ascription: "Micropython",
+                      version: selectedCpyVer.version,
+                      url: "/temp/adafruit-circuitpython-makergo_esp32c3_supermini-en_x_pirate-9.2.8.bin",
+                    });
+                  }}
+                >
+                  Flash
+                </button>
+              ) : (
+                // TODO
+                <a
+                  href="/temp/adafruit-circuitpython-makergo_esp32c3_supermini-en_x_pirate-9.2.8.bin"
+                  download
+                >
+                  Download
+                </a>
+              )}
+            </div>
+          </div>
+        ) : null}
+
+        <EspFlasher
+          isShow={showFlasher}
+          onClose={() => setShowFlasher(false)}
+          packageInfo={flasherInfo}
+        />
+      </div>
     </div>
   );
 };

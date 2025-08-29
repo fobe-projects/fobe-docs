@@ -7,10 +7,37 @@
   "features": ["Wi-Fi", "Bluetooth"],
   "circuitpython": {
     "id": "seeed-xiao-esp32s3",
-    "enabled": true
+    "enabled": true,
+    "last_update": "2024-08-29 08:00",
+    "packages": [
+      {
+        "version": "9.2.8",
+        "uf2": false,
+        "bin": true
+      },
+      {
+        "version": "10.0.0-beta.2",
+        "uf2": false,
+        "bin": true
+      }
+    ]
   },
   "meshtastic": {
     "id": "seeed-xiao-esp32s3",
-    "enabled": true
+    "enabled": true,
+    "last_update": "2024-08-29 08:00",
+    "packages": []
+  },
+  "micropython": {
+    "id": "seeed-xiao-esp32s3",
+    "enabled": true,
+    "last_update": "2024-08-29 09:00",
+    "packages": [
+      {
+        "version": "v1.26.0",
+        "bin": true,
+        "uf2": true
+      }
+    ]
   }
 }

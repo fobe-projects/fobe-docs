@@ -1,24 +1,144 @@
-.root {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  padding: var(--spacer-5) 0;
-  border-bottom: 1px solid var(--gray5);
-  container-type: inline-size;
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
 
-.root h2 {
-  grid-column: 1 / 4;
+.modalContent {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 600px;
+  width: 90%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.3s ease-in-out;
 }
 
-.root .container {
-  grid-column: 4 / -1;
-}
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
 
-@container (width < 850px) {
-  .root h2 {
-    grid-column: 1 / 12;
+  > h3 {
+    margin: unset;
   }
-  .root .container {
-    grid-column: 1 / 12;
+}
+
+.closeButton {
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.modalBody {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  > div {
+    display: flex;
+    justify-content: space-between;
+
+    > label:first-child {
+      flex-grow: 2;
+      > select {
+        border-radius: 2rem;
+        letter-spacing: 0.35px;
+        transition: 0.2s;
+        border: var(--docsearch-text-color) 1px solid;
+        color: var(--docsearch-text-color);
+        background-color: var(--ifm-background-color);
+        font-size: var(--font-size-sm);
+        padding: 3px;
+        margin: 5px;
+        width: 50%;
+      }
+    }
   }
+
+  > button {
+    border-radius: 2rem;
+    font-weight: 600;
+    letter-spacing: 0.35px;
+    transition: 0.2s;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    border: var(--docsearch-text-color) 1px solid;
+    background-color: var(--macaw-ui-black);
+    color: var(--macaw-ui-white);
+    font-size: var(--font-size-sm);
+    width: 100%;
+  }
+}
+
+.terminal {
+  margin-top: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #000;
+  color: #0f0;
+  padding: 10px;
+  font-family: monospace;
+  height: 300px;
+  overflow-y: auto;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.toggleSwitch {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  > input {
+    display: none;
+  }
+}
+
+.slider {
+  position: relative;
+  width: 40px;
+  height: 20px;
+  background: #ccc;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.slider::before {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 2px;
+  left: 2px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.2s ease;
+}
+
+input:checked + .slider::before {
+  transform: translateX(20px);
+  background: #4caf50;
+}
+
+.labelText {
+  font-size: 0.9rem;
+  color: #333;
 }

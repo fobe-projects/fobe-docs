@@ -1,70 +1,76 @@
 import "xterm/css/xterm.css";
 
-import { ESPLoader,Transport } from "esptool-js";
+import { ESPLoader, Transport } from "esptool-js";
 import React, { useEffect, useRef, useState } from "react";
 import { Terminal } from "xterm";
 
 import styles from "./styles.module.css";
 
-const EspFlasher = () => {
+const EspFlasher = ({ isShow, onClose, packageInfo }) => {
   const terminalRef = useRef(null);
   const termRef = useRef(null);
   const transportRef = useRef(null);
 
-  const [showModal, setShowModal] = useState(false);
   const [baudRate, setBaudRate] = useState(115200);
   const [erase, setErase] = useState(false);
   const [firmwareContent, setFirmwareContent] = useState(null);
   const [flashing, setFlashing] = useState(false);
 
-  // 初始化 xterm 终端
   useEffect(() => {
-    if (showModal && terminalRef.current && !termRef.current) {
-      const term = new Terminal({ convertEol: true, cols: 100, rows: 30 });
+    if (isShow && terminalRef.current && !termRef.current) {
+      const term = new Terminal({ convertEol: true });
       term.open(terminalRef.current);
       termRef.current = term;
-    }
-  }, [showModal]);
-
-  // 打开模态框
-  const openModal = () => {
-    setShowModal(true);
-    if (termRef.current) {
       termRef.current.clear();
     }
-  };
+    return () => {
+      if (!isShow) {
+        if (transportRef.current) {
+          transportRef.current.disconnect().catch(() => {});
+          transportRef.current = null;
+        }
+        termRef.current = null;
+        setFirmwareContent(null);
+      }
+    };
+  }, [isShow]);
 
-  // 关闭模态框
+  useEffect(() => {
+    console.log(packageInfo);
+    fetchBinaryContent(packageInfo.url);
+  }, [packageInfo]);
+
   const closeModal = () => {
-    setShowModal(false);
     setFirmwareContent(null);
     if (transportRef.current) {
       transportRef.current.disconnect().catch(() => {});
       transportRef.current = null;
     }
+    if (onClose) onClose();
   };
 
-  // 读取本地文件固件
-  const handleFileChange = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+  const fetchBinaryContent = async (firmwareUrl) => {
+    try {
+      const response = await fetch(firmwareUrl);
+      if (!response.ok) {
+        throw new Error(`Failed to load file: ${firmwareUrl}`);
+      }
+      const blob = await response.blob();
+      const buffer = await blob.arrayBuffer();
 
-    const buffer = await file.arrayBuffer();
-    const bytes = new Uint8Array(buffer);
-    let binary = "";
-    for (let i = 0; i < bytes.byteLength; i++) {
-      binary += String.fromCharCode(bytes[i]);
-    }
-    setFirmwareContent(binary);
-
-    if (termRef.current) {
-      termRef.current.writeln(
-        `Loaded firmware: ${file.name} (${bytes.length} bytes)`,
-      );
+      // Efficiently convert ArrayBuffer to a binary string
+      const bytes = new Uint8Array(buffer);
+      let binary = "";
+      for (let i = 0; i < bytes.byteLength; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      setFirmwareContent(binary);
+      return binary;
+    } catch (error) {
+      throw new Error(`Error loading binary content: ${error.message}`);
     }
   };
 
-  // ESP32 烧录函数
   const flashESP32 = async () => {
     if (!firmwareContent) {
       termRef.current.writeln("ERROR: No firmware selected.");
@@ -126,57 +132,52 @@ const EspFlasher = () => {
 
   return (
     <>
-      <button onClick={openModal}>ESP32 Flash</button>
-
-      {showModal && (
+      {isShow && (
         <div
           className={styles.modalOverlay}
           onClick={(e) => e.target === e.currentTarget && closeModal()}
         >
           <div className={styles.modalContent}>
             <div className={styles.modalHeader}>
-              <h3>ESP32 Flash Firmware</h3>
+              <h3>
+                {packageInfo.ascription} {packageInfo.version}
+              </h3>
               <span className={styles.closeButton} onClick={closeModal}>
                 &times;
               </span>
             </div>
 
             <div className={styles.modalBody}>
-              <label>
-                Select Firmware File:
-                <input type="file" onChange={handleFileChange} />
-              </label>
-              <br />
+              <div>
+                <label>
+                  Baud Rate:
+                  <select
+                    value={baudRate}
+                    onChange={(e) => setBaudRate(Number(e.target.value))}
+                  >
+                    <option value={115200}>115200</option>
+                    <option value={230400}>230400</option>
+                    <option value={460800}>460800</option>
+                    <option value={921600}>921600</option>
+                  </select>
+                </label>
 
-              <label>
-                Baud Rate:
-                <select
-                  value={baudRate}
-                  onChange={(e) => setBaudRate(Number(e.target.value))}
-                >
-                  <option value={115200}>115200</option>
-                  <option value={230400}>230400</option>
-                  <option value={460800}>460800</option>
-                  <option value={921600}>921600</option>
-                </select>
-              </label>
+                <label className={styles.toggleSwitch}>
+                  <input
+                    type="checkbox"
+                    checked={erase}
+                    onChange={(e) => setErase(e.target.checked)}
+                  />
+                  <span className={styles.slider}></span>
+                  <span className={styles.labelText}>Perform full erase</span>
+                </label>
+              </div>
 
-              <label className={styles.toggleSwitch}>
-                <input
-                  type="checkbox"
-                  checked={erase}
-                  onChange={(e) => setErase(e.target.checked)}
-                />
-                <span className={styles.slider}></span>
-                <span className={styles.labelText}>Perform full erase</span>
-              </label>
-
-              <br />
               <button
                 onClick={flashESP32}
                 disabled={flashing || !firmwareContent}
               >
-                {flashing ? "Flashing... ⏳" : "Flash ESP32"}
+                {flashing ? "Flashing... ⏳" : "Start flash"}
               </button>
 
               <div ref={terminalRef} className={styles.terminal} />

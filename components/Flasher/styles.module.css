@@ -144,12 +144,6 @@
   line-height: 22px;
 }
 
-.boardDescription {
-}
-
-.boardFirmware {
-}
-
 .boardDescriptionImage {
   position: relative;
   margin-bottom: 20px;
@@ -279,7 +273,8 @@
     padding-left: 0.5rem;
   }
 
-  > button {
+  > button,
+  a {
     border-radius: 2rem;
     font-weight: 600;
     letter-spacing: 0.35px;
@@ -291,15 +286,18 @@
     color: var(--macaw-ui-white);
     font-size: var(--font-size-sm);
     width: 50%;
+    text-align: center;
   }
 
-  > button:hover {
+  > button:hover,
+  a:hover {
     background-color: var(--macaw-ui-white);
     color: var(--macaw-ui-black);
     cursor: pointer;
   }
 
-  > button:active {
+  > button:active,
+  a:active {
     background-color: var(--macaw-ui-white);
     color: var(--macaw-ui-black);
   }
