@@ -12,11 +12,10 @@
 }
 
 .modalContent {
-  background: #fff;
+  background: var(--docsearch-modal-background);
   padding: 20px;
   border-radius: 8px;
-  max-width: 600px;
-  width: 90%;
+  max-width: 60%;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   animation: fadeIn 0.3s ease-in-out;
 }
@@ -78,18 +77,6 @@
   }
 }
 
-.terminal {
-  margin-top: 15px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background: #000;
-  color: #0f0;
-  padding: 10px;
-  font-family: monospace;
-  height: 300px;
-  overflow-y: auto;
-}
-
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -128,17 +115,17 @@
   height: 16px;
   top: 2px;
   left: 2px;
-  background: white;
+  background: var(--macaw-ui-black);
   border-radius: 50%;
   transition: transform 0.2s ease;
 }
 
 input:checked + .slider::before {
   transform: translateX(20px);
-  background: #4caf50;
+  background: var(--highlight);
 }
 
 .labelText {
   font-size: 0.9rem;
-  color: #333;
+  color: var(--docsearch-text-color);
 }

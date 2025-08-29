@@ -137,39 +137,38 @@ const Monitor = () => {
 
       {showModal && (
         <div className={styles.modalOverlay}>
-          <div className={styles.section}>
+          <div className={styles.modalContent}>
             <div className={styles.modalHeader}>
               <h3>Serial Monitor</h3>
               <div>
-                <div>
-                  <p>BaudRate:</p>
+                <label>
+                  BaudRate:
                   <select
                     value={baudRate}
                     onChange={(e) => setBaudRate(Number(e.target.value))}
-                    className={styles.baudRateSelect}
                   >
-                    <option value={9600}>9600</option>
                     <option value={115200}>115200</option>
+                    <option value={230400}>230400</option>
+                    <option value={460800}>460800</option>
                     <option value={921600}>921600</option>
                   </select>
-                </div>
+                </label>
+
                 <button
                   onClick={connectSerialPort}
-                  className={styles.downloadButton}
                   style={{ display: connected ? "none" : "inline-block" }}
                 >
                   Connect
                 </button>
                 <button
                   onClick={disconnectSerialPort}
-                  className={styles.downloadButton}
                   style={{ display: connected ? "inline-block" : "none" }}
                 >
                   Disconnect
                 </button>
-                <button onClick={closeModal} className={styles.closeButton}>
+                <span className={styles.closeButton} onClick={closeModal}>
                   &times;
-                </button>
+                </span>
               </div>
             </div>
             <div ref={terminalRef} id="monitor-terminal" />
