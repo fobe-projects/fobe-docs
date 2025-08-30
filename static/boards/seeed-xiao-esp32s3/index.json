@@ -13,7 +13,26 @@
       {
         "version": "9.2.8",
         "uf2": false,
-        "bin": true
+        "bin": true,
+        "variants": [
+          "de_DE",
+          "en_GB",
+          "en_US",
+          "en_x_pirate",
+          "es",
+          "fil",
+          "fr",
+          "ID",
+          "it_IT",
+          "ja",
+          "nl",
+          "pl",
+          "pt_BR",
+          "ru",
+          "sv",
+          "tr",
+          "zh_Latn_pinyin"
+        ]
       },
       {
         "version": "10.0.0-beta.2",
@@ -37,6 +56,11 @@
         "version": "v1.26.0",
         "bin": true,
         "uf2": true
+      },
+      {
+        "version": "v1.25.0",
+        "bin": true,
+        "uf2": false
       }
     ]
   }
