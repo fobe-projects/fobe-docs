@@ -14,7 +14,7 @@ const EspFlasher = ({ isShow, onClose, packageInfo }) => {
 
   const [baudRate, setBaudRate] = useState(115200);
   const [erase, setErase] = useState(false);
-  const [firmwareContent, setFirmwareContent] = useState(null);
+  const [firmwareContent, setFirmwareContent] = useState({});
   const [flashing, setFlashing] = useState(false);
 
   useEffect(() => {
@@ -37,18 +37,13 @@ const EspFlasher = ({ isShow, onClose, packageInfo }) => {
           transportRef.current = null;
         }
         termRef.current = null;
-        setFirmwareContent(null);
+        setFirmwareContent({});
       }
     };
   }, [isShow, TerminalClass]);
 
-  useEffect(() => {
-    console.log(packageInfo);
-    fetchBinaryContent(packageInfo.url);
-  }, [packageInfo]);
-
   const closeModal = () => {
-    setFirmwareContent(null);
+    setFirmwareContent({});
     if (transportRef.current) {
       transportRef.current.disconnect().catch(() => {});
       transportRef.current = null;
@@ -58,6 +53,9 @@ const EspFlasher = ({ isShow, onClose, packageInfo }) => {
 
   const fetchBinaryContent = async (firmwareUrl) => {
     try {
+      if (firmwareContent && firmwareContent.url == firmwareUrl) {
+        return firmwareContent.content;
+      }
       const response = await fetch(firmwareUrl);
       if (!response.ok) {
         throw new Error(`Failed to load file: ${firmwareUrl}`);
@@ -71,7 +69,7 @@ const EspFlasher = ({ isShow, onClose, packageInfo }) => {
       for (let i = 0; i < bytes.byteLength; i++) {
         binary += String.fromCharCode(bytes[i]);
       }
-      setFirmwareContent(binary);
+      setFirmwareContent({ url: firmwareUrl, content: binary });
       return binary;
     } catch (error) {
       throw new Error(`Error loading binary content: ${error.message}`);
@@ -79,11 +77,6 @@ const EspFlasher = ({ isShow, onClose, packageInfo }) => {
   };
 
   const flashESP32 = async () => {
-    if (!firmwareContent) {
-      termRef.current.writeln("ERROR: No firmware selected.");
-      return;
-    }
-
     setFlashing(true);
     const term = termRef.current;
     term.clean = term.clear;
@@ -101,6 +94,16 @@ const EspFlasher = ({ isShow, onClose, packageInfo }) => {
         terminal: term,
       });
 
+      termRef.current.writeln("Downloading firmware ......");
+      const content = await fetchBinaryContent(packageInfo.url);
+      if (!content) {
+        termRef.current.writeln("ERROR: Download firmware has error.");
+        termRef.current.writeln("Disconnect the device.");
+        await transport.disconnect();
+        setFlashing(false);
+        return;
+      }
+
       term.writeln("Starting flash...");
 
       await loader.main();
@@ -108,7 +111,7 @@ const EspFlasher = ({ isShow, onClose, packageInfo }) => {
       await loader.writeFlash({
         fileArray: [
           {
-            data: firmwareContent,
+            data: content,
             address: loader.chip.BOOTLOADER_FLASH_OFFSET,
           },
         ],
@@ -178,10 +181,7 @@ const EspFlasher = ({ isShow, onClose, packageInfo }) => {
                 </label>
               </div>
 
-              <button
-                onClick={flashESP32}
-                disabled={flashing || !firmwareContent}
-              >
+              <button onClick={flashESP32} disabled={flashing}>
                 {flashing ? "Flashing... ⏳" : "Start flash"}
               </button>
 

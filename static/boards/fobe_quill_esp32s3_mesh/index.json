@@ -1,0 +1,45 @@
+{
+  "id": "fobe_quill_esp32s3_mesh",
+  "name": "FoBE Quill ESP32S3 Mesh",
+  "manufacturer": "Seeed Studio",
+  "image": "/img/products/f1102-r1a.main.png",
+  "mcu": "ESP32-S3",
+  "features": ["Wi-Fi", "Bluetooth"],
+  "circuitpython": {
+    "id": "FOBE_QUILL_ESP32S3_MESH",
+    "enabled": true,
+    "last_update": "2024-08-29 08:00",
+    "package": ["hex", "uf2", "app-bin", "bin", "elf", "map"],
+    "variants": [
+      "de_DE",
+      "en_GB",
+      "en_US",
+      "en_x_pirate",
+      "es",
+      "fil",
+      "fr",
+      "ID",
+      "it_IT",
+      "ja",
+      "nl",
+      "pl",
+      "pt_BR",
+      "ru",
+      "sv",
+      "tr",
+      "zh_Latn_pinyin"
+    ]
+  },
+  "meshtastic": {
+    "id": "seeed-xiao-esp32s3",
+    "enabled": true,
+    "last_update": "2024-08-29 08:00",
+    "package": ["hex", "uf2", "app-bin", "bin", "elf", "map"]
+  },
+  "micropython": {
+    "id": "FOBE_QUILL_ESP32S3_MESH",
+    "enabled": true,
+    "last_update": "2024-08-29 09:00",
+    "package": ["app-bin", "bin", "elf", "map"]
+  }
+}

@@ -1,14 +1,8 @@
 [
   {
-    "id": "seeed-xiao-esp32s3",
-    "name": "Board Name ame me e",
-    "manufacturer": "Sample",
-    "image": "https://circuitpython.org/assets/images/boards/large/raspberry_pi_pico.jpg"
-  },
-  {
-    "id": "seeed-xiao-esp32s3",
-    "name": "Board Name ame me e",
-    "manufacturer": "Sample",
-    "image": "https://circuitpython.org/assets/images/boards/large/raspberry_pi_pico.jpg"
+    "id": "fobe_quill_esp32s3_mesh",
+    "name": "FoBE Quill ESP32S3 Mesh",
+    "manufacturer": "Fobe",
+    "image": "/img/products/f1102-r1a.main.png"
   }
 ]

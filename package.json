@@ -11,6 +11,7 @@
     "npm": ">=10"
   },
   "scripts": {
+    "prestart": "node scripts/fetch-micropython-releases.js && node scripts/fetch-circuitpython-releases.js && node scripts/fetch-meshtastic-releases.js",
     "start": "docusaurus start",
     "dev": "npm run start",
     "build": "docusaurus build",

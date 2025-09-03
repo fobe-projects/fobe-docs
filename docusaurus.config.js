@@ -117,6 +117,48 @@ module.exports = {
         },
       };
     },
+    async function githubReleaseProxy(context, options) {
+      return {
+        name: "github-release-proxy",
+        configureWebpack(config, isServer, utils) {
+          return {
+            devServer: {
+              proxy: {
+                "/api/github": {
+                  target: "https://github.com",
+                  changeOrigin: true,
+                  pathRewrite: { "^/api/github": "" },
+                  secure: false,
+                  selfHandleResponse: true, // 👈 关键：自己接管响应
+                  onProxyRes: async (proxyRes, req, res) => {
+                    if (
+                      proxyRes.statusCode === 302 &&
+                      proxyRes.headers.location
+                    ) {
+                      const redirectUrl = proxyRes.headers.location;
+                      try {
+                        const r = await fetch(redirectUrl);
+                        const buffer = await r.arrayBuffer();
+                        res.writeHead(200, {
+                          "Content-Type": "application/octet-stream",
+                        });
+                        res.end(Buffer.from(buffer));
+                      } catch (err) {
+                        res.writeHead(500);
+                        res.end(`Proxy error: ${err.message}`);
+                      }
+                    } else {
+                      // 默认把内容 pipe 回去
+                      proxyRes.pipe(res);
+                    }
+                  },
+                },
+              },
+            },
+          };
+        },
+      };
+    },
   ],
 
   themeConfig: {

@@ -61,28 +61,66 @@ const Board = ({ path }) => {
   const [description, setDescription] = useState("");
   const [boardAttr, setBoardAttr] = useState({});
   const [loading, setLoading] = useState(true);
+  const [isEsp32, setIsEsp32] = useState(false);
 
   const [showFlasher, setShowFlasher] = useState(false);
   const [flasherInfo, setFlasherInfo] = useState({});
 
+  const [micropythonReleases, setMicropythonReleases] = useState([]);
+  const [circuitpythonReleases, setCircuitpythonReleases] = useState([]);
+  const [meshtasticReleases, setMeshtasticReleases] = useState([]);
+
   useEffect(() => {
     setLoading(true);
 
-    Promise.all([
-      fetch(`${path}/index.json`).then((res) => res.json()),
-      fetch(`${path}/README.md`).then((res) => res.text()),
-    ])
-      .then(([boardsData, markdownText]) => {
+    (async () => {
+      try {
+        const [boardsData, markdownText] = await Promise.all([
+          fetch(`${path}/index.json`).then((res) => res.json()),
+          fetch(`${path}/README.md`).then((res) => res.text()),
+        ]);
+
         setBoardAttr(boardsData);
+        setIsEsp32(boardsData.mcu.toLowerCase().includes("esp32"));
         setDescription(markdownText);
-        console.log("boards / markdown loaded");
-      })
-      .catch((err) => {
+
+        const fetchPromises = [];
+        if (boardsData.circuitpython.enabled) {
+          fetchPromises.push(
+            fetch(`releases/cpy-releases.json`).then((res) => res.json()),
+          );
+        }
+        if (boardsData.micropython.enabled) {
+          fetchPromises.push(
+            fetch(`releases/mpy-releases.json`).then((res) => res.json()),
+          );
+        }
+        if (boardsData.meshtastic.enabled) {
+          fetchPromises.push(
+            fetch(`releases/meshtastic-releases.json`).then((res) =>
+              res.json(),
+            ),
+          );
+        }
+
+        const [cpy, mpy, meshtastic] = await Promise.all(fetchPromises);
+        if (cpy) setCircuitpythonReleases(cpy);
+        if (mpy) setMicropythonReleases(mpy);
+        if (meshtastic) setMeshtasticReleases(meshtastic);
+
+        // todo 这两句不会有效果，异步设值，如果不使用这两变量不能提交，纯放着
+        console.log(circuitpythonReleases);
+        console.log(meshtasticReleases);
+
+        console.log("Loaded data");
+      } catch (err) {
         console.error("load error", err);
         setBoardAttr([]);
         setDescription("");
-      })
-      .finally(() => setLoading(false));
+      } finally {
+        setLoading(false);
+      }
+    })();
   }, [path]);
 
   if (loading) {
@@ -110,7 +148,7 @@ const Board = ({ path }) => {
       </div>
 
       <div className={styles.boardFirmware}>
-        {boardAttr.circuitpython.enabled ? (
+        {/* {circuitpythonReleases.length > 0 ? (
           <FirmwareCard
             ascription="CircuitPython"
             description={`CircuitPython is a programming language designed to simplify
@@ -119,25 +157,25 @@ const Board = ({ path }) => {
               the <b>${boardAttr.name}</b> Board.`}
             gitUrl="https://github.com/adafruit/circuitpython"
             officialUrl="https://circuitpython.org/"
-            releaseNoteUrl="https://github.com/adafruit/circuitpython/releases/tag"
             boardAscription={boardAttr.circuitpython}
-            isEsp32={boardAttr.mcu.toLowerCase().includes("esp32")}
+            releases={circuitpythonReleases}
+            isEsp32={isEsp32}
             onFlashClick={openFlasher}
           />
-        ) : null}
+        ) : null} */}
 
-        {boardAttr.micropython.enabled ? (
+        {micropythonReleases.length > 0 ? (
           <FirmwareCard
             ascription="Micropython"
             description={`Micropython is a programming language designed to simplify
               experimenting and learning to code on low-cost microcontroller
               boards, This is the firmware of Micropython that will work with
               the <b>${boardAttr.name}</b> Board.`}
-            gitUrl="https://github.com/micropython/micropython"
+            gitUrl="https://github.com/fobe-projects/micropython"
             officialUrl="https://micropython.org/"
-            releaseNoteUrl="https://github.com/micropython/micropython/releases/tag"
             boardAscription={boardAttr.micropython}
-            isEsp32={boardAttr.mcu.toLowerCase().includes("esp32")}
+            releases={micropythonReleases}
+            isEsp32={isEsp32}
             onFlashClick={openFlasher}
           />
         ) : null}

@@ -8,75 +8,99 @@ const FirmwareCard = ({
   description,
   gitUrl,
   officialUrl,
-  releaseNoteUrl,
   boardAscription,
+  releases,
   isEsp32,
   onFlashClick,
 }) => {
-  const [binLink, setBinLink] = useState("");
-  const [uf2Link, setUf2Link] = useState("");
+  const [downLinks, setDownLinks] = useState([]);
   const [targetLink, setTargetLink] = useState("");
+  const [flasherAble, setFlasherAble] = useState(false);
 
-  const [selectedVersion, setSelectVersion] = useState({});
+  const [selectedRelease, setSelectRelease] = useState({});
   const [selectedVariant, setSelectVariant] = useState("");
 
   const [variantOpts, setVariantOpts] = useState([]);
-  const [variantVers, setVariantVers] = useState([]);
+  const [releaseOpts, setReleaseOpts] = useState([]);
 
   useEffect(() => {
     updateUrls();
-  }, [selectedVersion, selectedVariant]);
+  }, [selectedRelease, selectedVariant]);
 
   useEffect(() => {
-    const versionOptions = [];
-    boardAscription.packages.forEach((pkg, index) => {
-      if (pkg.variants && pkg.variants.length > 0) {
-        setVariantOpts(
-          pkg.variants.map((variant, vIndex) => (
-            <option key={vIndex} value={variant}>
-              {variant}
-            </option>
-          )),
-        );
-      }
-
-      versionOptions.push(
+    setReleaseOpts(
+      releases.map((pkg, index) => (
         <option
           key={index}
-          value={pkg.version}
-          data-bin={pkg.bin}
-          data-uf2={pkg.uf2}
+          value={pkg.tag_name}
+          data-updated_at={pkg.updated_at}
+          data-date_fm={pkg.date_fm}
+          data-release_url={pkg.html_url}
         >
-          {pkg.version}
-        </option>,
-      );
-    });
-    setVariantVers(versionOptions);
+          {pkg.tag_name}
+        </option>
+      )),
+    );
 
-    setSelectVersion({
-      version: boardAscription.packages[0].version,
-      bin: boardAscription.packages[0].bin,
-      uf2: boardAscription.packages[0].uf2,
+    setVariantOpts(
+      boardAscription.variants
+        ? boardAscription.variants.map((variant, index) => (
+            <option key={index} value={variant}>
+              {variant}
+            </option>
+          ))
+        : [],
+    );
+
+    setSelectRelease({
+      release: releases[0].tag_name,
+      updated_at: releases[0].updated_at,
+      date_fm: releases[0].date_fm,
+      release_url: releases[0].html_url,
     });
-    if (boardAscription.packages[0].variants)
-      setSelectVariant(boardAscription.packages[0].variants[0]);
+
+    if (boardAscription.variants) setSelectVariant(boardAscription.variants[0]);
   }, []);
 
   const updateUrls = () => {
-    const url = `xxx/xxx/xxx/${boardAscription.id}/${selectedVariant.length > 0 ? selectedVariant + "-" : ""}${selectedVersion.version}`; // TODO
-    console.log(ascription, url);
+    // https://github.com/fobe-projects/micropython/releases/download/v1.26.0/FOBE_QUILL_ESP32S3_MESH-20250902-v1.26.0.bin
+    let base_url = "";
+    if (ascription.toLowerCase() === "micropython") {
+      base_url = `/api/github/fobe-projects/micropython/releases/download/${selectedRelease.release}/${boardAscription.id}-${selectedRelease.date_fm}-${selectedRelease.release}`;
+    } else if (ascription.toLowerCase() === "circuitpython") {
+      //todo
+      base_url = `/api/github/fobe-projects/circuitpython/releases/download/${selectedRelease.release}/${boardAscription.id}-${selectedRelease.date_fm}-${selectedRelease.release}`;
+    }
+    console.log(ascription, base_url);
 
-    const pkgUrl =
-      "/temp/adafruit-circuitpython-makergo_esp32c3_supermini-en_x_pirate-9.2.8";
-    setBinLink(`${pkgUrl}.bin`);
-    setUf2Link(`${pkgUrl}.uf2`);
-    setTargetLink(binLink);
+    let tarLink = "";
+    const dls = boardAscription.package.map((f_type) => {
+      const res = {
+        f_type,
+        url: `${base_url}.${f_type}`,
+      };
+
+      if (isEsp32 && f_type == "bin") {
+        tarLink = res.url;
+        setFlasherAble(true);
+      }
+
+      return res;
+    });
+    setDownLinks(dls);
+    console.log(dls);
+
+    if (tarLink.length <= 0) {
+      tarLink = dls[0].url;
+    }
+    console.log("target link", tarLink);
+    setTargetLink(tarLink);
   };
 
   const onFlash = () => {
     onFlashClick({
-      title: `${ascription} - ${selectedVariant.length > 0 ? selectedVariant + " - " : ""}${selectedVersion.version}`,
-      url: binLink,
+      title: `${ascription} - ${selectedVariant.length > 0 ? selectedVariant + " - " : ""}${selectedRelease.release}`,
+      url: targetLink,
     });
   };
 
@@ -98,31 +122,25 @@ const FirmwareCard = ({
 
       <p dangerouslySetInnerHTML={{ __html: description }} />
       <p>
-        <small>Last Update: {boardAscription.last_update}</small>
+        <small>Last Update: {selectedRelease.updated_at}</small>
       </p>
 
       <div className={styles.boardFirmwareNote}>
         <a
-          href={`${releaseNoteUrl}/${selectedVersion.version}`}
+          href={`${selectedRelease.release_url}`}
           target="_blank"
           rel="noreferrer"
         >
           Release Notes
         </a>
         <div>
-          <span>{selectedVersion.version}</span>
-          {selectedVersion.bin ? (
-            <a href={binLink} download>
+          <span>{selectedRelease.release}</span>
+          {downLinks.map((dl, idx) => (
+            <a key={idx} href={dl.url} download>
               {" "}
-              bin{" "}
+              {dl.f_type}{" "}
             </a>
-          ) : null}
-          {selectedVersion.uf2 ? (
-            <a href={uf2Link} download>
-              {" "}
-              uf2{" "}
-            </a>
-          ) : null}
+          ))}
         </div>
       </div>
       <div className={styles.boardFirmwareSelect}>
@@ -134,21 +152,18 @@ const FirmwareCard = ({
 
         <select
           onChange={(e) => {
-            setSelectVersion({
-              version: e.target.value,
-              bin:
-                e.target.selectedOptions[0].dataset.bin.toLowerCase() ===
-                "true",
-              uf2:
-                e.target.selectedOptions[0].dataset.uf2.toLowerCase() ===
-                "true",
+            setSelectRelease({
+              release: e.target.value,
+              updated_at: e.target.selectedOptions[0].dataset.updated_at,
+              date_fm: e.target.selectedOptions[0].dataset.date_fm,
+              release_url: e.target.selectedOptions[0].dataset.release_url,
             });
           }}
         >
-          {variantVers}
+          {releaseOpts}
         </select>
 
-        {isEsp32 && selectedVersion.bin ? (
+        {flasherAble ? (
           <button onClick={onFlash}> Flash </button>
         ) : (
           <a href={targetLink} download>
