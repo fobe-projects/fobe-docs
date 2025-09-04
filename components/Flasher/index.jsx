@@ -112,10 +112,6 @@ const Board = ({ path }) => {
         if (mpy) setMicropythonReleases(mpy);
         if (meshtastic) setMeshtasticReleases(meshtastic);
 
-        // todo 这两句不会有效果，异步设值，如果不使用这两变量不能提交，纯放着
-        console.log(circuitpythonReleases);
-        console.log(meshtasticReleases);
-
         console.log("Loaded data");
       } catch (err) {
         console.error("load error", err);
@@ -179,6 +175,19 @@ const Board = ({ path }) => {
             officialUrl="https://micropython.org/"
             boardAscription={boardAttr.micropython}
             releases={micropythonReleases}
+            isEsp32={isEsp32}
+            onFlashClick={openFlasher}
+          />
+        ) : null}
+
+        {meshtasticReleases.length > 0 ? (
+          <FirmwareCard
+            ascription="Meshtastic"
+            description={`Meshtastic is a project that enables you to use inexpensive LoRa radios as a long range off-grid communication platform in areas without existing or reliable communications infrastructure.`}
+            gitUrl="https://github.com/fobe-projects/meshtastic-firmware"
+            officialUrl="https://meshtastic.org/"
+            boardAscription={boardAttr.meshtastic}
+            releases={meshtasticReleases}
             isEsp32={isEsp32}
             onFlashClick={openFlasher}
           />
