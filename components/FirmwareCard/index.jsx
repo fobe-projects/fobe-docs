@@ -1,8 +1,7 @@
-import React, { useEffect, useRef,useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaExternalLinkAlt, FaGithub } from "react-icons/fa";
-import tar from "tar-stream";
-import { XzReadableStream } from "xz-decompress";
 
+import { useFirmwareManager } from "../common/useFirmwareManager";
 import styles from "./styles.module.css";
 
 const FirmwareCard = ({
@@ -23,8 +22,7 @@ const FirmwareCard = ({
   const [variantOpts, setVariantOpts] = useState([]);
   const [releaseOpts, setReleaseOpts] = useState([]);
 
-  const fileCache = useRef(new Map());
-  const fetched_package = useRef("");
+  const { fileCache, fetchedPackage, fetchFirmwares } = useFirmwareManager();
 
   useEffect(() => {
     setReleaseOpts(
@@ -59,6 +57,8 @@ const FirmwareCard = ({
     if (isEsp32 && boardAscription.packages.some((pg) => pg === "bin")) {
       setFlasherAble(true);
     }
+
+    console.log(selectedVariant); // workless feature, not use yet.
   }, []);
 
   const onSelectRelease = (e) => {
@@ -74,92 +74,27 @@ const FirmwareCard = ({
   };
 
   const handleDownload = async (f_type) => {
-    if (fetched_package.current != selectedRelease.build) {
-      await fetch_firmwares();
+    if (fetchedPackage.current !== selectedRelease.build) {
+      const boardID = boardAscription.id;
+      await fetchFirmwares({ ascription, selectedRelease, boardID });
     }
     const f_data = fileCache.current.get(f_type);
     if (f_data) {
       const tempLink = document.createElement("a");
       tempLink.href = f_data.url;
       tempLink.download = f_data.name;
-      document.body.appendChild(tempLink);
       tempLink.click();
       tempLink.remove();
     }
   };
 
-  const fetch_firmwares = async () => {
-    return new Promise((resolve, reject) => {
-      (async () => {
-        try {
-          let fireware_url = "";
-          if (ascription.toLowerCase() === "micropython") {
-            fireware_url = `/api/github/fobe-projects/micropython/releases/download/${selectedRelease.tag_name}/${boardAscription.id}-${selectedRelease.date_fm}-${selectedRelease.build}.tar.xz`;
-          }
-          console.log(ascription, fireware_url);
-
-          const response = await fetch(fireware_url);
-          if (!response.ok) {
-            throw new Error(`Download error: ${response.status}`);
-          }
-
-          const decompressedResponse = new Response(
-            new XzReadableStream(response.body),
-          );
-          const decompressedArrayBuffer =
-            await decompressedResponse.arrayBuffer();
-
-          const extract = tar.extract();
-
-          extract.on("entry", (header, stream, next) => {
-            const chunks = [];
-            stream.on("data", (chunk) => chunks.push(chunk));
-            stream.on("end", () => {
-              const size = chunks.reduce((acc, cur) => acc + cur.length, 0);
-              const fileBuffer = new Uint8Array(size);
-              let offset = 0;
-              for (const chunk of chunks) {
-                fileBuffer.set(chunk, offset);
-                offset += chunk.length;
-              }
-
-              let f_type = "";
-              if (header.name.endsWith(".bin")) f_type = "bin";
-              else if (header.name.endsWith(".hex")) f_type = "hex";
-              else if (header.name.endsWith(".uf2")) f_type = "uf2";
-              else if (header.name.endsWith(".elf")) f_type = "elf";
-              else if (header.name.endsWith(".app-bin")) f_type = "app-bin";
-
-              const blob = new Blob([fileBuffer], {
-                type: "application/octet-stream",
-              });
-              const url = URL.createObjectURL(blob);
-
-              fileCache.current.set(f_type, { name: header.name, url });
-              next();
-            });
-            stream.resume();
-          });
-
-          extract.on("finish", () => {
-            fetched_package.current = selectedRelease.build;
-            resolve();
-          });
-
-          extract.end(new Uint8Array(decompressedArrayBuffer));
-        } catch (err) {
-          console.error("Decompressed has error:", err);
-          reject(err);
-        }
-      })();
-    });
-  };
-
-  const onFlash = async () => {
-    await handleDownload("-");
+  const onFlash = () => {
     onFlashClick({
-      title: `${ascription} - ${selectedVariant.length > 0 ? selectedVariant + " - " : ""}${selectedRelease.build}`,
-      url: fileCache.current.get("bin"),
+      url: fileCache.current.get("bin")?.url, // 传给 flasher
+      buffer: fileCache.current.get("bin")?.buffer, // 直接 Uint8Array，也可以传
+      boardID: boardAscription.id,
+      ascription,
+      selectedRelease,
     });
   };
 

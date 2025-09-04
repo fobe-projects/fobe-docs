@@ -131,9 +131,9 @@ const Board = ({ path }) => {
     return <p>Loading board ......</p>;
   }
 
-  const openFlasher = ({ title, url }) => {
+  const openFlasher = (packageInfo) => {
     setShowFlasher(true);
-    setFlasherInfo({ title, url });
+    setFlasherInfo(packageInfo);
   };
 
   console.log(boardAttr);

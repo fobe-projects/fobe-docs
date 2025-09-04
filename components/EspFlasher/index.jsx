@@ -3,9 +3,12 @@ import "xterm/css/xterm.css";
 import { ESPLoader, Transport } from "esptool-js";
 import React, { useEffect, useRef, useState } from "react";
 
+import { useFirmwareManager } from "../common/useFirmwareManager";
 import styles from "./styles.module.css";
 
 const EspFlasher = ({ isShow, onClose, packageInfo }) => {
+  const { fileCache, fetchFirmwares } = useFirmwareManager();
+
   const terminalRef = useRef(null);
   const termRef = useRef(null);
   const transportRef = useRef(null);
@@ -14,7 +17,6 @@ const EspFlasher = ({ isShow, onClose, packageInfo }) => {
 
   const [baudRate, setBaudRate] = useState(115200);
   const [erase, setErase] = useState(false);
-  const [firmwareContent, setFirmwareContent] = useState({});
   const [flashing, setFlashing] = useState(false);
 
   useEffect(() => {
@@ -37,13 +39,11 @@ const EspFlasher = ({ isShow, onClose, packageInfo }) => {
           transportRef.current = null;
         }
         termRef.current = null;
-        setFirmwareContent({});
       }
     };
   }, [isShow, TerminalClass]);
 
   const closeModal = () => {
-    setFirmwareContent({});
     if (transportRef.current) {
       transportRef.current.disconnect().catch(() => {});
       transportRef.current = null;
@@ -51,29 +51,12 @@ const EspFlasher = ({ isShow, onClose, packageInfo }) => {
     if (onClose) onClose();
   };
 
-  const fetchBinaryContent = async (firmwareUrl) => {
-    try {
-      if (firmwareContent && firmwareContent.url == firmwareUrl) {
-        return firmwareContent.content;
-      }
-      const response = await fetch(firmwareUrl);
-      if (!response.ok) {
-        throw new Error(`Failed to load file: ${firmwareUrl}`);
-      }
-      const blob = await response.blob();
-      const buffer = await blob.arrayBuffer();
-
-      // Efficiently convert ArrayBuffer to a binary string
-      const bytes = new Uint8Array(buffer);
-      let binary = "";
-      for (let i = 0; i < bytes.byteLength; i++) {
-        binary += String.fromCharCode(bytes[i]);
-      }
-      setFirmwareContent({ url: firmwareUrl, content: binary });
-      return binary;
-    } catch (error) {
-      throw new Error(`Error loading binary content: ${error.message}`);
+  const uint8ArrayToBinaryString = (bytes) => {
+    let binary = "";
+    for (let i = 0; i < bytes.byteLength; i++) {
+      binary += String.fromCharCode(bytes[i]);
     }
+    return binary;
   };
 
   const flashESP32 = async () => {
@@ -94,15 +77,24 @@ const EspFlasher = ({ isShow, onClose, packageInfo }) => {
         terminal: term,
       });
 
-      termRef.current.writeln("Downloading firmware ......");
-      const content = await fetchBinaryContent(packageInfo.url);
+      term.writeln("Preparing firmware...");
+
+      console.log("!");
+      let content = packageInfo.buffer;
+      if (!content) content = fileCache.current.get("bin")?.buffer;
       if (!content) {
-        termRef.current.writeln("ERROR: Download firmware has error.");
-        termRef.current.writeln("Disconnect the device.");
-        await transport.disconnect();
-        setFlashing(false);
-        return;
+        // trigger download firmware
+        await fetchFirmwares({
+          ascription: packageInfo.ascription,
+          selectedRelease: packageInfo.selectedRelease,
+          boardID: packageInfo.boardID,
+        });
+        content = fileCache.current.get("bin")?.buffer;
       }
+
+      if (!content) throw new Error("No firmware available");
+
+      content = uint8ArrayToBinaryString(content);
 
       term.writeln("Starting flash...");
 
@@ -128,10 +120,10 @@ const EspFlasher = ({ isShow, onClose, packageInfo }) => {
       });
 
       term.writeln("Flash finished. Disconnecting device.");
-      await transport.setRTS(true);
+      await transportRef.current.setRTS(true);
       await new Promise((resolve) => setTimeout(resolve, 100));
-      await transport.setRTS(false);
-      await transport.disconnect();
+      await transportRef.current.setRTS(false);
+      await transportRef.current.disconnect();
       transportRef.current = null;
     } catch (error) {
       term.writeln(`FLASH ERROR: ${error.message}`);
@@ -149,7 +141,7 @@ const EspFlasher = ({ isShow, onClose, packageInfo }) => {
         >
           <div className={styles.modalContent}>
             <div className={styles.modalHeader}>
-              <h3>{packageInfo.title}</h3>
+              <h3>{`${packageInfo.ascription} - ${packageInfo.selectedRelease.build}: ${packageInfo.boardID}`}</h3>
               <span className={styles.closeButton} onClick={closeModal}>
                 &times;
               </span>
