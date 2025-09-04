@@ -11,7 +11,7 @@
     "npm": ">=10"
   },
   "scripts": {
-    "prestart": "node scripts/fetch-micropython-releases.js && node scripts/fetch-circuitpython-releases.js && node scripts/fetch-meshtastic-releases.js",
+    "prestart": "node scripts/fetch-micropython-releases.js",
     "start": "docusaurus start",
     "dev": "npm run start",
     "build": "docusaurus build",
@@ -63,7 +63,9 @@
     "react-icons": "^5.5.0",
     "react-markdown": "^10.1.0",
     "remark-gfm": "^4.0.1",
-    "xterm": "^5.3.0"
+    "tar-stream": "^3.1.7",
+    "xterm": "^5.3.0",
+    "xz-decompress": "^0.2.3"
   },
   "browserslist": {
     "production": [

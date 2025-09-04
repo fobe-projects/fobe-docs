@@ -87,17 +87,21 @@ const Board = ({ path }) => {
         const fetchPromises = [];
         if (boardsData.circuitpython.enabled) {
           fetchPromises.push(
-            fetch(`releases/cpy-releases.json`).then((res) => res.json()),
+            fetch(`releases/circuitpython-releases.json`).then((res) =>
+              res.json(),
+            ),
           );
         }
         if (boardsData.micropython.enabled) {
           fetchPromises.push(
-            fetch(`releases/mpy-releases.json`).then((res) => res.json()),
+            fetch(`releases/micropython-releases.json`).then((res) =>
+              res.json(),
+            ),
           );
         }
         if (boardsData.meshtastic.enabled) {
           fetchPromises.push(
-            fetch(`releases/meshtastic-releases.json`).then((res) =>
+            fetch(`releases/meshtastic-firmware-releases.json`).then((res) =>
               res.json(),
             ),
           );
@@ -148,7 +152,7 @@ const Board = ({ path }) => {
       </div>
 
       <div className={styles.boardFirmware}>
-        {/* {circuitpythonReleases.length > 0 ? (
+        {circuitpythonReleases.length > 0 ? (
           <FirmwareCard
             ascription="CircuitPython"
             description={`CircuitPython is a programming language designed to simplify
@@ -162,7 +166,7 @@ const Board = ({ path }) => {
             isEsp32={isEsp32}
             onFlashClick={openFlasher}
           />
-        ) : null} */}
+        ) : null}
 
         {micropythonReleases.length > 0 ? (
           <FirmwareCard

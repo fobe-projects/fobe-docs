@@ -129,7 +129,7 @@ module.exports = {
                   changeOrigin: true,
                   pathRewrite: { "^/api/github": "" },
                   secure: false,
-                  selfHandleResponse: true, // 👈 关键：自己接管响应
+                  selfHandleResponse: true,
                   onProxyRes: async (proxyRes, req, res) => {
                     if (
                       proxyRes.statusCode === 302 &&

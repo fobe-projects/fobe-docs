@@ -9,37 +9,19 @@
     "id": "FOBE_QUILL_ESP32S3_MESH",
     "enabled": true,
     "last_update": "2024-08-29 08:00",
-    "package": ["hex", "uf2", "app-bin", "bin", "elf", "map"],
-    "variants": [
-      "de_DE",
-      "en_GB",
-      "en_US",
-      "en_x_pirate",
-      "es",
-      "fil",
-      "fr",
-      "ID",
-      "it_IT",
-      "ja",
-      "nl",
-      "pl",
-      "pt_BR",
-      "ru",
-      "sv",
-      "tr",
-      "zh_Latn_pinyin"
-    ]
+    "packages": ["hex", "uf2", "app-bin", "bin", "elf", "map"],
+    "variants": []
   },
   "meshtastic": {
-    "id": "seeed-xiao-esp32s3",
+    "id": "FOBE_QUILL_ESP32S3_MESH",
     "enabled": true,
     "last_update": "2024-08-29 08:00",
-    "package": ["hex", "uf2", "app-bin", "bin", "elf", "map"]
+    "packages": ["hex", "uf2", "app-bin", "bin", "elf", "map"]
   },
   "micropython": {
     "id": "FOBE_QUILL_ESP32S3_MESH",
     "enabled": true,
     "last_update": "2024-08-29 09:00",
-    "package": ["app-bin", "bin", "elf", "map"]
+    "packages": ["app-bin", "bin", "elf", "map", "uf2"]
   }
 }
