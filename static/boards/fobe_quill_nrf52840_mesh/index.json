@@ -1,0 +1,27 @@
+{
+  "id": "fobe_quill_nrf52840_mesh",
+  "name": "FoBE Quill NRF52840 Mesh",
+  "manufacturer": "FoBE",
+  "image": "/img/products/f1101-r1a.main.png",
+  "mcu": "NRF52840",
+  "features": ["NFC", "Bluetooth"],
+  "circuitpython": {
+    "id": "FOBE_QUILL_NRF52840_MESH",
+    "enabled": true,
+    "last_update": "2024-08-29 08:00",
+    "packages": ["uf2", "hex"],
+    "variants": []
+  },
+  "meshtastic": {
+    "id": "FOBE_QUILL_NRF52840_MESH",
+    "enabled": true,
+    "last_update": "2024-08-29 08:00",
+    "packages": ["uf2", "hex"]
+  },
+  "micropython": {
+    "id": "FOBE_QUILL_NRF52840_MESH",
+    "enabled": true,
+    "last_update": "2024-08-29 09:00",
+    "packages": ["uf2", "hex"]
+  }
+}

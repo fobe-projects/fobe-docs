@@ -1,7 +1,7 @@
 {
   "id": "fobe_quill_esp32s3_mesh",
   "name": "FoBE Quill ESP32S3 Mesh",
-  "manufacturer": "Seeed Studio",
+  "manufacturer": "FoBE",
   "image": "/img/products/f1102-r1a.main.png",
   "mcu": "ESP32-S3",
   "features": ["Wi-Fi", "Bluetooth"],

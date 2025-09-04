@@ -45,6 +45,7 @@ export function useFirmwareManager() {
                 offset += chunk.length;
               }
 
+              console.log(`decompressed file: ${header.name}`);
               let f_type = "";
               if (header.name.endsWith(".bin")) f_type = "bin";
               else if (header.name.endsWith(".hex")) f_type = "hex";
@@ -57,7 +58,7 @@ export function useFirmwareManager() {
               const url = URL.createObjectURL(blob);
 
               fileCache.current.set(f_type, {
-                name: header.name,
+                name: header.name.split("/").pop(),
                 url,
                 buffer: fileBuffer,
               });

@@ -1,5 +1,11 @@
 [
   {
+    "id": "fobe_quill_nrf52840_mesh",
+    "name": "FoBE Quill NRF52840 Mesh",
+    "manufacturer": "Fobe",
+    "image": "/img/products/f1101-r1a.main.png"
+  },
+  {
     "id": "fobe_quill_esp32s3_mesh",
     "name": "FoBE Quill ESP32S3 Mesh",
     "manufacturer": "Fobe",
