@@ -25,13 +25,17 @@ const FirmwareCard = ({
   const { fileCache, fetchedPackage, fetchFirmwares } = useFirmwareManager();
 
   useEffect(() => {
-    setReleaseOpts(
-      releases.map((pkg, index) => (
-        <option key={index} value={pkg.build}>
-          {pkg.build}
-        </option>
-      )),
-    );
+    const verOpts = [];
+    releases.forEach((ver, index) => {
+      if (ver.assets.some((ass) => ass.startsWith(boardAscription.id))) {
+        verOpts.push(
+          <option key={index} value={ver.build}>
+            {ver.build}
+          </option>,
+        );
+      }
+    });
+    setReleaseOpts(verOpts);
 
     setVariantOpts(
       boardAscription.variants
@@ -43,14 +47,16 @@ const FirmwareCard = ({
         : [],
     );
 
-    setSelectRelease({
-      tag_name: releases[0].tag_name,
-      build: releases[0].build,
-      prerelease: releases[0].prerelease,
-      updated_at: releases[0].updated_at,
-      date_fm: releases[0].date_fm,
-      release_url: releases[0].html_url,
-    });
+    if (releases && releases.length > 0) {
+      setSelectRelease({
+        tag_name: releases[0].tag_name,
+        build: releases[0].build,
+        prerelease: releases[0].prerelease,
+        updated_at: releases[0].updated_at,
+        date_fm: releases[0].date_fm,
+        release_url: releases[0].html_url,
+      });
+    }
 
     if (boardAscription.variants) setSelectVariant(boardAscription.variants[0]);
 
@@ -99,76 +105,82 @@ const FirmwareCard = ({
   };
 
   return (
-    <div className={styles.boardFirmwareContent}>
-      <div className={styles.boardFirmwareTitle}>
-        <h2>{ascription}</h2>
-        <div>
-          <a href={gitUrl} target="_blank" rel="noreferrer">
-            {" "}
-            <FaGithub size={20} />
-          </a>
-          <a href={officialUrl} target="_blank" rel="noreferrer">
-            {" "}
-            <FaExternalLinkAlt size={20} />
-          </a>
-        </div>
-      </div>
+    <>
+      {releaseOpts.length > 0 ? (
+        <div className={styles.boardFirmwareContent}>
+          <div className={styles.boardFirmwareTitle}>
+            <h2>{ascription}</h2>
+            <div>
+              <a href={gitUrl} target="_blank" rel="noreferrer">
+                {" "}
+                <FaGithub size={20} />
+              </a>
+              <a href={officialUrl} target="_blank" rel="noreferrer">
+                {" "}
+                <FaExternalLinkAlt size={20} />
+              </a>
+            </div>
+          </div>
 
-      <p dangerouslySetInnerHTML={{ __html: description }} />
-      <p>
-        <small>Last Update: {selectedRelease.updated_at}</small>
-      </p>
+          <p dangerouslySetInnerHTML={{ __html: description }} />
+          <p>
+            <small>Last Update: {selectedRelease.updated_at}</small>
+          </p>
 
-      <div className={styles.boardFirmwareNote}>
-        <a
-          href={`${selectedRelease.release_url}`}
-          target="_blank"
-          rel="noreferrer"
-        >
-          Release Notes
-        </a>
-        <div>
-          <span>{selectedRelease.tag_name}</span>
-          {boardAscription.packages.map((f_type, idx) => (
+          <div className={styles.boardFirmwareNote}>
             <a
-              key={idx}
-              href="#"
-              download
-              onClick={(e) => {
-                e.preventDefault();
-                handleDownload(f_type);
-              }}
+              href={`${selectedRelease.release_url}`}
+              target="_blank"
+              rel="noreferrer"
             >
-              {f_type}
+              Release Notes
             </a>
-          ))}
+            <div>
+              <span>{selectedRelease.tag_name}</span>
+              {boardAscription.packages.map((f_type, idx) => (
+                <a
+                  key={idx}
+                  href="#"
+                  download
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleDownload(f_type);
+                  }}
+                >
+                  {f_type}
+                </a>
+              ))}
+            </div>
+          </div>
+          <div className={styles.boardFirmwareSelect}>
+            {variantOpts.length > 0 ? (
+              <select onChange={(e) => setSelectVariant(e.target.value)}>
+                {variantOpts}
+              </select>
+            ) : null}
+
+            <select onChange={onSelectRelease}>{releaseOpts}</select>
+
+            {boardAscription.packages.length > 0 ? (
+              flasherAble ? (
+                <button onClick={onFlash}> Flash </button>
+              ) : (
+                <a
+                  href="#"
+                  download
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleDownload(boardAscription.packages[0]);
+                  }}
+                >
+                  Download {boardAscription.packages[0]}
+                </a>
+              )
+            ) : null}
+          </div>
         </div>
-      </div>
-      <div className={styles.boardFirmwareSelect}>
-        {variantOpts.length > 0 ? (
-          <select onChange={(e) => setSelectVariant(e.target.value)}>
-            {variantOpts}
-          </select>
-        ) : null}
-
-        <select onChange={onSelectRelease}>{releaseOpts}</select>
-
-        {flasherAble ? (
-          <button onClick={onFlash}> Flash </button>
-        ) : (
-          <a
-            href="#"
-            download
-            onClick={(e) => {
-              e.preventDefault();
-              handleDownload(boardAscription.packages[0]);
-            }}
-          >
-            Download {boardAscription.packages[0]}
-          </a>
-        )}
-      </div>
-    </div>
+      ) : null}
+    </>
   );
 };
 

@@ -153,6 +153,11 @@ module.exports = {
                     }
                   },
                 },
+                "/api/api-github": {
+                  target: "https://api.github.com",
+                  changeOrigin: true,
+                  pathRewrite: { "^/api/api-github": "" },
+                },
               },
             },
           };

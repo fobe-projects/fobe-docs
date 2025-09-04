@@ -16,7 +16,6 @@ export function useFirmwareManager() {
           if (ascription.toLowerCase() === "micropython") {
             firmware_url = `/api/github/fobe-projects/micropython/releases/download/${selectedRelease.tag_name}/${boardID}-${selectedRelease.date_fm}-${selectedRelease.build}.tar.xz`;
           } else if (ascription.toLowerCase() === "circuitpython") {
-            // TODO 目前还没有真实路径参考修改，组成规则可能不同
             firmware_url = `/api/github/fobe-projects/circuitpython/releases/download/${selectedRelease.tag_name}/${boardID}-${selectedRelease.date_fm}-${selectedRelease.build}.tar.xz`;
           } else if (ascription.toLowerCase() === "meshtastic") {
             // TODO 目前还没有真实路径参考修改，组成规则可能不同

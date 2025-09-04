@@ -15,6 +15,7 @@ async function fetchFromApi(apiUrl, owner, repo, entityName) {
     headers: {
       Accept: "application/vnd.github.v3+json",
       "User-Agent": "fobe-docusaurus-script",
+      // "GITHUB_TOKEN": ""// sample: use token in dev
     },
   });
 
@@ -40,17 +41,21 @@ async function processRepo(owner, repo) {
   const seenTags = new Set();
 
   for (const r of releases.slice(0, 10)) {
-    if (r.prerelease) {
+    if (r.prerelease && repo === "micropython") {
+      const prereleaseData = {};
       for (const asset of r.assets || []) {
-        // 解析 asset.name 中的版本号部分
-        // 例子: FOBE_IDEA_MESH_TRACKER_C1-v1.27.0-preview.97.g0cd5ea202.tar.xz
-        const match = asset.name.match(/-v([\w.-]+)\.tar\.xz$/);
+        // Parse version number from asset.name
+        // Example: FOBE_IDEA_MESH_TRACKER_C1-v1.27.0-preview.97.g0cd5ea202.tar.xz
+        const match = asset.name && asset.name.match(/-v([\w.-]+)\.tar\.xz$/);
         console.log(match);
         if (match) {
           const fullVersion = `v${match[1]}`;
-          // 如果这个版本和 release 本身的 tag_name 不一样，说明是新的 build 版本
-          if (fullVersion !== r.tag_name && !seenTags.has(fullVersion)) {
-            finalData.push({
+          if (fullVersion == r.tag_name) {
+            continue;
+          }
+          // If this version is different from the release's tag_name, it's a new build version
+          if (!prereleaseData[fullVersion]) {
+            prereleaseData[fullVersion] = {
               tag_name: r.tag_name,
               html_url: r.html_url,
               build: fullVersion,
@@ -59,11 +64,17 @@ async function processRepo(owner, repo) {
               date_fm: asset.updated_at
                 ? asset.updated_at.substring(0, 10).replace(/-/g, "")
                 : null,
-            });
-            seenTags.add(fullVersion);
+              assets: [asset.name],
+            };
+          } else {
+            prereleaseData[fullVersion].assets.push(asset.name);
           }
         }
       }
+      Object.keys(prereleaseData).forEach((key) => {
+        finalData.push(prereleaseData[key]);
+        seenTags.add(key);
+      });
     } else {
       // 基础版本
       const baseItem = {
@@ -75,6 +86,7 @@ async function processRepo(owner, repo) {
         date_fm: r.updated_at
           ? r.updated_at.substring(0, 10).replace(/-/g, "")
           : null,
+        assets: r.assets.map((d) => d.name),
       };
       finalData.push(baseItem);
       seenTags.add(r.tag_name);

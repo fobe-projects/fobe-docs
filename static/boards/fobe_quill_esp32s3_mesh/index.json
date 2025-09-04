@@ -7,16 +7,16 @@
   "features": ["Wi-Fi", "Bluetooth"],
   "circuitpython": {
     "id": "FOBE_QUILL_ESP32S3_MESH",
-    "enabled": true,
+    "enabled": false,
     "last_update": "2024-08-29 08:00",
-    "packages": ["hex", "uf2", "app-bin", "bin", "elf", "map"],
+    "packages": ["app-bin", "bin", "elf", "map", "uf2"],
     "variants": []
   },
   "meshtastic": {
     "id": "FOBE_QUILL_ESP32S3_MESH",
     "enabled": true,
     "last_update": "2024-08-29 08:00",
-    "packages": ["hex", "uf2", "app-bin", "bin", "elf", "map"]
+    "packages": ["app-bin", "bin", "elf", "map", "uf2"]
   },
   "micropython": {
     "id": "FOBE_QUILL_ESP32S3_MESH",

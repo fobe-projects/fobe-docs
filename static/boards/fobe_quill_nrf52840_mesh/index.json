@@ -6,7 +6,7 @@
   "mcu": "NRF52840",
   "features": ["NFC", "Bluetooth"],
   "circuitpython": {
-    "id": "FOBE_QUILL_NRF52840_MESH",
+    "id": "fobe_quill_nrf52840_mesh",
     "enabled": true,
     "last_update": "2024-08-29 08:00",
     "packages": ["uf2", "hex"],

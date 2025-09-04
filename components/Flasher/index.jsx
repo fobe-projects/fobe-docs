@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
+import { useFirmwareTags } from "../common/useFirmwareTags";
 import styles from "./styles.module.css";
 
 const BoardGrid = ({ path }) => {
@@ -66,9 +67,19 @@ const Board = ({ path }) => {
   const [showFlasher, setShowFlasher] = useState(false);
   const [flasherInfo, setFlasherInfo] = useState({});
 
-  const [micropythonReleases, setMicropythonReleases] = useState([]);
-  const [circuitpythonReleases, setCircuitpythonReleases] = useState([]);
-  const [meshtasticReleases, setMeshtasticReleases] = useState([]);
+  const {
+    data: firmwareData,
+    loading: firmwareLoading,
+    error: firmwareError,
+  } = useFirmwareTags();
+
+  const [firmwareErrorVisible, setFirmwareErrorVisible] = useState(false);
+
+  useEffect(() => {
+    if (firmwareError) {
+      setFirmwareErrorVisible(true);
+    }
+  }, [firmwareError]);
 
   useEffect(() => {
     setLoading(true);
@@ -83,34 +94,6 @@ const Board = ({ path }) => {
         setBoardAttr(boardsData);
         setIsEsp32(boardsData.mcu.toLowerCase().includes("esp32"));
         setDescription(markdownText);
-
-        const fetchPromises = [];
-        if (boardsData.circuitpython.enabled) {
-          fetchPromises.push(
-            fetch(`releases/circuitpython-releases.json`).then((res) =>
-              res.json(),
-            ),
-          );
-        }
-        if (boardsData.micropython.enabled) {
-          fetchPromises.push(
-            fetch(`releases/micropython-releases.json`).then((res) =>
-              res.json(),
-            ),
-          );
-        }
-        if (boardsData.meshtastic.enabled) {
-          fetchPromises.push(
-            fetch(`releases/meshtastic-firmware-releases.json`).then((res) =>
-              res.json(),
-            ),
-          );
-        }
-
-        const [cpy, mpy, meshtastic] = await Promise.all(fetchPromises);
-        if (cpy) setCircuitpythonReleases(cpy);
-        if (mpy) setMicropythonReleases(mpy);
-        if (meshtastic) setMeshtasticReleases(meshtastic);
 
         console.log("Loaded data");
       } catch (err) {
@@ -132,7 +115,7 @@ const Board = ({ path }) => {
     setFlasherInfo(packageInfo);
   };
 
-  console.log(boardAttr);
+  // console.log(boardAttr);
   return (
     <div className={styles.board}>
       <div className={styles.boardDescription}>
@@ -148,7 +131,9 @@ const Board = ({ path }) => {
       </div>
 
       <div className={styles.boardFirmware}>
-        {circuitpythonReleases.length > 0 ? (
+        {!firmwareLoading &&
+        firmwareData.circuitpython &&
+        firmwareData.circuitpython.length > 0 ? (
           <FirmwareCard
             ascription="CircuitPython"
             description={`CircuitPython is a programming language designed to simplify
@@ -158,13 +143,15 @@ const Board = ({ path }) => {
             gitUrl="https://github.com/adafruit/circuitpython"
             officialUrl="https://circuitpython.org/"
             boardAscription={boardAttr.circuitpython}
-            releases={circuitpythonReleases}
+            releases={firmwareData.circuitpython}
             isEsp32={isEsp32}
             onFlashClick={openFlasher}
           />
         ) : null}
 
-        {micropythonReleases.length > 0 ? (
+        {!firmwareLoading &&
+        firmwareData.micropython &&
+        firmwareData.micropython.length > 0 ? (
           <FirmwareCard
             ascription="Micropython"
             description={`Micropython is a programming language designed to simplify
@@ -174,22 +161,35 @@ const Board = ({ path }) => {
             gitUrl="https://github.com/fobe-projects/micropython"
             officialUrl="https://micropython.org/"
             boardAscription={boardAttr.micropython}
-            releases={micropythonReleases}
+            releases={firmwareData.micropython}
             isEsp32={isEsp32}
             onFlashClick={openFlasher}
           />
         ) : null}
 
-        {meshtasticReleases.length > 0 ? (
+        {!firmwareLoading &&
+        firmwareData["meshtastic-firmware"] &&
+        firmwareData["meshtastic-firmware"].length > 0 ? (
           <FirmwareCard
             ascription="Meshtastic"
             description={`Meshtastic is a project that enables you to use inexpensive LoRa radios as a long range off-grid communication platform in areas without existing or reliable communications infrastructure.`}
             gitUrl="https://github.com/fobe-projects/meshtastic-firmware"
             officialUrl="https://meshtastic.org/"
             boardAscription={boardAttr.meshtastic}
-            releases={meshtasticReleases}
+            releases={firmwareData["meshtastic-firmware"]}
             isEsp32={isEsp32}
             onFlashClick={openFlasher}
+          />
+        ) : null}
+
+        {firmwareLoading ? (
+          <FirmwareCard
+            ascription="Loading firmware..."
+            description="--"
+            gitUrl="--"
+            officialUrl="--"
+            boardAscription={{ id: "", packages: [] }}
+            releases={[]}
           />
         ) : null}
 
@@ -199,6 +199,18 @@ const Board = ({ path }) => {
           packageInfo={flasherInfo}
         />
       </div>
+
+      {firmwareErrorVisible && (
+        <div className={styles.errorModal}>
+          <div className={styles.errorModalContent}>
+            <h2>Firmware Error</h2>
+            <p>{firmwareError.message}</p>
+            <button onClick={() => setFirmwareErrorVisible(false)}>
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
