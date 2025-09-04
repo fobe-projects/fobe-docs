@@ -11,6 +11,7 @@
     "npm": ">=10"
   },
   "scripts": {
+    "prestart": "node scripts/fetch-tags.js",
     "start": "docusaurus start",
     "dev": "npm run start",
     "build": "docusaurus build",

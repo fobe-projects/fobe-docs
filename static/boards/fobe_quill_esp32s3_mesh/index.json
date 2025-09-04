@@ -7,7 +7,7 @@
   "features": ["Wi-Fi", "Bluetooth"],
   "circuitpython": {
     "id": "FOBE_QUILL_ESP32S3_MESH",
-    "enabled": false,
+    "enabled": true,
     "last_update": "2024-08-29 08:00",
     "packages": ["app-bin", "bin", "elf", "map", "uf2"],
     "variants": []
