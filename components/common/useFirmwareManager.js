@@ -13,13 +13,15 @@ export function useFirmwareManager() {
       (async () => {
         try {
           let firmware_url = "";
+          let domain = "https://github.com";
+          // domain = "/api/github";
           if (ascription.toLowerCase() === "micropython") {
-            firmware_url = `/api/github/fobe-projects/micropython/releases/download/${selectedRelease.tag_name}/${boardID}-${selectedRelease.date_fm}-${selectedRelease.build}.tar.xz`;
+            firmware_url = `${domain}/fobe-projects/micropython/releases/download/${selectedRelease.tag_name}/${boardID}-${selectedRelease.date_fm}-${selectedRelease.build}.tar.xz`;
           } else if (ascription.toLowerCase() === "circuitpython") {
-            firmware_url = `/api/github/fobe-projects/circuitpython/releases/download/${selectedRelease.tag_name}/${boardID}-${selectedRelease.date_fm}-${selectedRelease.build}.tar.xz`;
+            firmware_url = `${domain}/fobe-projects/circuitpython/releases/download/${selectedRelease.tag_name}/${boardID}-${selectedRelease.date_fm}-${selectedRelease.build}.tar.xz`;
           } else if (ascription.toLowerCase() === "meshtastic") {
             // TODO 目前还没有真实路径参考修改，组成规则可能不同
-            firmware_url = `/api/github/fobe-projects/meshtastic-firmware/releases/download/${selectedRelease.tag_name}/${boardID}-${selectedRelease.date_fm}-${selectedRelease.build}.tar.xz`;
+            firmware_url = `${domain}/fobe-projects/meshtastic-firmware/releases/download/${selectedRelease.tag_name}/${boardID}-${selectedRelease.date_fm}-${selectedRelease.build}.tar.xz`;
           }
 
           const response = await fetch(firmware_url);
