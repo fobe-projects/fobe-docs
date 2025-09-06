@@ -13,6 +13,25 @@
     ]
   },
   {
+    "tag_name": "v1.27.0-preview",
+    "html_url": "https://github.com/fobe-projects/micropython/releases/tag/v1.27.0-preview",
+    "build": "v1.27.0-preview.97.gf8d22cbf7",
+    "prerelease": true,
+    "updated_at": "2025-09-04T17:04:05Z",
+    "date_fm": "20250904",
+    "assets": [
+      "FOBE_IDEA_MESH_TRACKER_C1-20250904-v1.27.0-preview.97.gf8d22cbf7.tar.xz",
+      "FOBE_IDEA_MESH_TRACKER_C1-20250905-v1.27.0-preview.97.gf8d22cbf7.tar.xz",
+      "FOBE_IDEA_MESH_TRACKER_C1-20250906-v1.27.0-preview.97.gf8d22cbf7.tar.xz",
+      "FOBE_QUILL_ESP32S3_MESH-20250904-v1.27.0-preview.97.gf8d22cbf7.tar.xz",
+      "FOBE_QUILL_ESP32S3_MESH-20250905-v1.27.0-preview.97.gf8d22cbf7.tar.xz",
+      "FOBE_QUILL_ESP32S3_MESH-20250906-v1.27.0-preview.97.gf8d22cbf7.tar.xz",
+      "FOBE_QUILL_NRF52840_MESH-20250904-v1.27.0-preview.97.gf8d22cbf7.tar.xz",
+      "FOBE_QUILL_NRF52840_MESH-20250905-v1.27.0-preview.97.gf8d22cbf7.tar.xz",
+      "FOBE_QUILL_NRF52840_MESH-20250906-v1.27.0-preview.97.gf8d22cbf7.tar.xz"
+    ]
+  },
+  {
     "tag_name": "v1.26.0",
     "html_url": "https://github.com/fobe-projects/micropython/releases/tag/v1.26.0",
     "build": "v1.26.0",

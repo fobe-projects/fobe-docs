@@ -4,11 +4,14 @@
     "html_url": "https://github.com/fobe-projects/circuitpython/releases/tag/10.0.0-beta.3",
     "build": "10.0.0-beta.3",
     "prerelease": true,
-    "updated_at": "2025-09-04T13:31:05Z",
+    "updated_at": "2025-09-04T17:07:59Z",
     "date_fm": "20250904",
     "assets": [
+      "fobe_idea_mesh_tracker_c1-20250904-10.0.0-beta.3-2-g0c2a8f3219.tar.xz",
       "fobe_idea_mesh_tracker_c1-20250904-10.0.0-beta.3.tar.xz",
+      "fobe_quill_esp32s3_mesh-20250904-10.0.0-beta.3-2-g0c2a8f3219.tar.xz",
       "fobe_quill_esp32s3_mesh-20250904-10.0.0-beta.3.tar.xz",
+      "fobe_quill_nrf52840_mesh-20250904-10.0.0-beta.3-2-g0c2a8f3219.tar.xz",
       "fobe_quill_nrf52840_mesh-20250904-10.0.0-beta.3.tar.xz"
     ]
   },
