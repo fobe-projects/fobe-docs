@@ -8,7 +8,7 @@ const gtmContainerId = "GTM-PQDT48Z5"; // cspell: disable-line
 module.exports = {
   title: "FoBE Documentation",
   tagline: "High performance, composable, headless commerce API.",
-  url: "https://fobe-projects.github.io",
+  url: "https://docs.fobestudio.com",
   baseUrl: "/",
   onBrokenAnchors: "throw",
   // Used for publishing and more
@@ -190,11 +190,11 @@ module.exports = {
       }, // cspell: disable-line
       {
         property: "og:image",
-        content: "https://fobe-projects.github.io/img/og-image.png",
+        content: "https://docs.fobestudio.com/img/og-image.png",
       },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
-      { property: "og:url", content: "https://fobe-projects.github.io" },
+      { property: "og:url", content: "https://docs.fobestudio.com" },
       { property: "og:locale", content: "en_US" },
 
       { name: "twitter:card", content: "summary_large_image" },
@@ -211,13 +211,13 @@ module.exports = {
       },
       {
         name: "twitter:image",
-        content: "https://fobe-projects.github.io/img/twitter-image.png",
+        content: "https://docs.fobestudio.com/img/twitter-image.png",
       },
 
       { name: "viewport", content: "width=device-width, initial-scale=1.0" },
       { name: "theme-color", content: "#0c7d7b" },
 
-      { name: "canonical", content: "https://fobe-projects.github.io" },
+      { name: "canonical", content: "https://docs.fobestudio.com" },
       { name: "mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-status-bar-style", content: "default" },
       { name: "format-detection", content: "telephone=no" },
