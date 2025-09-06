@@ -24,7 +24,12 @@ export function useFirmwareManager() {
             firmware_url = `${domain}/fobe-projects/meshtastic-firmware/releases/download/${selectedRelease.tag_name}/${boardID}-${selectedRelease.date_fm}-${selectedRelease.build}.tar.xz`;
           }
 
-          const response = await fetch(firmware_url);
+          const response = await fetch(firmware_url, {
+            headers: {
+              Accept: "application/vnd.github.v3+json",
+              "Access-Control-Allow-Origin": "*",
+            },
+          });
           if (!response.ok) {
             throw new Error(`Download error: ${response.status}`);
           }
