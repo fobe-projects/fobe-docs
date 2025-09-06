@@ -26,8 +26,7 @@ export function useFirmwareManager() {
 
           const response = await fetch(firmware_url, {
             headers: {
-              Accept: "application/vnd.github.v3+json",
-              "Access-Control-Allow-Origin": "*",
+              Origin: "https://docs.fobestudio.com/",
             },
           });
           if (!response.ok) {
