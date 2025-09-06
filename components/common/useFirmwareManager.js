@@ -26,7 +26,10 @@ export function useFirmwareManager() {
 
           const response = await fetch(firmware_url, {
             headers: {
-              Origin: "https://docs.fobestudio.com/",
+              Origin: "https://docs.fobestudio.com",
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Expose-Headers":
+                "ETag, Link, x-ratelimit-limit, x-ratelimit-remaining, x-ratelimit-reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval",
             },
           });
           if (!response.ok) {
