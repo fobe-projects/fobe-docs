@@ -9,7 +9,7 @@
     "id": "fobe_quill_nrf52840_mesh",
     "enabled": true,
     "last_update": "2024-08-29 08:00",
-    "packages": ["uf2", "hex"],
+    "packages": ["uf2", "hex", "bin"],
     "variants": []
   },
   "meshtastic": {

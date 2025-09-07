@@ -54,6 +54,8 @@ export function useFirmwareManager() {
               else if (header.name.endsWith(".hex")) f_type = "hex";
               else if (header.name.endsWith(".uf2")) f_type = "uf2";
               else if (header.name.endsWith(".elf")) f_type = "elf";
+              else if (header.name.endsWith(".app-bin")) f_type = "app-bin";
+              else if (header.name.endsWith(".map")) f_type = "map";
 
               const blob = new Blob([fileBuffer], {
                 type: "application/octet-stream",
