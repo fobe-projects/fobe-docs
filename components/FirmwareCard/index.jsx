@@ -22,7 +22,8 @@ const FirmwareCard = ({
   const [variantOpts, setVariantOpts] = useState([]);
   const [releaseOpts, setReleaseOpts] = useState([]);
 
-  const { fileCache, fetchedPackage, fetchFirmwares } = useFirmwareManager();
+  const { fileCache, fetchedPackage, fetchFirmwares, loading } =
+    useFirmwareManager();
 
   useEffect(() => {
     setReleaseOpts(
@@ -104,6 +105,12 @@ const FirmwareCard = ({
 
   return (
     <>
+      {loading && (
+        <div className={styles.loadingOverlay}>
+          <div className={styles.spinner}></div>
+          <p>Downloading firmware...</p>
+        </div>
+      )}
       {releaseOpts.length > 0 ? (
         <div className={styles.boardFirmwareContent}>
           <div className={styles.boardFirmwareTitle}>
@@ -127,7 +134,7 @@ const FirmwareCard = ({
 
           <div className={styles.boardFirmwareNote}>
             <a
-              href={`${selectedRelease.release_url}`}
+              href={`${selectedRelease.html_url}`}
               target="_blank"
               rel="noreferrer"
             >

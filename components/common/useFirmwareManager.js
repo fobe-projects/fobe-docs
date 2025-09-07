@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import tar from "tar-stream";
 import { XzReadableStream } from "xz-decompress";
 
@@ -7,10 +7,12 @@ import { XzReadableStream } from "xz-decompress";
 export function useFirmwareManager() {
   const fileCache = useRef(new Map());
   const fetchedPackage = useRef("");
+  const [loading, setLoading] = useState(false);
 
   const fetchFirmwares = async ({ ascription, selectedRelease, boardID }) => {
     return new Promise((resolve, reject) => {
       (async () => {
+        setLoading(true);
         try {
           let firmware_url =
             "https://raw.githubusercontent.com/fobe-projects/fobe-projects.github.io/refs/heads/main/firmwares";
@@ -76,10 +78,12 @@ export function useFirmwareManager() {
           extract.end(new Uint8Array(decompressedArrayBuffer));
         } catch (err) {
           reject(err);
+        } finally {
+          setLoading(false);
         }
       })();
     });
   };
 
-  return { fileCache, fetchedPackage, fetchFirmwares };
+  return { fileCache, fetchedPackage, fetchFirmwares, loading };
 }
