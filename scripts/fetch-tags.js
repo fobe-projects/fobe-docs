@@ -15,7 +15,6 @@ async function fetchFromApi(apiUrl, owner, repo, entityName) {
     headers: {
       Accept: "application/vnd.github.v3+json",
       "User-Agent": "fobe-docusaurus-script",
-      // "GITHUB_TOKEN": ""// sample: use token in dev
     },
   });
 
@@ -47,7 +46,6 @@ async function processRepo(owner, repo) {
         // Parse version number from asset.name
         // Example: FOBE_IDEA_MESH_TRACKER_C1-v1.27.0-preview.97.g0cd5ea202.tar.xz
         const match = asset.name && asset.name.match(/-v([\w.-]+)\.tar\.xz$/);
-        console.log(match);
         if (match) {
           const fullVersion = `v${match[1]}`;
           if (fullVersion == r.tag_name) {
@@ -64,10 +62,7 @@ async function processRepo(owner, repo) {
               date_fm: asset.updated_at
                 ? asset.updated_at.substring(0, 10).replace(/-/g, "")
                 : null,
-              assets: [asset.name],
             };
-          } else {
-            prereleaseData[fullVersion].assets.push(asset.name);
           }
         }
       }
@@ -86,7 +81,6 @@ async function processRepo(owner, repo) {
         date_fm: r.updated_at
           ? r.updated_at.substring(0, 10).replace(/-/g, "")
           : null,
-        assets: r.assets.map((d) => d.name),
       };
       finalData.push(baseItem);
       seenTags.add(r.tag_name);

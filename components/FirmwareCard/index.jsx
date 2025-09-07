@@ -25,17 +25,13 @@ const FirmwareCard = ({
   const { fileCache, fetchedPackage, fetchFirmwares } = useFirmwareManager();
 
   useEffect(() => {
-    const verOpts = [];
-    releases.forEach((ver, index) => {
-      if (ver.assets.some((ass) => ass.startsWith(boardAscription.id))) {
-        verOpts.push(
-          <option key={index} value={ver.build}>
-            {ver.build}
-          </option>,
-        );
-      }
-    });
-    setReleaseOpts(verOpts);
+    setReleaseOpts(
+      releases.map((rel, idx) => (
+        <option key={idx} value={rel.build}>
+          {rel.build}
+        </option>
+      )),
+    );
 
     setVariantOpts(
       boardAscription.variants
@@ -48,14 +44,7 @@ const FirmwareCard = ({
     );
 
     if (releases && releases.length > 0) {
-      setSelectRelease({
-        tag_name: releases[0].tag_name,
-        build: releases[0].build,
-        prerelease: releases[0].prerelease,
-        updated_at: releases[0].updated_at,
-        date_fm: releases[0].date_fm,
-        release_url: releases[0].html_url,
-      });
+      setSelectRelease(releases[0]);
     }
 
     if (boardAscription.variants) setSelectVariant(boardAscription.variants[0]);
@@ -69,14 +58,7 @@ const FirmwareCard = ({
 
   const onSelectRelease = (e) => {
     const tag = releases[e.target.selectedIndex];
-    setSelectRelease({
-      tag_name: tag.tag_name,
-      build: tag.build,
-      prerelease: tag.prerelease,
-      updated_at: tag.updated_at,
-      date_fm: tag.date_fm,
-      release_url: tag.html_url,
-    });
+    setSelectRelease(tag);
   };
 
   const handleDownload = async (f_type) => {

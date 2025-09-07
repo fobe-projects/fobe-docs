@@ -12,26 +12,17 @@ export function useFirmwareManager() {
     return new Promise((resolve, reject) => {
       (async () => {
         try {
-          let firmware_url = "";
-          let domain = "https://github.com";
-          // domain = "/api/github";
+          let firmware_url =
+            "https://raw.githubusercontent.com/fobe-projects/fobe-projects.github.io/refs/heads/main/firmwares";
           if (ascription.toLowerCase() === "micropython") {
-            firmware_url = `${domain}/fobe-projects/micropython/releases/download/${selectedRelease.tag_name}/${boardID}-${selectedRelease.date_fm}-${selectedRelease.build}.tar.xz`;
+            firmware_url = `${firmware_url}/micropython/${boardID}-${selectedRelease.date_fm}-${selectedRelease.build}.tar.xz`;
           } else if (ascription.toLowerCase() === "circuitpython") {
-            firmware_url = `${domain}/fobe-projects/circuitpython/releases/download/${selectedRelease.tag_name}/${boardID}-${selectedRelease.date_fm}-${selectedRelease.build}.tar.xz`;
+            firmware_url = `${firmware_url}/circuitpython/${boardID}-${selectedRelease.date_fm}-${selectedRelease.build}.tar.xz`;
           } else if (ascription.toLowerCase() === "meshtastic") {
-            // TODO 目前还没有真实路径参考修改，组成规则可能不同
-            firmware_url = `${domain}/fobe-projects/meshtastic-firmware/releases/download/${selectedRelease.tag_name}/${boardID}-${selectedRelease.date_fm}-${selectedRelease.build}.tar.xz`;
+            firmware_url = `${firmware_url}/meshtastic/${boardID}-${selectedRelease.date_fm}-${selectedRelease.build}.tar.xz`;
           }
 
-          const response = await fetch(firmware_url, {
-            headers: {
-              Origin: "https://docs.fobestudio.com",
-              "Access-Control-Allow-Origin": "*",
-              "Access-Control-Expose-Headers":
-                "ETag, Link, x-ratelimit-limit, x-ratelimit-remaining, x-ratelimit-reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval",
-            },
-          });
+          const response = await fetch(firmware_url);
           if (!response.ok) {
             throw new Error(`Download error: ${response.status}`);
           }
