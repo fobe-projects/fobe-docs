@@ -33,6 +33,22 @@ const FirmwareCard = ({
       )),
     );
 
+    const verOpts = [];
+    releases.forEach((rel, index) => {
+      if (
+        rel.packages.some((pkg) =>
+          pkg.toLowerCase().startsWith(boardAscription.id.toLowerCase()),
+        )
+      ) {
+        verOpts.push(
+          <option key={index} value={rel.build}>
+            {rel.build}
+          </option>,
+        );
+      }
+    });
+    setReleaseOpts(verOpts);
+
     setVariantOpts(
       boardAscription.variants
         ? boardAscription.variants.map((variant, index) => (

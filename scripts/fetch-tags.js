@@ -9,8 +9,7 @@ const REPOS = [
 
 const OUTPUT_DIR = path.join(__dirname, "..", "static", "releases");
 
-async function fetchFromApi(apiUrl, owner, repo, entityName) {
-  console.log(`Fetching ${entityName} from ${owner}/${repo}...`);
+async function fetchFromApi(apiUrl) {
   const response = await fetch(apiUrl, {
     headers: {
       Accept: "application/vnd.github.v3+json",
@@ -19,68 +18,103 @@ async function fetchFromApi(apiUrl, owner, repo, entityName) {
   });
 
   if (!response.ok) {
-    throw new Error(
-      `Failed to fetch ${entityName} from ${owner}/${repo}: ${response.status} ${response.statusText}`,
-    );
+    console.log(response.error);
+    throw new Error(`Failed to fetch from ${apiUrl}`);
   }
   return response.json();
 }
 
 async function processRepo(owner, repo) {
   const RELEASES_API_URL = `https://api.github.com/repos/${owner}/${repo}/releases`;
-  const releases = await fetchFromApi(
-    RELEASES_API_URL,
-    owner,
-    repo,
-    "releases",
-  );
+  const releases = await fetchFromApi(RELEASES_API_URL);
+
+  let PACKAGE_URL = `https://api.github.com/repos/fobe-projects/fobe-projects.github.io/contents/firmwares/${repo}`;
+  if (repo == "meshtastic-firmware") {
+    return; // no yet
+  }
+  let packages = await fetchFromApi(PACKAGE_URL);
+  packages = packages.map((d) => d.name);
+  // console.log(packages);
 
   // console.log(releases[0]);
   const finalData = [];
   const seenTags = new Set();
 
   for (const r of releases.slice(0, 10)) {
-    if (r.prerelease && repo === "micropython") {
-      const prereleaseData = {};
-      for (const asset of r.assets || []) {
-        // Parse version number from asset.name
-        // Example: FOBE_IDEA_MESH_TRACKER_C1-v1.27.0-preview.97.g0cd5ea202.tar.xz
-        const match = asset.name && asset.name.match(/-v([\w.-]+)\.tar\.xz$/);
-        if (match) {
-          const fullVersion = `v${match[1]}`;
-          if (fullVersion == r.tag_name) {
-            continue;
-          }
-          // If this version is different from the release's tag_name, it's a new build version
-          if (!prereleaseData[fullVersion]) {
-            prereleaseData[fullVersion] = {
-              tag_name: r.tag_name,
-              html_url: r.html_url,
-              build: fullVersion,
-              prerelease: r.prerelease,
-              updated_at: asset.updated_at,
-              date_fm: asset.updated_at
-                ? asset.updated_at.substring(0, 10).replace(/-/g, "")
-                : null,
-            };
-          }
+    if (r.prerelease) {
+      const relatedPackages = packages.filter((d) => {
+        if (!d.includes(r.tag_name)) return false;
+        // Exclude plain prerelease tarballs (e.g., ...-preview.tar.xz, ...-beta.3.tar.xz)
+        if (d.endsWith(`${r.tag_name}.tar.xz`)) return false;
+        return true;
+      });
+      const groups = {};
+
+      for (const pkg of relatedPackages) {
+        let groupKey = null;
+        // Match style: v1.27.0-preview.97.g4dd4407d9
+        let match1 = pkg.match(/(v[\d.]+-preview\.\d+.[^.]+)/);
+        if (match1) {
+          groupKey = match1[1];
+        }
+
+        // Match style: 10.0.0-beta.3-2-g0c2a8f3219
+        let match2 = pkg.match(
+          /(\d+\.\d+\.\d+-beta\.\d+(?:-\d+-g[0-9a-f]+)?)/i,
+        );
+        if (match2) {
+          groupKey = match2[1];
+        }
+
+        if (groupKey) {
+          if (!groups[groupKey]) groups[groupKey] = [];
+          groups[groupKey].push(pkg);
         }
       }
-      Object.keys(prereleaseData).forEach((key) => {
-        finalData.push(prereleaseData[key]);
-        seenTags.add(key);
-      });
+
+      for (const [groupKey, pkgs] of Object.entries(groups)) {
+        const item = {
+          tag_name: groupKey,
+          html_url: r.html_url,
+          build: groupKey,
+          prerelease: r.prerelease,
+          updated_at: r.updated_at,
+          date_fm: (() => {
+            const dates = pkgs
+              .map((p) => {
+                const m = p.match(/-(\d{8})-/);
+                return m ? m[1] : null;
+              })
+              .filter(Boolean)
+              .sort()
+              .reverse();
+            return dates.length > 0 ? dates[0] : null;
+          })(),
+          packages: pkgs,
+        };
+        finalData.push(item);
+        seenTags.add(groupKey);
+      }
     } else {
-      // 基础版本
       const baseItem = {
         tag_name: r.tag_name,
         html_url: r.html_url,
         build: r.tag_name,
         prerelease: r.prerelease,
         updated_at: r.updated_at,
-        date_fm: r.updated_at
-          ? r.updated_at.substring(0, 10).replace(/-/g, "")
-          : null,
+        date_fm: (() => {
+          const dates = packages
+            .filter((d) => d.includes(r.tag_name))
+            .map((p) => {
+              const m = p.match(/-(\d{8})-/);
+              return m ? m[1] : null;
+            })
+            .filter(Boolean)
+            .sort()
+            .reverse();
+          return dates.length > 0 ? dates[0] : null;
+        })(),
+        packages: packages.filter((d) => d.includes(r.tag_name)),
       };
       finalData.push(baseItem);
       seenTags.add(r.tag_name);

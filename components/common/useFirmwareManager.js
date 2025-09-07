@@ -17,7 +17,7 @@ export function useFirmwareManager() {
           if (ascription.toLowerCase() === "micropython") {
             firmware_url = `${firmware_url}/micropython/${boardID}-${selectedRelease.date_fm}-${selectedRelease.build}.tar.xz`;
           } else if (ascription.toLowerCase() === "circuitpython") {
-            firmware_url = `${firmware_url}/circuitpython/${boardID}-${selectedRelease.date_fm}-${selectedRelease.build}.tar.xz`;
+            firmware_url = `${firmware_url}/circuitpython/${boardID.toLowerCase()}-${selectedRelease.date_fm}-${selectedRelease.build}.tar.xz`;
           } else if (ascription.toLowerCase() === "meshtastic") {
             firmware_url = `${firmware_url}/meshtastic/${boardID}-${selectedRelease.date_fm}-${selectedRelease.build}.tar.xz`;
           }
