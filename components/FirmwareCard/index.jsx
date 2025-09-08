@@ -13,6 +13,7 @@ const FirmwareCard = ({
   releases,
   isEsp32,
   onFlashClick,
+  release_take = 3,
 }) => {
   const [flasherAble, setFlasherAble] = useState(false);
 
@@ -25,30 +26,32 @@ const FirmwareCard = ({
   const { fileCache, fetchedPackage, fetchFirmwares, loading } =
     useFirmwareManager();
 
-  useEffect(() => {
-    setReleaseOpts(
-      releases.map((rel, idx) => (
-        <option key={idx} value={rel.build}>
-          {rel.build}
-        </option>
-      )),
-    );
+  const boardID = boardAscription.id;
 
-    const verOpts = [];
+  useEffect(() => {
+    const versionOptions = [];
     releases.forEach((rel, index) => {
-      if (
-        rel.packages.some((pkg) =>
-          pkg.toLowerCase().startsWith(boardAscription.id.toLowerCase()),
-        )
-      ) {
-        verOpts.push(
-          <option key={index} value={rel.build}>
-            {rel.build}
-          </option>,
-        );
-      }
+      rel.packages
+        .filter((d) => d.startsWith(boardID))
+        .sort((a, b) => {
+          const getDate = (str) => str.split("-")[1] || "";
+          return getDate(a).localeCompare(getDate(b));
+        })
+        .slice(-release_take)
+        .forEach((d) => {
+          const firstDashIndex = d.indexOf("-");
+          const rel_val =
+            firstDashIndex !== -1 ? d.slice(firstDashIndex + 1) : d;
+          const ignore_str_idx = rel_val.lastIndexOf(".tar.xz");
+
+          versionOptions.push(
+            <option data-rel={index} value={rel_val}>
+              {rel_val.slice(0, ignore_str_idx)}
+            </option>,
+          );
+        });
     });
-    setReleaseOpts(verOpts);
+    setReleaseOpts(versionOptions);
 
     setVariantOpts(
       boardAscription.variants
@@ -60,8 +63,11 @@ const FirmwareCard = ({
         : [],
     );
 
-    if (releases && releases.length > 0) {
-      setSelectRelease(releases[0]);
+    if (versionOptions.length > 0) {
+      setSelectRelease({
+        ...releases[0],
+        value: versionOptions[0].props.value,
+      });
     }
 
     if (boardAscription.variants) setSelectVariant(boardAscription.variants[0]);
@@ -74,14 +80,17 @@ const FirmwareCard = ({
   }, []);
 
   const onSelectRelease = (e) => {
-    const tag = releases[e.target.selectedIndex];
-    setSelectRelease(tag);
+    const tag = releases[e.target.selectedOptions[0].dataset.rel];
+    setSelectRelease({ ...tag, value: e.target.value });
   };
 
   const handleDownload = async (f_type) => {
     if (fetchedPackage.current !== selectedRelease.build) {
-      const boardID = boardAscription.id;
-      await fetchFirmwares({ ascription, selectedRelease, boardID });
+      await fetchFirmwares({
+        ascription,
+        boardID,
+        target_package: selectedRelease.value,
+      });
     }
     const f_data = fileCache.current.get(f_type);
     if (f_data) {
@@ -97,9 +106,9 @@ const FirmwareCard = ({
     onFlashClick({
       url: fileCache.current.get("bin")?.url, // 传给 flasher
       buffer: fileCache.current.get("bin")?.buffer, // 直接 Uint8Array，也可以传
-      boardID: boardAscription.id,
+      boardID: boardID,
       ascription,
-      selectedRelease,
+      target_package: selectedRelease.value,
     });
   };
 

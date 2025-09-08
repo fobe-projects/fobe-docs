@@ -19,6 +19,8 @@ const EspFlasher = ({ isShow, onClose, packageInfo }) => {
   const [erase, setErase] = useState(false);
   const [flashing, setFlashing] = useState(false);
 
+  const [headerLabel, setHeaderLabel] = useState("");
+
   useEffect(() => {
     import("xterm").then((mod) => {
       setTerminalClass(() => mod.Terminal);
@@ -32,6 +34,13 @@ const EspFlasher = ({ isShow, onClose, packageInfo }) => {
       termRef.current = term;
       termRef.current.clear();
     }
+    if (packageInfo.target_package) {
+      const ignore_str_idx = packageInfo.target_package.lastIndexOf(".tar.xz");
+      setHeaderLabel(
+        `${packageInfo.ascription} - ${packageInfo.target_package.slice(0, ignore_str_idx)}`,
+      );
+    }
+
     return () => {
       if (!isShow) {
         if (transportRef.current) {
@@ -79,15 +88,14 @@ const EspFlasher = ({ isShow, onClose, packageInfo }) => {
 
       term.writeln("Preparing firmware...");
 
-      console.log("!");
       let content = packageInfo.buffer;
       if (!content) content = fileCache.current.get("bin")?.buffer;
       if (!content) {
         // trigger download firmware
         await fetchFirmwares({
           ascription: packageInfo.ascription,
-          selectedRelease: packageInfo.selectedRelease,
           boardID: packageInfo.boardID,
+          target_package: packageInfo.target_package,
         });
         content = fileCache.current.get("bin")?.buffer;
       }
@@ -141,7 +149,7 @@ const EspFlasher = ({ isShow, onClose, packageInfo }) => {
         >
           <div className={styles.modalContent}>
             <div className={styles.modalHeader}>
-              <h3>{`${packageInfo.ascription} - ${packageInfo.selectedRelease.build}`}</h3>
+              <h3>{headerLabel}</h3>
               <span className={styles.closeButton} onClick={closeModal}>
                 &times;
               </span>
