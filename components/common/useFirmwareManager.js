@@ -21,7 +21,14 @@ export function useFirmwareManager() {
           } else if (ascription.toLowerCase() === "circuitpython") {
             firmware_url = `${firmware_url}/circuitpython/${dir}/${boardID.toLowerCase()}-${pkg}`;
           } else if (ascription.toLowerCase() === "meshtastic") {
-            firmware_url = `${firmware_url}/meshtastic/${dir}/${boardID}-${pkg}`;
+            firmware_url = `${firmware_url}/meshtastic/${dir}/firmware-${boardID.toLowerCase()}-${pkg}`;
+
+            fileCache.current.set("uf2", {
+              name: firmware_url.split("/").pop(),
+              url: firmware_url,
+            });
+            fetchedPackage.current = pkg;
+            return;
           }
 
           const response = await fetch(firmware_url);

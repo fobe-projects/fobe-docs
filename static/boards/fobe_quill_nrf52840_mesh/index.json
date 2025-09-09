@@ -16,7 +16,7 @@
     "id": "FOBE_QUILL_NRF52840_MESH",
     "enabled": true,
     "last_update": "2024-08-29 08:00",
-    "packages": ["uf2", "hex"]
+    "packages": ["uf2"]
   },
   "micropython": {
     "id": "FOBE_QUILL_NRF52840_MESH",

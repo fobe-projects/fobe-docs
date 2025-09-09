@@ -32,14 +32,29 @@ const FirmwareCard = ({
     releases.forEach((rel, index) => {
       rel.packages
         .filter((d) => {
-          if (ascription == "meshtastic") {
-            return d.startsWith(`firmware-${boardID}`);
+          if (ascription == "Meshtastic") {
+            return (
+              d.startsWith(`firmware-${boardID.toLowerCase()}`) &&
+              d.indexOf("zip") == -1
+            );
           }
           return d.startsWith(boardID);
         })
         .sort((a, b) => getDate(b).localeCompare(getDate(a)))
         .slice(-release_take)
         .forEach((d, idxx) => {
+          if (ascription == "Meshtastic") {
+            const ldi = d.lastIndexOf("-");
+            const rel_val = ldi !== -1 ? d.slice(ldi + 1) : d;
+            const ignore_str_idx = rel_val.lastIndexOf(".");
+            versionOptions.push(
+              <option key={`${index}-${idxx}`} data-rel={index} value={rel_val}>
+                {rel_val.slice(0, ignore_str_idx)}
+              </option>,
+            );
+            return;
+          }
+
           const firstDashIndex = d.indexOf("-");
           const rel_val =
             firstDashIndex !== -1 ? d.slice(firstDashIndex + 1) : d;
@@ -127,17 +142,24 @@ const FirmwareCard = ({
 
           <p dangerouslySetInnerHTML={{ __html: description }} />
           <p>
-            <small>Last Update: {selectedRelease.updated_at}</small>
+            {ascription.toLowerCase() == "meshtastic" ? null : (
+              <small>Last Update: {selectedRelease.updated_at}</small>
+            )}
           </p>
 
           <div className={styles.boardFirmwareNote}>
-            <a
-              href={`https://github.com/fobe-projects/micropython/releases/tag/${selectedRelease.dir}`}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Release Notes
-            </a>
+            {ascription.toLowerCase() == "meshtastic" ? (
+              <p />
+            ) : (
+              <a
+                href={`https://github.com/fobe-projects/${ascription}/releases/tag/${selectedRelease.dir}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Release Notes
+              </a>
+            )}
+
             <div>
               <span>{selectedRelease.tag_name}</span>
               {boardAscription.packages.map((f_type, idx) => (
