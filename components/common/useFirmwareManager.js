@@ -9,7 +9,7 @@ export function useFirmwareManager() {
   const fetchedPackage = useRef("");
   const [loading, setLoading] = useState(false);
 
-  const fetchFirmwares = async ({ ascription, boardID, targetPackage }) => {
+  const fetchFirmwares = async ({ ascription, boardID, dir, pkg }) => {
     return new Promise((resolve, reject) => {
       (async () => {
         setLoading(true);
@@ -17,11 +17,11 @@ export function useFirmwareManager() {
           let firmware_url =
             "https://raw.githubusercontent.com/fobe-projects/fobe-projects.github.io/refs/heads/main/firmwares";
           if (ascription.toLowerCase() === "micropython") {
-            firmware_url = `${firmware_url}/micropython/${boardID}-${targetPackage}`;
+            firmware_url = `${firmware_url}/micropython/${dir}/${boardID}-${pkg}`;
           } else if (ascription.toLowerCase() === "circuitpython") {
-            firmware_url = `${firmware_url}/circuitpython/${boardID.toLowerCase()}-${targetPackage}`;
+            firmware_url = `${firmware_url}/circuitpython/${dir}/${boardID.toLowerCase()}-${pkg}`;
           } else if (ascription.toLowerCase() === "meshtastic") {
-            firmware_url = `${firmware_url}/meshtastic/${boardID}-${targetPackage}`;
+            firmware_url = `${firmware_url}/meshtastic/${dir}/${boardID}-${pkg}`;
           }
 
           const response = await fetch(firmware_url);
@@ -73,7 +73,7 @@ export function useFirmwareManager() {
           });
 
           extract.on("finish", () => {
-            fetchedPackage.current = targetPackage;
+            fetchedPackage.current = pkg;
             resolve(fileCache.current);
           });
 

@@ -34,10 +34,10 @@ const EspFlasher = ({ isShow, onClose, packageInfo, targetChip }) => {
       termRef.current = term;
       termRef.current.clear();
     }
-    if (packageInfo.targetPackage) {
-      const ignore_str_idx = packageInfo.targetPackage.lastIndexOf(".tar.xz");
+    if (packageInfo.pkg) {
+      const ignore_str_idx = packageInfo.pkg.lastIndexOf(".tar.xz");
       setHeaderLabel(
-        `${packageInfo.ascription} - ${packageInfo.targetPackage.slice(0, ignore_str_idx)}`,
+        `${packageInfo.ascription} - ${packageInfo.pkg.slice(0, ignore_str_idx)}`,
       );
     }
 
@@ -110,7 +110,8 @@ const EspFlasher = ({ isShow, onClose, packageInfo, targetChip }) => {
         await fetchFirmwares({
           ascription: packageInfo.ascription,
           boardID: packageInfo.boardID,
-          targetPackage: packageInfo.targetPackage,
+          dir: packageInfo.dir,
+          pkg: packageInfo.pkg,
         });
         content = fileCache.current.get("bin")?.buffer;
       }

@@ -87,7 +87,7 @@ const Board = ({ path }) => {
 
         setMicropythonReleases(releases.micropython);
         setCircuitpythonReleases(releases.circuitpython);
-        setMeshtasticReleases(releases["meshtastic-firmware"]);
+        setMeshtasticReleases(releases.meshtastic);
 
         console.log("Loaded data");
       } catch (err) {

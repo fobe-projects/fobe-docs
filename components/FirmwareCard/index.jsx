@@ -18,9 +18,6 @@ const FirmwareCard = ({
   const [flasherAble, setFlasherAble] = useState(false);
 
   const [selectedRelease, setSelectRelease] = useState({});
-  const [selectedVariant, setSelectVariant] = useState("");
-
-  const [variantOpts, setVariantOpts] = useState([]);
   const [releaseOpts, setReleaseOpts] = useState([]);
 
   const { fileCache, fetchedPackage, fetchFirmwares, loading } =
@@ -28,40 +25,34 @@ const FirmwareCard = ({
 
   const boardID = boardAscription.id;
 
+  const getDate = (str) => str.split("-")[1] || "";
+
   useEffect(() => {
     const versionOptions = [];
     releases.forEach((rel, index) => {
       rel.packages
-        .filter((d) => d.startsWith(boardID))
-        .sort((a, b) => {
-          const getDate = (str) => str.split("-")[1] || "";
-          return getDate(a).localeCompare(getDate(b));
+        .filter((d) => {
+          if (ascription == "meshtastic") {
+            return d.startsWith(`firmware-${boardID}`);
+          }
+          return d.startsWith(boardID);
         })
+        .sort((a, b) => getDate(b).localeCompare(getDate(a)))
         .slice(-release_take)
-        .forEach((d) => {
+        .forEach((d, idxx) => {
           const firstDashIndex = d.indexOf("-");
           const rel_val =
             firstDashIndex !== -1 ? d.slice(firstDashIndex + 1) : d;
           const ignore_str_idx = rel_val.lastIndexOf(".tar.xz");
 
           versionOptions.push(
-            <option data-rel={index} value={rel_val}>
+            <option key={`${index}-${idxx}`} data-rel={index} value={rel_val}>
               {rel_val.slice(0, ignore_str_idx)}
             </option>,
           );
         });
     });
     setReleaseOpts(versionOptions);
-
-    setVariantOpts(
-      boardAscription.variants
-        ? boardAscription.variants.map((variant, index) => (
-            <option key={index} value={variant}>
-              {variant}
-            </option>
-          ))
-        : [],
-    );
 
     if (versionOptions.length > 0) {
       setSelectRelease({
@@ -70,13 +61,9 @@ const FirmwareCard = ({
       });
     }
 
-    if (boardAscription.variants) setSelectVariant(boardAscription.variants[0]);
-
     if (isEsp32 && boardAscription.packages.some((pg) => pg === "bin")) {
       setFlasherAble(true);
     }
-
-    console.log(selectedVariant); // workless feature, not use yet.
   }, []);
 
   const onSelectRelease = (e) => {
@@ -85,11 +72,12 @@ const FirmwareCard = ({
   };
 
   const handleDownload = async (f_type) => {
-    if (fetchedPackage.current !== selectedRelease.build) {
+    if (fetchedPackage.current !== selectedRelease.value) {
       await fetchFirmwares({
         ascription,
         boardID,
-        targetPackage: selectedRelease.value,
+        dir: selectedRelease.dir,
+        pkg: selectedRelease.value,
       });
     }
     const f_data = fileCache.current.get(f_type);
@@ -108,7 +96,8 @@ const FirmwareCard = ({
       buffer: fileCache.current.get("bin")?.buffer, // 直接 Uint8Array，也可以传
       boardID: boardID,
       ascription,
-      targetPackage: selectedRelease.value,
+      pkg: selectedRelease.value,
+      dir: selectedRelease.dir,
     });
   };
 
@@ -143,7 +132,7 @@ const FirmwareCard = ({
 
           <div className={styles.boardFirmwareNote}>
             <a
-              href={`${selectedRelease.html_url}`}
+              href={`https://github.com/fobe-projects/micropython/releases/tag/${selectedRelease.dir}`}
               target="_blank"
               rel="noreferrer"
             >
@@ -167,12 +156,6 @@ const FirmwareCard = ({
             </div>
           </div>
           <div className={styles.boardFirmwareSelect}>
-            {variantOpts.length > 0 ? (
-              <select onChange={(e) => setSelectVariant(e.target.value)}>
-                {variantOpts}
-              </select>
-            ) : null}
-
             <select onChange={onSelectRelease}>{releaseOpts}</select>
 
             {boardAscription.packages.length > 0 ? (

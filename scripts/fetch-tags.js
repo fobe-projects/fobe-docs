@@ -1,12 +1,6 @@
 const fs = require("fs");
 const path = require("path");
 
-const REPOS = [
-  { owner: "fobe-projects", repo: "micropython" },
-  { owner: "fobe-projects", repo: "circuitpython" },
-  { owner: "fobe-projects", repo: "meshtastic-firmware" },
-];
-
 const OUTPUT_DIR = path.join(__dirname, "..", "src", "");
 
 async function fetchFromApi(apiUrl) {
@@ -24,104 +18,92 @@ async function fetchFromApi(apiUrl) {
   return response.json();
 }
 
-async function processRepo(owner, repo) {
-  const RELEASES_API_URL = `https://api.github.com/repos/${owner}/${repo}/releases`;
-  const releases = await fetchFromApi(RELEASES_API_URL);
-
-  let PACKAGE_URL = `https://api.github.com/repos/fobe-projects/fobe-projects.github.io/contents/firmwares/${repo}`;
-  if (repo == "meshtastic-firmware") {
-    return; // no yet
+function extractDate(fileName) {
+  const date = fileName.match(/-(\d{8})-/);
+  if (date) {
+    return date[1].replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3");
   }
-  let packages = await fetchFromApi(PACKAGE_URL);
-  packages = packages.map((d) => d.name);
-  // console.log(packages);
+  return null;
+}
 
-  // console.log(releases[0]);
-  const finalData = [];
-  const seenTags = new Set();
+async function getFirmwareDirSha() {
+  const requestUrl =
+    "https://api.github.com/repos/fobe-projects/fobe-projects.github.io/git/trees/main";
+  const treeStruct = await fetchFromApi(requestUrl);
+  const fileTree = treeStruct.tree;
+  return fileTree.find((d) => d.path == "firmwares").sha;
+}
 
-  for (const r of releases.slice(0, 10)) {
-    if (r.prerelease) {
-      const relatedPackages = packages.filter((d) => {
-        if (!d.includes(r.tag_name)) return false;
-        // Exclude plain prerelease tarballs (e.g., ...-preview.tar.xz, ...-beta.3.tar.xz)
-        if (d.endsWith(`${r.tag_name}.tar.xz`)) return false;
-        return true;
-      });
-      const groups = {};
+async function loadFileTree(sha) {
+  const requestUrl = `https://api.github.com/repos/fobe-projects/fobe-projects.github.io/git/trees/${sha}?recursive=1`;
+  const treeStruct = await fetchFromApi(requestUrl);
+  const fileTree = treeStruct.tree;
 
-      for (const pkg of relatedPackages) {
-        let groupKey = null;
-        // Match style: v1.27.0-preview.97.g4dd4407d9
-        let match1 = pkg.match(/(v[\d.]+-preview\.\d+.[^.]+)/);
-        if (match1) {
-          groupKey = match1[1];
+  const resObj = {};
+  fileTree.forEach((d) => {
+    const dirLevel = d.path.split("/");
+    if (dirLevel.length == 1 && d["type"] == "tree") {
+      // ex: [micropython]
+      resObj[dirLevel[0]] = [];
+    } else if (dirLevel.length == 2 && d["type"] == "tree") {
+      // ex: micropython/ [v1.26.0]
+      if (dirLevel[1].includes("preview") || dirLevel[1].includes("beta")) {
+        return;
+      }
+      if (!resObj[dirLevel[0]].some((d) => d.tag_name == dirLevel[1])) {
+        resObj[dirLevel[0]].push({
+          tag_name: dirLevel[1],
+          dir: dirLevel[1],
+          prerelease: false,
+          packages: [],
+          updated_at: "",
+        });
+      }
+    } else if (dirLevel.length == 3) {
+      // ex: micropython/v1.26.0/ [xxxx.tar.xz]
+      const file_name = dirLevel[2];
+
+      let matchKey = null;
+      // Match style: v1.27.0-preview.97.g4dd4407d9
+      let match1 = file_name.match(/(v[\d.]+-preview\.\d+.[^.]+)/);
+      if (match1) matchKey = match1[1];
+      // Match style: 10.0.0-beta.3-2-g0c2a8f3219
+      let match2 = file_name.match(
+        /(\d+\.\d+\.\d+-beta\.\d+-+(?:\d+-g[0-9a-f]+)?)/i,
+      );
+      if (match2) matchKey = match2[1];
+
+      if (matchKey) {
+        const tarTag = resObj[dirLevel[0]].find((d) => d.tag_name == matchKey);
+        if (!tarTag) {
+          resObj[dirLevel[0]].push({
+            tag_name: matchKey,
+            dir: dirLevel[1],
+            prerelease: true,
+            packages: [dirLevel[2]],
+            updated_at: extractDate(file_name),
+          });
+        } else {
+          const exDate = extractDate(file_name);
+          if (tarTag.updated_at < exDate) tarTag.updated_at = exDate;
+
+          tarTag.packages.push(dirLevel[2]);
         }
+      } else {
+        for (let i = 0; i < resObj[dirLevel[0]].length; i++) {
+          const d = resObj[dirLevel[0]][i];
+          if (d.tag_name == dirLevel[1]) {
+            const exDate = extractDate(file_name);
+            if (d.updated_at < exDate) d.updated_at = exDate;
 
-        // Match style: 10.0.0-beta.3-2-g0c2a8f3219
-        let match2 = pkg.match(
-          /(\d+\.\d+\.\d+-beta\.\d+(?:-\d+-g[0-9a-f]+)?)/i,
-        );
-        if (match2) {
-          groupKey = match2[1];
-        }
-
-        if (groupKey) {
-          if (!groups[groupKey]) groups[groupKey] = [];
-          groups[groupKey].push(pkg);
+            d.packages.push(dirLevel[2]);
+            break;
+          }
         }
       }
-
-      for (const [groupKey, pkgs] of Object.entries(groups)) {
-        const item = {
-          tag_name: groupKey,
-          html_url: r.html_url,
-          build: groupKey,
-          prerelease: r.prerelease,
-          updated_at: r.updated_at,
-          date_fm: (() => {
-            const dates = pkgs
-              .map((p) => {
-                const m = p.match(/-(\d{8})-/);
-                return m ? m[1] : null;
-              })
-              .filter(Boolean)
-              .sort()
-              .reverse();
-            return dates.length > 0 ? dates[0] : null;
-          })(),
-          packages: pkgs,
-        };
-        finalData.push(item);
-        seenTags.add(groupKey);
-      }
-    } else {
-      const baseItem = {
-        tag_name: r.tag_name,
-        html_url: r.html_url,
-        build: r.tag_name,
-        prerelease: r.prerelease,
-        updated_at: r.updated_at,
-        date_fm: (() => {
-          const dates = packages
-            .filter((d) => d.includes(r.tag_name))
-            .map((p) => {
-              const m = p.match(/-(\d{8})-/);
-              return m ? m[1] : null;
-            })
-            .filter(Boolean)
-            .sort()
-            .reverse();
-          return dates.length > 0 ? dates[0] : null;
-        })(),
-        packages: packages.filter((d) => d.includes(r.tag_name)),
-      };
-      finalData.push(baseItem);
-      seenTags.add(r.tag_name);
     }
-  }
-
-  return finalData;
+  });
+  return resObj;
 }
 
 async function main() {
@@ -130,10 +112,8 @@ async function main() {
       fs.mkdirSync(OUTPUT_DIR, { recursive: true });
     }
 
-    const repo_releases = {};
-    for (const { owner, repo } of REPOS) {
-      repo_releases[repo] = (await processRepo(owner, repo)) || [];
-    }
+    const firmwareDirSha = await getFirmwareDirSha();
+    const repo_releases = await loadFileTree(firmwareDirSha);
 
     const outputFile = path.join(OUTPUT_DIR, "releases.json");
     fs.writeFileSync(outputFile, JSON.stringify(repo_releases, null, 2));
