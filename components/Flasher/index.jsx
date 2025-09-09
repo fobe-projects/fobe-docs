@@ -1,6 +1,7 @@
 import EspFlasher from "@site/components/EspFlasher";
 import FirmwareCard from "@site/components/FirmwareCard";
 import Monitor from "@site/components/Monitor";
+import releases from "@site/src/releases.json";
 import React, { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -77,40 +78,16 @@ const Board = ({ path }) => {
       try {
         const [boardsData, markdownText] = await Promise.all([
           fetch(`${path}/index.json`).then((res) => res.json()),
-          fetch(`${path}/README.md`).then((res) => res.text()),
+          fetch(`$;{path}/README.md`).then((res) => res.text()),
         ]);
 
         setBoardAttr(boardsData);
         setIsEsp32(boardsData.mcu.toLowerCase().includes("esp32"));
         setDescription(markdownText);
 
-        const fetchPromises = [];
-        if (boardsData.circuitpython.enabled) {
-          fetchPromises.push(
-            fetch(`releases/circuitpython-releases.json`).then((res) =>
-              res.json(),
-            ),
-          );
-        }
-        if (boardsData.micropython.enabled) {
-          fetchPromises.push(
-            fetch(`releases/micropython-releases.json`).then((res) =>
-              res.json(),
-            ),
-          );
-        }
-        if (boardsData.meshtastic.enabled) {
-          fetchPromises.push(
-            fetch(`releases/meshtastic-firmware-releases.json`).then((res) =>
-              res.json(),
-            ),
-          );
-        }
-
-        const [cpy, mpy, meshtastic] = await Promise.all(fetchPromises);
-        if (cpy) setCircuitpythonReleases(cpy);
-        if (mpy) setMicropythonReleases(mpy);
-        if (meshtastic) setMeshtasticReleases(meshtastic);
+        setMicropythonReleases(releases.micropython);
+        setCircuitpythonReleases(releases.circuitpython);
+        setMeshtasticReleases(releases["meshtastic-firmware"]);
 
         console.log("Loaded data");
       } catch (err) {

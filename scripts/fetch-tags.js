@@ -7,7 +7,7 @@ const REPOS = [
   { owner: "fobe-projects", repo: "meshtastic-firmware" },
 ];
 
-const OUTPUT_DIR = path.join(__dirname, "..", "static", "releases");
+const OUTPUT_DIR = path.join(__dirname, "..", "src", "");
 
 async function fetchFromApi(apiUrl) {
   const response = await fetch(apiUrl, {
@@ -121,11 +121,7 @@ async function processRepo(owner, repo) {
     }
   }
 
-  const outputFile = path.join(OUTPUT_DIR, `${repo}-releases.json`);
-  fs.writeFileSync(outputFile, JSON.stringify(finalData, null, 2));
-  console.log(
-    `Successfully saved ${finalData.length} items to ${path.relative(process.cwd(), outputFile)}`,
-  );
+  return finalData;
 }
 
 async function main() {
@@ -134,9 +130,16 @@ async function main() {
       fs.mkdirSync(OUTPUT_DIR, { recursive: true });
     }
 
+    const repo_releases = {};
     for (const { owner, repo } of REPOS) {
-      await processRepo(owner, repo);
+      repo_releases[repo] = (await processRepo(owner, repo)) || [];
     }
+
+    const outputFile = path.join(OUTPUT_DIR, "releases.json");
+    fs.writeFileSync(outputFile, JSON.stringify(repo_releases, null, 2));
+    console.log(
+      `Successfully saved releases to ${path.relative(process.cwd(), outputFile)}`,
+    );
   } catch (error) {
     console.error("Error during script execution:", error);
     process.exit(1);

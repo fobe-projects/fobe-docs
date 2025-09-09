@@ -22,10 +22,10 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+      - name: Run fetch-tag script before build
+        run: node scripts/fetch-tags.js
       - name: Build website
         run: npm run build
-      - name: Run custom script before build
-        run: node scripts/fetch-tags.js
       - name: Upload Build Artifact
         uses: actions/upload-pages-artifact@v3
         with:
