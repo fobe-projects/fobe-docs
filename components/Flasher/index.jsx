@@ -78,7 +78,7 @@ const Board = ({ path }) => {
       try {
         const [boardsData, markdownText] = await Promise.all([
           fetch(`${path}/index.json`).then((res) => res.json()),
-          fetch(`$;{path}/README.md`).then((res) => res.text()),
+          fetch(`${path}/README.md`).then((res) => res.text()),
         ]);
 
         setBoardAttr(boardsData);
