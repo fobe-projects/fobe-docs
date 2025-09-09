@@ -109,7 +109,6 @@ const Board = ({ path }) => {
     setFlasherInfo(packageInfo);
   };
 
-  // console.log(boardAttr);
   return (
     <div className={styles.board}>
       <div className={styles.boardDescription}>
@@ -174,6 +173,7 @@ const Board = ({ path }) => {
           isShow={showFlasher}
           onClose={() => setShowFlasher(false)}
           packageInfo={flasherInfo}
+          targetChip={boardAttr.mcu}
         />
       </div>
     </div>

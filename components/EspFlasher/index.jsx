@@ -6,7 +6,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useFirmwareManager } from "../common/useFirmwareManager";
 import styles from "./styles.module.css";
 
-const EspFlasher = ({ isShow, onClose, packageInfo }) => {
+const EspFlasher = ({ isShow, onClose, packageInfo, targetChip }) => {
   const { fileCache, fetchFirmwares } = useFirmwareManager();
 
   const terminalRef = useRef(null);
@@ -34,10 +34,10 @@ const EspFlasher = ({ isShow, onClose, packageInfo }) => {
       termRef.current = term;
       termRef.current.clear();
     }
-    if (packageInfo.target_package) {
-      const ignore_str_idx = packageInfo.target_package.lastIndexOf(".tar.xz");
+    if (packageInfo.targetPackage) {
+      const ignore_str_idx = packageInfo.targetPackage.lastIndexOf(".tar.xz");
       setHeaderLabel(
-        `${packageInfo.ascription} - ${packageInfo.target_package.slice(0, ignore_str_idx)}`,
+        `${packageInfo.ascription} - ${packageInfo.targetPackage.slice(0, ignore_str_idx)}`,
       );
     }
 
@@ -88,6 +88,21 @@ const EspFlasher = ({ isShow, onClose, packageInfo }) => {
 
       term.writeln("Preparing firmware...");
 
+      await loader.main();
+
+      if (targetChip != loader.chip.CHIP_NAME) {
+        console.log(
+          "chip not match between",
+          targetChip,
+          loader.chip.CHIP_NAME,
+        );
+        term.writeln(
+          `Chip not match between target(${targetChip}) and connected device(${loader.chip.CHIP_NAME})! Stop flash!`,
+        );
+        await transportRef.current.disconnect();
+        return;
+      }
+
       let content = packageInfo.buffer;
       if (!content) content = fileCache.current.get("bin")?.buffer;
       if (!content) {
@@ -95,7 +110,7 @@ const EspFlasher = ({ isShow, onClose, packageInfo }) => {
         await fetchFirmwares({
           ascription: packageInfo.ascription,
           boardID: packageInfo.boardID,
-          target_package: packageInfo.target_package,
+          targetPackage: packageInfo.targetPackage,
         });
         content = fileCache.current.get("bin")?.buffer;
       }
@@ -105,8 +120,6 @@ const EspFlasher = ({ isShow, onClose, packageInfo }) => {
       content = uint8ArrayToBinaryString(content);
 
       term.writeln("Starting flash...");
-
-      await loader.main();
 
       await loader.writeFlash({
         fileArray: [

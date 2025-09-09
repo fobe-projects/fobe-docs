@@ -89,7 +89,7 @@ const FirmwareCard = ({
       await fetchFirmwares({
         ascription,
         boardID,
-        target_package: selectedRelease.value,
+        targetPackage: selectedRelease.value,
       });
     }
     const f_data = fileCache.current.get(f_type);
@@ -108,7 +108,7 @@ const FirmwareCard = ({
       buffer: fileCache.current.get("bin")?.buffer, // 直接 Uint8Array，也可以传
       boardID: boardID,
       ascription,
-      target_package: selectedRelease.value,
+      targetPackage: selectedRelease.value,
     });
   };
 
