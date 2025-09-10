@@ -1,11 +1,11 @@
-import EspFlasher from "@site/components/EspFlasher";
-import FirmwareCard from "@site/components/FirmwareCard";
-import Monitor from "@site/components/Monitor";
-import releases from "@site/src/releases.json";
 import React, { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
+import releases from "../../src/releases.json";
+import EspFlasher from "../EspFlasher";
+import FirmwareCard from "../FirmwareCard";
+import Monitor from "../Monitor";
 import styles from "./styles.module.css";
 
 const BoardGrid = ({ path }) => {
@@ -213,6 +213,9 @@ const Flasher = (args) => {
   }, []);
   return id == null ? (
     <>
+      <header>
+        <h1>Firmware Hub</h1>
+      </header>
       <BoardGrid path={args.boards_path} />
       <Monitor />
     </>
