@@ -2,7 +2,7 @@
   "id": "fobe_quill_nrf52840_mesh",
   "name": "FoBE Quill NRF52840 Mesh",
   "manufacturer": "FoBE",
-  "image": "/img/products/f1101-r1a.main.png",
+  "image": "/img/products/f1101.render.shot-box.r1a.png",
   "mcu": "NRF52840",
   "features": ["NFC", "Bluetooth"],
   "circuitpython": {
