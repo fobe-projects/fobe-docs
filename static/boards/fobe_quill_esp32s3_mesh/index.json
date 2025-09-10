@@ -12,9 +12,9 @@
     "variants": []
   },
   "meshtastic": {
-    "id": "FOBE_QUILL_ESP32S3_MESH",
+    "id": "fobe_quill_esp32s3_mesh",
     "enabled": true,
-    "packages": ["uf2"]
+    "packages": ["bin"]
   },
   "micropython": {
     "id": "FOBE_QUILL_ESP32S3_MESH",

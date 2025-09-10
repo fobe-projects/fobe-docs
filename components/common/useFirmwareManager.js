@@ -23,11 +23,13 @@ export function useFirmwareManager() {
           } else if (ascription.toLowerCase() === "meshtastic") {
             firmware_url = `${firmware_url}/meshtastic/${dir}/firmware-${boardID.toLowerCase()}-${pkg}`;
 
-            fileCache.current.set("uf2", {
+            const ldi = firmware_url.lastIndexOf(".");
+            fileCache.current.set(firmware_url.slice(ldi + 1), {
               name: firmware_url.split("/").pop(),
               url: firmware_url,
             });
             fetchedPackage.current = pkg;
+            resolve(fileCache.current);
             return;
           }
 

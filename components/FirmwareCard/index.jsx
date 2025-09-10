@@ -34,8 +34,7 @@ const FirmwareCard = ({
         .filter((d) => {
           if (ascription == "Meshtastic") {
             return (
-              d.startsWith(`firmware-${boardID.toLowerCase()}`) &&
-              d.indexOf("zip") == -1
+              d.startsWith(`firmware-${boardID}`) && d.indexOf("zip") == -1
             );
           }
           return d.startsWith(boardID);
@@ -44,11 +43,15 @@ const FirmwareCard = ({
         .slice(-release_take)
         .forEach((d, idxx) => {
           if (ascription == "Meshtastic") {
-            const ldi = d.lastIndexOf("-");
-            const rel_val = ldi !== -1 ? d.slice(ldi + 1) : d;
+            const rel_val = d.slice(d.indexOf("-", 9) + 1);
             const ignore_str_idx = rel_val.lastIndexOf(".");
             versionOptions.push(
-              <option key={`${index}-${idxx}`} data-rel={index} value={rel_val}>
+              <option
+                key={`${index}-${idxx}`}
+                data-rel={index}
+                data-type={rel_val.slice(ignore_str_idx)}
+                value={rel_val}
+              >
                 {rel_val.slice(0, ignore_str_idx)}
               </option>,
             );

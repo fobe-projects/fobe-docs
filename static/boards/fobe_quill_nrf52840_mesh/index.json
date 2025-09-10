@@ -12,7 +12,7 @@
     "variants": []
   },
   "meshtastic": {
-    "id": "FOBE_QUILL_NRF52840_MESH",
+    "id": "fobe_quill_nrf52840_mesh",
     "enabled": true,
     "packages": ["uf2"]
   },
