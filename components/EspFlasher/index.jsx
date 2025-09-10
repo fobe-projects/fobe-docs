@@ -35,7 +35,11 @@ const EspFlasher = ({ isShow, onClose, packageInfo, targetChip }) => {
       termRef.current.clear();
     }
     if (packageInfo.pkg) {
-      const ignore_str_idx = packageInfo.pkg.lastIndexOf(".tar.xz");
+      let pkg_type = ".tar.xz";
+      if (packageInfo.ascription == "Meshtastic") {
+        pkg_type = ".bin";
+      }
+      const ignore_str_idx = packageInfo.pkg.lastIndexOf(pkg_type);
       setHeaderLabel(
         `${packageInfo.ascription} - ${packageInfo.pkg.slice(0, ignore_str_idx)}`,
       );

@@ -23,12 +23,23 @@ export function useFirmwareManager() {
           } else if (ascription.toLowerCase() === "meshtastic") {
             firmware_url = `${firmware_url}/meshtastic/${dir}/firmware-${boardID.toLowerCase()}-${pkg}`;
 
+            const response = await fetch(firmware_url);
+            if (!response.ok) {
+              throw new Error(`Download error: ${response.status}`);
+            }
+            const arrayBuffer = await response.arrayBuffer();
+            const buffer = new Uint8Array(arrayBuffer);
+            const blob = new Blob([buffer], {
+              type: "application/octet-stream",
+            });
+            const url = URL.createObjectURL(blob);
+
             const ldi = firmware_url.lastIndexOf(".");
             fileCache.current.set(firmware_url.slice(ldi + 1), {
               name: firmware_url.split("/").pop(),
-              url: firmware_url,
+              url,
+              buffer,
             });
-            fetchedPackage.current = pkg;
             resolve(fileCache.current);
             return;
           }
