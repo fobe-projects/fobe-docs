@@ -1,23 +1,23 @@
 {
-  "id": "fobe_quill_nrf52840_mesh",
-  "name": "FoBE Quill NRF52840 Mesh",
+  "id": "fobe_idea_mesh_tracker_c1",
+  "name": "FoBE Idea Mesh Tracker C1",
   "manufacturer": "FoBE",
-  "image": "/img/products/f1101-r1a.main.png",
+  "image": "/img/products/f2102-r1lg.main.png",
   "mcu": "NRF52840",
   "features": ["NFC", "Bluetooth"],
   "circuitpython": {
-    "id": "fobe_quill_nrf52840_mesh",
+    "id": "fobe_idea_mesh_tracker_c1",
     "enabled": true,
     "packages": ["uf2", "hex", "bin"],
     "variants": []
   },
   "meshtastic": {
-    "id": "FOBE_QUILL_NRF52840_MESH",
+    "id": "fobe_idea_mesh_tracker_c1",
     "enabled": true,
     "packages": ["uf2"]
   },
   "micropython": {
-    "id": "FOBE_QUILL_NRF52840_MESH",
+    "id": "FOBE_IDEA_MESH_TRACKER_C1",
     "enabled": true,
     "packages": ["uf2", "hex"]
   }

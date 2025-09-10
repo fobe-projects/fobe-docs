@@ -10,5 +10,11 @@
     "name": "FoBE Quill ESP32S3 Mesh",
     "manufacturer": "Fobe",
     "image": "/img/products/f1102-r1a.main.png"
+  },
+  {
+    "id": "fobe_idea_mesh_tracker_c1",
+    "name": "FoBE Idea Mesh Tracker C1",
+    "manufacturer": "Fobe",
+    "image": "/img/products/f2102-r1lg.main.png"
   }
 ]

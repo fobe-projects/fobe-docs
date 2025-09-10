@@ -148,17 +148,13 @@ const FirmwareCard = ({
           </p>
 
           <div className={styles.boardFirmwareNote}>
-            {ascription.toLowerCase() == "meshtastic" ? (
-              <p />
-            ) : (
-              <a
-                href={`https://github.com/fobe-projects/${ascription}/releases/tag/${selectedRelease.dir}`}
-                target="_blank"
-                rel="noreferrer"
-              >
-                Release Notes
-              </a>
-            )}
+            <a
+              href={`https://github.com/fobe-projects/${ascription == "Meshtastic" ? "meshtastic-firmware" : ascription}/releases/tag/${selectedRelease.dir}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Release Notes
+            </a>
 
             <div>
               <span>{selectedRelease.tag_name}</span>

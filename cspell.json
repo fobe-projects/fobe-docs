@@ -45,7 +45,15 @@
     "UART",
     "lipoly",
     "Qwiic",
-    "makergo"
+    "makergo",
+    "SWDIO",
+    "SWCLK",
+    "IPEX",
+    "Espressif",
+    "Xtensa",
+    "PSRAM",
+    "TWAI",
+    "JTAG"
   ],
   "allowCompoundWords": true,
   "useGitignore": true,
