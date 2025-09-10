@@ -89,7 +89,7 @@ const Board = ({ board }) => {
               experimenting and learning to code on low-cost microcontroller
               boards, This is the firmware of CircuitPython that will work with
               the <b>${board.name}</b> Board.`}
-            gitUrl="https://github.com/adafruit/circuitpython"
+            gitUrl="https://github.com/fobe-projects/circuitpython"
             officialUrl="https://circuitpython.org/"
             boardAscription={board.circuitpython}
             releases={circuitpythonReleases}
@@ -145,6 +145,19 @@ const Flasher = (args) => {
   const [boards, setBoards] = useState([]);
   const [boardData, setBoardData] = useState({});
 
+  const [displayBoards, setDisplayBoards] = useState([]);
+
+  const onSearchChange = (e) => {
+    const keyword = e.target.value.toLowerCase();
+    const filteredBoards = boards.filter(
+      (board) =>
+        board.name.toLowerCase().includes(keyword) ||
+        board.manufacturer.toLowerCase().includes(keyword),
+    );
+    setDisplayBoards(filteredBoards);
+    if (keyword === "") setDisplayBoards(boards);
+  };
+
   const loadBoardData = async (id) => {
     setLoading(true);
     try {
@@ -190,7 +203,10 @@ const Flasher = (args) => {
 
     fetch(args.boards_path)
       .then((res) => res.json())
-      .then((data) => setBoards(data))
+      .then((data) => {
+        setBoards(data);
+        setDisplayBoards(data);
+      })
       .catch(() => setBoards([]))
       .finally(() => setLoading(false));
 
@@ -206,8 +222,14 @@ const Flasher = (args) => {
     <>
       <header>
         <h1>Firmware Hub</h1>
+        <input
+          type="text"
+          placeholder="Search boards..."
+          id="board-search"
+          onChange={onSearchChange}
+        />
       </header>
-      <BoardGrid boards={boards} />
+      <BoardGrid boards={displayBoards} />
       <Monitor />
     </>
   ) : (
