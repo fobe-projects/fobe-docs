@@ -8,19 +8,7 @@ import remarkGfm from "remark-gfm";
 
 import styles from "./styles.module.css";
 
-const BoardGrid = ({ path }) => {
-  const [boards, setBoards] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setLoading(true);
-    fetch(path)
-      .then((res) => res.json())
-      .then((data) => setBoards(data))
-      .catch(() => setBoards([]))
-      .finally(() => setLoading(false));
-  }, [path]);
-
+const BoardGrid = ({ boards }) => {
   const handleBoardClick = (board) => {
     const urlParams = new URLSearchParams(window.location.search);
     urlParams.set("id", board.id);
@@ -28,10 +16,6 @@ const BoardGrid = ({ path }) => {
     window.history.pushState(null, "", newUrl);
     window.dispatchEvent(new Event("urlchange"));
   };
-
-  if (loading) {
-    return <p>Loading boards…</p>;
-  }
 
   return (
     <section className={styles.boardGrid}>
@@ -58,10 +42,7 @@ const BoardGrid = ({ path }) => {
   );
 };
 
-const Board = ({ path }) => {
-  const [description, setDescription] = useState("");
-  const [boardAttr, setBoardAttr] = useState({});
-  const [loading, setLoading] = useState(true);
+const Board = ({ board }) => {
   const [isEsp32, setIsEsp32] = useState(false);
 
   const [showFlasher, setShowFlasher] = useState(false);
@@ -72,37 +53,14 @@ const Board = ({ path }) => {
   const [meshtasticReleases, setMeshtasticReleases] = useState([]);
 
   useEffect(() => {
-    setLoading(true);
+    setMicropythonReleases(releases.micropython);
+    setCircuitpythonReleases(releases.circuitpython);
+    setMeshtasticReleases(releases.meshtastic);
+  }, []);
 
-    (async () => {
-      try {
-        const [boardsData, markdownText] = await Promise.all([
-          fetch(`${path}/index.json`).then((res) => res.json()),
-          fetch(`${path}/README.md`).then((res) => res.text()),
-        ]);
-
-        setBoardAttr(boardsData);
-        setIsEsp32(boardsData.mcu.toLowerCase().includes("esp32"));
-        setDescription(markdownText);
-
-        setMicropythonReleases(releases.micropython);
-        setCircuitpythonReleases(releases.circuitpython);
-        setMeshtasticReleases(releases.meshtastic);
-
-        console.log("Loaded data");
-      } catch (err) {
-        console.error("load error", err);
-        setBoardAttr([]);
-        setDescription("");
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, [path]);
-
-  if (loading) {
-    return <p>Loading board ......</p>;
-  }
+  useEffect(() => {
+    setIsEsp32(board.mcu.toLowerCase().includes("esp32"));
+  }, [board]);
 
   const openFlasher = (packageInfo) => {
     setShowFlasher(true);
@@ -113,12 +71,12 @@ const Board = ({ path }) => {
     <div className={styles.board}>
       <div className={styles.boardDescription}>
         <div className={styles.boardDescriptionImage}>
-          <img src={boardAttr.image} alt={boardAttr.name} loading="lazy" />
-          <h1>{boardAttr.name}</h1>
+          <img src={board.image} alt={board.name} loading="lazy" />
+          <h1>{board.name}</h1>
         </div>
         <div className={styles.boardDescriptionContent}>
           <ReactMarkdown remarkPlugins={[remarkGfm]}>
-            {description}
+            {board.description}
           </ReactMarkdown>
         </div>
       </div>
@@ -130,10 +88,10 @@ const Board = ({ path }) => {
             description={`CircuitPython is a programming language designed to simplify
               experimenting and learning to code on low-cost microcontroller
               boards, This is the firmware of CircuitPython that will work with
-              the <b>${boardAttr.name}</b> Board.`}
+              the <b>${board.name}</b> Board.`}
             gitUrl="https://github.com/adafruit/circuitpython"
             officialUrl="https://circuitpython.org/"
-            boardAscription={boardAttr.circuitpython}
+            boardAscription={board.circuitpython}
             releases={circuitpythonReleases}
             isEsp32={isEsp32}
             onFlashClick={openFlasher}
@@ -146,10 +104,10 @@ const Board = ({ path }) => {
             description={`Micropython is a programming language designed to simplify
               experimenting and learning to code on low-cost microcontroller
               boards, This is the firmware of Micropython that will work with
-              the <b>${boardAttr.name}</b> Board.`}
+              the <b>${board.name}</b> Board.`}
             gitUrl="https://github.com/fobe-projects/micropython"
             officialUrl="https://micropython.org/"
-            boardAscription={boardAttr.micropython}
+            boardAscription={board.micropython}
             releases={micropythonReleases}
             isEsp32={isEsp32}
             onFlashClick={openFlasher}
@@ -162,7 +120,7 @@ const Board = ({ path }) => {
             description={`Meshtastic is a project that enables you to use inexpensive LoRa radios as a long range off-grid communication platform in areas without existing or reliable communications infrastructure.`}
             gitUrl="https://github.com/fobe-projects/meshtastic-firmware"
             officialUrl="https://meshtastic.org/"
-            boardAscription={boardAttr.meshtastic}
+            boardAscription={board.meshtastic}
             releases={meshtasticReleases}
             isEsp32={isEsp32}
             onFlashClick={openFlasher}
@@ -173,7 +131,7 @@ const Board = ({ path }) => {
           isShow={showFlasher}
           onClose={() => setShowFlasher(false)}
           packageInfo={flasherInfo}
-          targetChip={boardAttr.mcu}
+          targetChip={board.mcu}
         />
       </div>
     </div>
@@ -181,13 +139,37 @@ const Board = ({ path }) => {
 };
 
 const Flasher = (args) => {
-  const [id, setId] = useState(null);
+  const [boardId, setBoardId] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const [boards, setBoards] = useState([]);
+  const [boardData, setBoardData] = useState({});
+
+  const loadBoardData = async (id) => {
+    setLoading(true);
+    try {
+      const [boardObj, markdownText] = await Promise.all([
+        fetch(`/boards/${id}/index.json`).then((res) => res.json()),
+        fetch(`/boards/${id}/README.md`).then((res) => res.text()),
+      ]);
+      boardObj.description = markdownText;
+      setBoardData(boardObj);
+    } catch (err) {
+      console.error(`load board: ${id} error`, err);
+      setBoardData([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const handleUrlChange = () => {
       const urlParams = new URLSearchParams(window.location.search);
       const id = urlParams.get("id");
-      setId(id);
+      if (id) {
+        loadBoardData(id);
+      }
+      setBoardId(id);
     };
 
     const wrapHistoryMethod = (type) => {
@@ -206,18 +188,27 @@ const Flasher = (args) => {
 
     handleUrlChange();
 
+    fetch(args.boards_path)
+      .then((res) => res.json())
+      .then((data) => setBoards(data))
+      .catch(() => setBoards([]))
+      .finally(() => setLoading(false));
+
     return () => {
       window.removeEventListener("urlchange", handleUrlChange);
       window.removeEventListener("popstate", handleUrlChange);
     };
   }, []);
-  return id == null ? (
+
+  return loading ? (
+    <p>Loading boards…</p>
+  ) : boardId == null ? (
     <>
-      <BoardGrid path={args.boards_path} />
+      <BoardGrid boards={boards} />
       <Monitor />
     </>
   ) : (
-    <Board path={`/boards/${id}`} />
+    <Board board={boardData} />
   );
 };
 
