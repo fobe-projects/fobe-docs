@@ -7,7 +7,7 @@
 
 .container {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(5, minmax(190px, 1fr));
   gap: var(--spacer-3);
   width: 100%;
 }
@@ -31,8 +31,8 @@
   color: inherit !important;
   display: flex;
   flex-direction: column;
-  min-height: 200px;
-  height: 200px;
+  min-height: 300px;
+  height: 300px;
   font-size: var(--font-size-sm);
   transition: border-color, box-shadow, 0.3s;
 }
@@ -119,21 +119,19 @@
 }
 
 .boardGridImage {
-  aspect-ratio: 1 / 1;
-  width: 100%;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  height: 220px;
+  position: relative;
+  flex-shrink: 0;
 }
 
 .boardGridImage img {
+  position: absolute;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
   border-radius: 0.32rem 0.32rem 0 0;
-  display: block;
 }
 
 .board {
