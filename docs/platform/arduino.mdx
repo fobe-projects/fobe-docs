@@ -1,8 +1,65 @@
 ---
 title: Arduino
 sidebarLabel: Arduino
+hide_title: true
 ---
 
-:::warning
-This page is under construction.
-:::
+<br/><div style={{ textAlign: 'left' }}><img src="/img/apps/arduino.logo.png" alt="Arduino" style={{ width: '120px', height: 'auto' }} /></div><br/>
+
+Arduino is an open-source electronics platform based on easy-to-use hardware and software. It's intended for anyone making interactive projects.
+
+### FoBE Studio Package for Arduino
+
+[![Website](https://img.shields.io/website?url=https%3A//fobe-projects.github.io/)](https://img.shields.io/website?url=https%3A//fobe-projects.github.io/)
+
+This repository contains custom `package_fobe_index.json` files that can be used to add new third-party boards to the Arduino v1.6.4+ IDE through the Board Manager.
+
+## Quick Start
+
+### Step 1: Copy the Package Index URL
+
+```text
+https://fobe-projects.github.io/arduino/package_fobe_index.json
+```
+
+### Step 2: Add to Arduino IDE
+
+1. Open Arduino IDE
+2. Go to **File** → **Preferences**
+3. In the "Additional Boards Manager URLs" field, paste the URL above
+4. If you already have other URLs, separate them with commas
+5. Click **OK**
+
+### Step 3: Install Board Package
+
+1. Go to **Tools** → **Board** → **Boards Manager**
+2. Search for "FoBE" or the specific board you want
+3. Click **Install** on the desired board package
+4. Wait for the installation to complete
+
+## Requirements
+
+- Arduino IDE version 1.6.4 or higher
+- Internet connection for downloading board packages
+
+## Additional Resources
+
+### Official Arduino Documentation
+
+- [Arduino IDE Board Manager Guide](https://docs.arduino.cc/software/ide-v2/tutorials/ide-v2-board-manager/)
+- [Arduino Package Index Format](https://docs.arduino.cc/arduino-cli/package_index_json-specification/)
+
+### Third-Party Board Resources
+
+- [Unofficial list of 3rd party boards support URLs](https://github.com/arduino/Arduino/wiki/Unofficial-list-of-3rd-party-boards-support-urls)
+- [ESP32 Arduino Core](https://github.com/espressif/arduino-esp32)
+- [ESP8266 Arduino Core](https://github.com/esp8266/Arduino)
+
+## Contributing
+
+If you have suggestions for improving this package index or want to report issues:
+
+1. Open an issue [nRF52](https://github.com/fobe-projects/fobe-nrf52-arduino/issues) / [ESP32](https://github.com/fobe-projects/fobe-esp32-arduino/issues)
+2. Fork the repository
+3. Create a feature branch
+4. Submit a pull request

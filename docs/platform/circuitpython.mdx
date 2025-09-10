@@ -1,27 +1,29 @@
 ---
-title: MicroPython
-sidebarLabel: MicroPython
+title: CircuitPython
+sidebarLabel: CircuitPython
 hide_title: true
 ---
 
-<br/><div style={{ textAlign: 'left' }}><img src="/img/apps/micropython.logo.jpg" alt="MicroPython" style={{ width: '120px', height: 'auto' }} /></div><br/>
+<br/>
+<div style={{ textAlign: 'left' }}>
+    <img src="/img/apps/circuitpython.logo.png" alt="CircuitPython" style={{ width: '180px', height: 'auto' }} />
+</div>
+<br/>
 
-
-[MicroPython](https://micropython.org) is a lean and efficient implementation of the Python 3
-programming language that includes a small subset of the Python standard library and is
-optimised to run on microcontrollers and in constrained environments.
+[CircuitPython](https://circuitpython.org) CircuitPython is a programming language designed to
+simplify experimenting and learning to code on low-cost microcontroller boards.
 
 ## Compatible
 
-[FoBE Studio MicroPython](https://github.com/fobe-projects/micropython) is a fork of the
-official MicroPython repository with additional features and optimizations for FoBE hardware.
+[FoBE Studio CircuitPython](https://github.com/fobe-projects/circuitpython) is a fork of the
+official CircuitPython repository with additional features and optimizations for FoBE hardware.
 
-- [GitHub Releases](https://github.com/fobe-projects/micropython/releases) - Get Firmware from GitHub Releases.
+- [GitHub Releases](https://github.com/fobe-projects/circuitpython/releases) - Get Firmware from GitHub Releases.
 - [Firmware Hub](/firmware-hub) - Get or Flash Firmware via Web Interface from FoBE Firmware Hub.
 
 ## Install
 
-To install the MicroPython firmware, follow these steps:
+To install the CircuitPython firmware, follow these steps:
 
 ### BIN with ESPTool
 
@@ -36,7 +38,7 @@ Program your board using the ```esptool.py``` program, found
 
     1. Download the **firmware** file with the `.bin` extension.
     2. Connect the **board** to your computer using a **USB-C** cable.
-    3. If you are putting **MicroPython** on your board for the first time then you should first **erase** the entire flash using:
+    3. If you are putting **CircuitPython** on your board for the first time then you should first **erase** the entire flash using:
     ```bash
     python3 -m esptool erase-flash
     ```
@@ -46,7 +48,7 @@ Program your board using the ```esptool.py``` program, found
     write-flash --flash-mode dio --flash-size 4MB --flash-freq 80m 0x0 <path_to_firmware.bin>
     ```
     Replace `<path_to_firmware.bin>` with the path to the downloaded `.bin` file.
-    5. After flashing, the device should reboot automatically. If it does not, press the **RESET** button on the board to start the **MicroPython** firmware.
+    5. After flashing, the device should reboot automatically. If it does not, press the **RESET** button on the board to start the **CircuitPython** firmware.
 
 ### UF2 with USB Storage
 
@@ -56,16 +58,21 @@ Compatible with the following development boards
 - **FoBE Quill nRF52840 Mesh**
 - **FoBE IDEA Mesh Tracker C1**
 
-To install the MicroPython firmware, follow these steps:
+To install the CircuitPython firmware, follow these steps:
 
     1. Download the **firmware** file with the `.uf2` extension.
     2. Connect the **board** Mesh to your computer using a **USB-C** cable.
     3. **Double-click** the **reset button** on the device to enter **bootloader** mode.
 
-<br/><div style={{ textAlign: 'center' }}><img src="/img/screenshot/2025-07-21-10-48-27.png" alt="2025-07-21-10-48-27.png" style={{ width: '80%', height: 'auto' }} /></div><br/>
+<br/>
+<div style={{ textAlign: 'center' }}>
+    <img src="/img/screenshot/2025-07-21-10-48-27.png" alt="2025-07-21-10-48-27.png" style={{ width: '80%', height: 'auto' }} />
+</div>
+<br/>
 
     4. Copy the `.uf2` file to the device storage ```FOBEBOOT```.
-    5. After flashing, the device should reboot automatically. If it does not, press the **RESET** button on the board to start the **MicroPython** firmware.
+    5. After flashing, the device should reboot automatically. If it does not, press the **RESET**
+    button on the board to start the **CircuitPython** firmware.
 
 ### HEX with OpenOCD (CMSIS-DAP)
 Compatible with the following development boards
