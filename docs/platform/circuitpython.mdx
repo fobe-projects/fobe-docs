@@ -93,3 +93,33 @@ Hex files are used for programming the device using OpenOCD. Please make sure Op
     ```
 
     Replace `<path_to_firmware.hex>` with the path to the downloaded `.hex` file.
+
+## Creating an Application
+
+Quickly create a CircuitPython application
+
+```bash
+# Create a new directory for the project
+mkdir -p cpy-example
+cd cpy-example
+
+# Create a virtual environment
+python3 -m venv ./.venv
+
+# Activate the virtual environment
+source .venv/bin/activate
+
+# Install the required packages
+pip3 install adafruit-ampy
+
+# Create a new file named main.py
+echo "print('Hello, CircuitPython!')" > main.py
+
+# Copy the main.py file to the device
+ampy --port <board_port> put main.py :
+
+# Run the main.py file on the device
+ampy --port <board_port> run main.py
+```
+
+More information about the CircuitPython REPL can be found in the [CircuitPython documentation](https://learn.adafruit.com/welcome-to-circuitpython/the-repl).

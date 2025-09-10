@@ -48,233 +48,26 @@ You can follow the official guide of [PlatformIO](https://platformio.org/platfor
 
 ## MicroPython
 
-[MicroPython](https://micropython.org) is a lean and efficient implementation of the Python 3 programming language that includes a small subset of the Python standard library and is optimised to run on microcontrollers and in constrained environments.
+[MicroPython](https://micropython.org) is a lean and efficient implementation of the Python 3
+programming language that includes a small subset of the Python standard library and is
+optimised to run on microcontrollers and in constrained environments.
 
-The following describes how to program the FoBE Quill ESP32S3 Mesh with MicroPython.
+To flash and run the **MicroPython** onto your device, please refer to the instructions in [Platform MicroPython](/platform/micropython).
 
-#### Releases
+## CircuitPython
 
-[FoBE MicroPython Index](https://micropython.fobestudio.com/?path=firmwares/fobe_quill_esp32s3_mesh)
+[CircuitPython](https://circuitpython.org) is a version of Python designed to run on microcontrollers. It is based on MicroPython and includes additional features and libraries to simplify experimentation and learning.
 
-#### Preview builds
+To flash and run the **CircuitPython** onto your device, please refer to the instructions in [Platform CircuitPython](/platform/circuitpython).
 
-[v1.26.0-preview(2025-08-07).bin](https://raw.githubusercontent.com/fobe-projects/fobe-micropython-index/refs/heads/gh-pages/firmwares/fobe_quill_esp32s3_mesh/FOBE_QUILL_ESP32S3_MESH-20250807-v1.26.0-preview.bin) / [[.elf]](https://raw.githubusercontent.com/fobe-projects/fobe-micropython-index/refs/heads/gh-pages/firmwares/fobe_quill_esp32s3_mesh/FOBE_QUILL_ESP32S3_MESH-20250807-v1.26.0-preview.elf) / [[.map]](https://raw.githubusercontent.com/fobe-projects/fobe-micropython-index/refs/heads/gh-pages/firmwares/fobe_quill_esp32s3_mesh/FOBE_QUILL_ESP32S3_MESH-20250807-v1.26.0-preview.map)
-
-### Install
-
-To install the MicroPython firmware, follow these steps:
-
-#### BIN with esptool
-
-:::important
-Program your board using the esptool.py program, found [here](https://docs.espressif.com/projects/esptool/en/latest/esp32s3/).
-:::
-
-    1. Download the latest firmware file with the `.bin` extension.
-    2. Connect the FoBE Quill ESP32S3 Mesh to your computer using a USB-C cable.
-    3. If you are putting MicroPython on your board for the first time then you should first erase the entire flash using:
-    ```bash
-    python3 -m esptool erase-flash
-    ```
-    4. Flash the firmware to the device using the following command:
-    ```bash
-    python3 -m esptool --chip esp32s3 -b 921600 --before default-reset --after hard-reset \
-    write-flash --flash-mode dio --flash-size 4MB --flash-freq 80m 0x0 [firmware].bin
-    ```
-    5. The device will reboot automatically, and the MicroPython firmware will be installed.
-
-### Create a new project
-
-Quickly create a MicroPython project:
-
-```bash
-# Create a new directory for the project
-mkdir -p mpy-example
-cd mpy-example
-
-# Create a virtual environment
-python3 -m venv ./.venv
-
-# Activate the virtual environment
-source .venv/bin/activate
-
-# Install the required packages
-pip3 install mpremote
-
-# Create a new file named main.py
-echo "print('Hello, FoBE Quill ESP32S3 Mesh!')" > main.py
-
-# Copy the main.py file to the device
-mpremote cp main.py :
-
-# Run the main.py file on the device
-mpremote run main.py
-
-# Or you can use the REPL to run the code interactively
-mpremote repl
-```
-
-More information about the MicroPython REPL can be found in the [MicroPython documentation](https://docs.micropython.org/en/latest/reference/repl.html).
-
-## Zephyr RTOS
+## Zephyr
 
 The [Zephyr OS](https://zephyrproject.org) is based on a small-footprint kernel designed for use on resource-constrained and embedded systems: from simple embedded environmental sensors and LED wearables to sophisticated embedded controllers, smart watches, and IoT wireless applications.
 
-The following describes how to program the FoBE Quill ESP32S3 Mesh with Zephyr RTOS.
+To start the **Zephyr** firmware project onto your device, please refer to the instructions in
+[Platform Zephyr - Install](/platform/zephyr#setup).
 
-### Create a new project
-
-Before you start, make sure you have Python installed on your system.
-
-    1. Open **Visual Studio Code** and create a new folder for your project.
-
-    2. Create a virtual environment for the project:
-
-    ```bash
-    # Create a virtual environment
-    python3 -m venv .venv
-
-    # Activate the virtual environment
-    source .venv/bin/activate
-
-    # Install the required packages
-    pip install west
-    ```
-
-    3. Create `.west/config` file in the project directory with the following content:
-
-    ```ini
-    [manifest]
-    path = app
-    file = west.yml
-
-    [zephyr]
-    base = zephyr
-    ```
-    4. Create app folder and add some files like:
-
-    ```
-    .west/
-    └── config
-    app/
-    ├── CMakeLists.txt
-    ├── prj.conf
-    ├── west.yml
-    └── src
-        └── main.c
-    ```
-
-    Add `CMakeLists.txt` file with the following content:
-
-    ```cmake
-    cmake_minimum_required(VERSION 3.20.0)
-    find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
-    project(app)
-
-    target_sources(app PRIVATE src/main.c)
-    ```
-
-    Add `prj.conf` file with the following content:
-
-    ```ini
-    CONFIG_GPIO=y
-    ```
-
-    Add `west.yml` file with the following content:
-
-    ```yaml
-    manifest:
-    remotes:
-        - name: zephyr
-            url-base: https://github.com/zephyrproject-rtos
-        - name: fobe
-            url-base: https://github.com/fobe-projects
-    projects:
-        - name: zephyr
-            remote: zephyr
-            revision: main
-            path: zephyr
-            import: true
-        - name: fobe-zephyr-sdk
-            remote: fobe
-            path: fobe
-            revision: main
-    ```
-
-    Add `src/main.c` file with the following content:
-
-    ```c
-    #include <stdio.h>
-    #include <zephyr/kernel.h>
-    #include <zephyr/drivers/gpio.h>
-
-    /* 1000 msec = 1 sec */
-    #define SLEEP_TIME_MS 1000
-
-    /* The devicetree node identifier for the "led0" alias. */
-    #define LED0_NODE DT_ALIAS(led0)
-
-    /*
-    * A build error on this line means your board is unsupported.
-    * See the sample documentation for information on how to fix this.
-    */
-    static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
-
-    int main(void)
-    {
-        int ret;
-        bool led_state = true;
-
-        if (!gpio_is_ready_dt(&led)) {
-            return 0;
-        }
-
-        ret = gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
-        if (ret < 0) {
-            return 0;
-        }
-
-        while (1) {
-            ret = gpio_pin_toggle_dt(&led);
-            if (ret < 0) {
-                return 0;
-            }
-
-            led_state = !led_state;
-            printf("LED state: %s\n", led_state ? "ON" : "OFF");
-            k_msleep(SLEEP_TIME_MS);
-        }
-        return 0;
-    }
-    ```
-    5. Install and configure the Zephyr SDK:
-
-    ```bash
-    # Update the west workspace in your project directory, it will download the Zephyr SDK and other dependencies
-    west update
-
-    # Install packages required for building the project
-    west packages pip --install
-
-    # Install the Zephyr SDK
-    west sdk install
-    ```
-
-    6. Build and flash the project:
-
-    Put the device into bootloader mode (hold the BOOT button while pressing RESET), then run the following commands in the terminal:
-
-    ```bash
-    # Build the project for the FoBE Quill ESP32S3 Mesh board
-    west build -b quill_esp32s3_mesh/esp32s3/procpu ./app
-
-    # Flash the project to the board
-    west flash
-    ```
-
-    Now you have a simple LED blinking example (Zephyr RTOS Standalone project) running on the **FoBE Quill ESP32S3 Mesh**.
-    <div style={{ textAlign: 'center' }}><img src="/img/screenshot/2025-07-21-13-38-07.png" alt="2025-07-21-13-38-07.png" style={{ width: '100%', height: 'auto' }} /></div><br/>
-
-    More information about the **Zephyr RTOS** can be found in the [Zephyr documentation](https://docs.zephyrproject.org/latest/).
-
-    You can also explore the [FoBE Zephyr](https://github.com/fobe-projects/fobe-zephyr) for more details on using the **FoBE Zephyr SDK**.
+:::info
+Project Board ID for FoBE Quill ESP32S3 Mesh
+- ```quill_esp32s3_mesh/esp32s3/procpu```
+:::
