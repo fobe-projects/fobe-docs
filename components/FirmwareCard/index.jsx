@@ -34,7 +34,9 @@ const FirmwareCard = ({
         .filter((d) => {
           if (ascription == "Meshtastic") {
             return (
-              d.startsWith(`firmware-${boardID}`) && d.indexOf("zip") == -1
+              d.startsWith(`firmware-${boardID}`) &&
+              d.indexOf("zip") == -1 &&
+              d.indexOf("update") == -1
             );
           }
           return d.startsWith(boardID);
@@ -43,7 +45,7 @@ const FirmwareCard = ({
         .slice(-release_take)
         .forEach((d, idxx) => {
           if (ascription == "Meshtastic") {
-            const rel_val = d.slice(d.indexOf("-", 9) + 1);
+            const rel_val = d.slice(d.indexOf("-", 9) + 1); // 9 is "firmware-".length
             const ignore_str_idx = rel_val.lastIndexOf(".");
             versionOptions.push(
               <option
