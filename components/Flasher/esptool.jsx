@@ -3,8 +3,8 @@ import "xterm/css/xterm.css";
 import { ESPLoader, Transport } from "esptool-js";
 import React, { useEffect, useRef, useState } from "react";
 
-import { useFirmwareManager } from "../common/useFirmwareManager";
-import styles from "./styles.module.css";
+import styles from "./esptool.styles.module.css";
+import { useFirmwareManager } from "./useFirmwareManager";
 
 const EspFlasher = ({ isShow, onClose, packageInfo, targetChip }) => {
   const { fileCache, fetchedPackage, fetchFirmwares } = useFirmwareManager();

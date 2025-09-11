@@ -2,7 +2,7 @@ import "xterm/css/xterm.css";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
-import styles from "./styles.module.css";
+import styles from "./monitor.styles.module.css";
 
 // Constants
 const BAUD_RATES = [115200, 230400, 460800, 921600];

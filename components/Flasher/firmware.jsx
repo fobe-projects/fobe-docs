@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { FaExternalLinkAlt, FaGithub } from "react-icons/fa";
 
-import { useFirmwareManager } from "../common/useFirmwareManager";
-import styles from "./styles.module.css";
+import styles from "./firmware.styles.module.css";
+import { useFirmwareManager } from "./useFirmwareManager";
 
 const FirmwareCard = ({
   ascription,

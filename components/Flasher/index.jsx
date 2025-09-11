@@ -3,9 +3,9 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 import releases from "../../src/releases.json";
-import EspFlasher from "../EspFlasher";
-import FirmwareCard from "../FirmwareCard";
-import Monitor from "../Monitor";
+import EspFlasher from "./esptool";
+import FirmwareCard from "./firmware";
+import Monitor from "./monitor";
 import styles from "./styles.module.css";
 
 const BoardGrid = ({ boards }) => {
