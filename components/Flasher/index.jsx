@@ -220,17 +220,20 @@ const Flasher = (args) => {
     <p>Loading boards…</p>
   ) : boardId == null ? (
     <>
-      <header>
+      <header className={styles.header}>
         <h1>Firmware Hub</h1>
-        <input
-          type="text"
-          placeholder="Search boards..."
-          id="board-search"
-          onChange={onSearchChange}
-        />
+        <div className={styles.headerRow}>
+          <input
+            type="text"
+            placeholder="Search Boards"
+            id="board-search"
+            onChange={onSearchChange}
+            className={styles.boardSearch}
+          />
+          <Monitor />
+        </div>
       </header>
       <BoardGrid boards={displayBoards} />
-      <Monitor />
     </>
   ) : (
     <Board board={boardData} />

@@ -12,12 +12,24 @@
 }
 
 .modalContent {
-  background: var(--docsearch-modal-background);
+  background-color: var(--ifm-color-emphasis-0);
   padding: 20px;
-  border-radius: 8px;
-  max-width: 60%;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  animation: fadeIn 0.3s ease-in-out;
+  border-radius: var(--ifm-card-border-radius);
+  max-width: 80%;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--gray5);
+}
+
+.modalConsole {
+  background-color: var(--macaw-ui-black);
+  color: var(--macaw-ui-white);
+  font-family: "Courier New", Courier, monospace;
+  border-radius: var(--ifm-card-border-radius);
+  border: 1px solid var(--gray5);
+
+  > div {
+    padding: 16px !important;
+  }
 }
 
 .modalHeader {
@@ -38,32 +50,61 @@
 
     > label {
       display: flex;
-      align-items: center;
+      font-size: var(--font-size-base);
+      color: var(--gray12);
+      gap: 8px;
+      flex: 1;
+      max-width: 400px;
+      padding: 4px 16px;
+      border: 1px solid var(--gray5);
+      border-radius: var(--ifm-card-border-radius);
+      background-color: var(--ifm-color-emphasis-0);
+      font-size: var(--font-size-sm);
+      font-weight: 600;
+      color: var(--gray12);
+      box-shadow: var(--shadow-sm);
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 
       > select {
-        border-radius: 2rem;
-        letter-spacing: 0.35px;
-        transition: 0.2s;
-        border: var(--docsearch-text-color) 1px solid;
-        color: var(--docsearch-text-color);
-        background-color: var(--ifm-background-color);
+        cursor: pointer;
+        border: none;
+        background-color: var(--ifm-color-emphasis-0);
         font-size: var(--font-size-sm);
-        padding: 3px;
-        margin: 5px;
+        font-weight: 600;
+        color: var(--gray12);
+        transition:
+          border-color 0.2s ease,
+          box-shadow 0.2s ease;
       }
     }
 
+    > label:hover {
+      outline: none;
+      border-color: var(--ifm-color-primary);
+    }
+
     > button {
-      padding: 5px;
-      border-radius: 2rem;
-      font-weight: 600;
-      letter-spacing: 0.35px;
-      transition: 0.2s;
-      border: var(--docsearch-text-color) 1px solid;
-      background-color: var(--macaw-ui-black);
-      color: var(--macaw-ui-white);
+      cursor: pointer;
+      flex: 1;
+      max-width: 400px;
+      padding: 8px 16px;
+      border: 1px solid var(--gray5);
+      border-radius: var(--ifm-card-border-radius);
+      background-color: var(--ifm-color-emphasis-0);
       font-size: var(--font-size-sm);
-      width: 100%;
+      font-weight: 600;
+      color: var(--gray12);
+      box-shadow: var(--shadow-sm);
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    > button:hover {
+      outline: none;
+      border-color: var(--ifm-color-primary);
     }
   }
 }
@@ -74,16 +115,25 @@
 }
 
 .modalTrigger {
-  margin-top: 20px;
   > button {
-    padding: 5px;
-    border-radius: 2rem;
-    font-weight: 600;
-    letter-spacing: 0.35px;
-    transition: 0.2s;
-    border: var(--docsearch-text-color) 1px solid;
-    background-color: var(--macaw-ui-black);
-    color: var(--macaw-ui-white);
-    font-size: var(--font-size-sm);
+    cursor: pointer;
+    flex: 1;
+    max-width: 400px;
+    padding: 12px 16px;
+    border: 1px solid var(--gray5);
+    border-radius: var(--ifm-card-border-radius);
+    background-color: var(--ifm-color-emphasis-0);
+    font-size: var(--font-size-base);
+    font-weight: 400;
+    color: var(--gray12);
+    box-shadow: var(--shadow-sm);
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  > button:hover {
+    outline: none;
+    border-color: var(--ifm-color-primary);
   }
 }

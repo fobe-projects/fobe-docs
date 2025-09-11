@@ -148,7 +148,7 @@ const Monitor = () => {
               <h3>Serial Monitor</h3>
               <div>
                 <label>
-                  BaudRate:
+                  BaudRate
                   <select
                     value={baudRate}
                     onChange={(e) => setBaudRate(Number(e.target.value))}
@@ -177,7 +177,11 @@ const Monitor = () => {
                 </span>
               </div>
             </div>
-            <div ref={terminalRef} id="monitor-terminal" />
+            <div
+              className={styles.modalConsole}
+              ref={terminalRef}
+              id="monitor-terminal"
+            />
           </div>
         </div>
       )}
