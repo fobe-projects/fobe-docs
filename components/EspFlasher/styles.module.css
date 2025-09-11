@@ -1,131 +1,161 @@
+/* ==========================================================================
+   Modal Base Styles
+   ========================================================================== */
+
 .modalOverlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
   z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .modalContent {
-  background: var(--docsearch-modal-background);
+  max-width: 80%;
   padding: 20px;
-  border-radius: 8px;
-  max-width: 60%;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  animation: fadeIn 0.3s ease-in-out;
+  background-color: var(--ifm-color-emphasis-0);
+  border: 1px solid var(--gray5);
+  border-radius: var(--ifm-card-border-radius);
+  box-shadow: var(--shadow-sm);
 }
+
+/* ==========================================================================
+   Modal Console
+   ========================================================================== */
+
+.modalConsole {
+  background-color: var(--macaw-ui-black);
+  color: var(--macaw-ui-white);
+  font-family: "Courier New", Courier, monospace;
+  border: 1px solid var(--gray5);
+  border-radius: var(--ifm-card-border-radius);
+}
+
+.modalConsole > div {
+  padding: 16px !important;
+}
+
+/* ==========================================================================
+   Modal Header
+   ========================================================================== */
 
 .modalHeader {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: 12px;
-
-  > h3 {
-    margin: unset;
-  }
 }
+
+.modalHeader > h3 {
+  margin: 0;
+  padding-right: 20px;
+}
+
+.modalHeader > div {
+  display: flex;
+  align-items: center;
+  width: 75%;
+  gap: 8px;
+}
+
+/* ==========================================================================
+   Form Controls (Shared Styles)
+   ========================================================================== */
+
+.modalHeader > div > label,
+.modalHeader > div > button,
+.modalTrigger > button {
+  flex: 1;
+  max-width: 400px;
+  border: 1px solid var(--gray5);
+  border-radius: var(--ifm-card-border-radius);
+  background-color: var(--ifm-color-emphasis-0);
+  color: var(--gray12);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  justify-content: space-between;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.modalHeader > div > label:hover,
+.modalHeader > div > button:hover,
+.modalTrigger > button:hover {
+  outline: none;
+  border-color: var(--ifm-color-primary);
+}
+
+/* ==========================================================================
+   Label Specific Styles
+   ========================================================================== */
+
+.modalHeader > div > label {
+  display: flex;
+  align-items: center;
+  padding: 5px 8px;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.modalHeader > div > label > select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: none;
+  background-color: var(--ifm-color-emphasis-0);
+  color: var(--gray12);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+/* ==========================================================================
+   Button Specific Styles
+   ========================================================================== */
+
+.modalHeader > div > button {
+  padding: 8px 16px;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.modalTrigger > button {
+  padding: 12px 16px;
+  font-size: var(--font-size-base);
+  font-weight: 400;
+}
+
+/* ==========================================================================
+   Close Button
+   ========================================================================== */
 
 .closeButton {
-  font-size: 1.5rem;
+  border: 1px solid var(--gray5);
+  border-radius: var(--ifm-card-border-radius);
+  background-color: var(--ifm-color-emphasis-0);
+  color: var(--gray12);
+  box-shadow: var(--shadow-sm);
   cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+  padding: auto;
+  padding: 5px;
+  margin-left: 8px;
+  width: 32px;
+  font-size: var(--font-size-base);
 }
 
-.modalBody {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-
-  > div {
-    display: flex;
-    justify-content: space-between;
-
-    > label:first-child {
-      flex-grow: 2;
-      > select {
-        border-radius: 2rem;
-        letter-spacing: 0.35px;
-        transition: 0.2s;
-        border: var(--docsearch-text-color) 1px solid;
-        color: var(--docsearch-text-color);
-        background-color: var(--ifm-background-color);
-        font-size: var(--font-size-sm);
-        padding: 3px;
-        margin: 5px;
-        width: 50%;
-      }
-    }
-  }
-
-  > button {
-    border-radius: 2rem;
-    font-weight: 600;
-    letter-spacing: 0.35px;
-    transition: 0.2s;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-    border: var(--docsearch-text-color) 1px solid;
-    background-color: var(--macaw-ui-black);
-    color: var(--macaw-ui-white);
-    font-size: var(--font-size-sm);
-    width: 100%;
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.toggleSwitch {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  > input {
-    display: none;
-  }
-}
-
-.slider {
-  position: relative;
-  width: 40px;
-  height: 20px;
-  background: #ccc;
-  border-radius: 20px;
-  cursor: pointer;
-}
-
-.slider::before {
-  content: "";
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  top: 2px;
-  left: 2px;
-  background: var(--macaw-ui-black);
-  border-radius: 50%;
-  transition: transform 0.2s ease;
-}
-
-input:checked + .slider::before {
-  transform: translateX(20px);
-  background: var(--highlight);
-}
-
-.labelText {
-  font-size: 0.9rem;
-  color: var(--docsearch-text-color);
+.closeButton:hover {
+  outline: none;
+  border-color: var(--ifm-color-primary);
 }

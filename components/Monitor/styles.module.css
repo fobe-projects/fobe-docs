@@ -1,139 +1,158 @@
+/* ==========================================================================
+   Modal Base Styles
+   ========================================================================== */
+
 .modalOverlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
   z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .modalContent {
-  background-color: var(--ifm-color-emphasis-0);
-  padding: 20px;
-  border-radius: var(--ifm-card-border-radius);
   max-width: 80%;
-  box-shadow: var(--shadow-sm);
+  padding: 20px;
+  background-color: var(--ifm-color-emphasis-0);
   border: 1px solid var(--gray5);
+  border-radius: var(--ifm-card-border-radius);
+  box-shadow: var(--shadow-sm);
 }
+
+/* ==========================================================================
+   Modal Console
+   ========================================================================== */
 
 .modalConsole {
   background-color: var(--macaw-ui-black);
   color: var(--macaw-ui-white);
   font-family: "Courier New", Courier, monospace;
-  border-radius: var(--ifm-card-border-radius);
   border: 1px solid var(--gray5);
-
-  > div {
-    padding: 16px !important;
-  }
+  border-radius: var(--ifm-card-border-radius);
 }
+
+.modalConsole > div {
+  padding: 16px !important;
+}
+
+/* ==========================================================================
+   Modal Header
+   ========================================================================== */
 
 .modalHeader {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: 12px;
-
-  > h3 {
-    margin: unset;
-  }
-
-  > div {
-    display: flex;
-    width: 50%;
-    align-items: center;
-    gap: 20px;
-
-    > label {
-      display: flex;
-      font-size: var(--font-size-base);
-      color: var(--gray12);
-      gap: 8px;
-      flex: 1;
-      max-width: 400px;
-      padding: 4px 16px;
-      border: 1px solid var(--gray5);
-      border-radius: var(--ifm-card-border-radius);
-      background-color: var(--ifm-color-emphasis-0);
-      font-size: var(--font-size-sm);
-      font-weight: 600;
-      color: var(--gray12);
-      box-shadow: var(--shadow-sm);
-      transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
-
-      > select {
-        cursor: pointer;
-        border: none;
-        background-color: var(--ifm-color-emphasis-0);
-        font-size: var(--font-size-sm);
-        font-weight: 600;
-        color: var(--gray12);
-        transition:
-          border-color 0.2s ease,
-          box-shadow 0.2s ease;
-      }
-    }
-
-    > label:hover {
-      outline: none;
-      border-color: var(--ifm-color-primary);
-    }
-
-    > button {
-      cursor: pointer;
-      flex: 1;
-      max-width: 400px;
-      padding: 8px 16px;
-      border: 1px solid var(--gray5);
-      border-radius: var(--ifm-card-border-radius);
-      background-color: var(--ifm-color-emphasis-0);
-      font-size: var(--font-size-sm);
-      font-weight: 600;
-      color: var(--gray12);
-      box-shadow: var(--shadow-sm);
-      transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
-    }
-
-    > button:hover {
-      outline: none;
-      border-color: var(--ifm-color-primary);
-    }
-  }
 }
+
+.modalHeader > h3 {
+  margin: 0;
+}
+
+.modalHeader > div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ==========================================================================
+   Form Controls (Shared Styles)
+   ========================================================================== */
+
+.modalHeader > div > label,
+.modalHeader > div > button,
+.modalTrigger > button {
+  max-width: 400px;
+  border: 1px solid var(--gray5);
+  border-radius: var(--ifm-card-border-radius);
+  background-color: var(--ifm-color-emphasis-0);
+  color: var(--gray12);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  justify-content: space-between;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.modalHeader > div > label:hover,
+.modalHeader > div > button:hover,
+.modalTrigger > button:hover {
+  outline: none;
+  border-color: var(--ifm-color-primary);
+}
+
+/* ==========================================================================
+   Label Specific Styles
+   ========================================================================== */
+
+.modalHeader > div > label {
+  display: flex;
+  align-items: center;
+  padding: 5px 16px;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.modalHeader > div > label > select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: none;
+  background-color: var(--ifm-color-emphasis-0);
+  color: var(--gray12);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+/* ==========================================================================
+   Button Specific Styles
+   ========================================================================== */
+
+.modalHeader > div > button {
+  padding: 8px 8px;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.modalTrigger > button {
+  padding: 12px 16px;
+  font-size: var(--font-size-base);
+  font-weight: 400;
+}
+
+/* ==========================================================================
+   Close Button
+   ========================================================================== */
 
 .closeButton {
-  font-size: 1.5rem;
+  border: 1px solid var(--gray5);
+  border-radius: var(--ifm-card-border-radius);
+  background-color: var(--ifm-color-emphasis-0);
+  color: var(--gray12);
+  box-shadow: var(--shadow-sm);
   cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+  padding: auto;
+  padding: 5px;
+  margin-left: 8px;
+  width: 32px;
+  font-size: var(--font-size-base);
 }
 
-.modalTrigger {
-  > button {
-    cursor: pointer;
-    flex: 1;
-    max-width: 400px;
-    padding: 12px 16px;
-    border: 1px solid var(--gray5);
-    border-radius: var(--ifm-card-border-radius);
-    background-color: var(--ifm-color-emphasis-0);
-    font-size: var(--font-size-base);
-    font-weight: 400;
-    color: var(--gray12);
-    box-shadow: var(--shadow-sm);
-    transition:
-      border-color 0.2s ease,
-      box-shadow 0.2s ease;
-  }
-
-  > button:hover {
-    outline: none;
-    border-color: var(--ifm-color-primary);
-  }
+.closeButton:hover {
+  outline: none;
+  border-color: var(--ifm-color-primary);
 }

@@ -182,15 +182,9 @@ const EspFlasher = ({ isShow, onClose, packageInfo, targetChip }) => {
           <div className={styles.modalContent}>
             <div className={styles.modalHeader}>
               <h3>{headerLabel}</h3>
-              <span className={styles.closeButton} onClick={closeModal}>
-                &times;
-              </span>
-            </div>
-
-            <div className={styles.modalBody}>
               <div>
                 <label>
-                  Baud Rate:
+                  Baud Rate
                   <select
                     value={baudRate}
                     onChange={(e) => setBaudRate(Number(e.target.value))}
@@ -201,24 +195,24 @@ const EspFlasher = ({ isShow, onClose, packageInfo, targetChip }) => {
                     <option value={921600}>921600</option>
                   </select>
                 </label>
-
                 <label className={styles.toggleSwitch}>
+                  <span className={styles.labelText}>Perform full erase</span>
                   <input
                     type="checkbox"
                     checked={erase}
                     onChange={(e) => setErase(e.target.checked)}
                   />
-                  <span className={styles.slider}></span>
-                  <span className={styles.labelText}>Perform full erase</span>
                 </label>
+                <button onClick={flashESP32} disabled={flashing}>
+                  {flashing ? "Flashing ⏳" : "Flash"}
+                </button>
               </div>
-
-              <button onClick={flashESP32} disabled={flashing}>
-                {flashing ? "Flashing... ⏳" : "Start flash"}
+              <button className={styles.closeButton} onClick={closeModal}>
+                &times;
               </button>
-
-              <div ref={terminalRef} className={styles.terminal} />
             </div>
+
+            <div ref={terminalRef} className={styles.modalConsole} />
           </div>
         </div>
       )}
