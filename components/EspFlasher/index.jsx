@@ -7,7 +7,7 @@ import { useFirmwareManager } from "../common/useFirmwareManager";
 import styles from "./styles.module.css";
 
 const EspFlasher = ({ isShow, onClose, packageInfo, targetChip }) => {
-  const { fileCache, fetchFirmwares } = useFirmwareManager();
+  const { fileCache, fetchedPackage, fetchFirmwares } = useFirmwareManager();
 
   const terminalRef = useRef(null);
   const termRef = useRef(null);
@@ -26,6 +26,13 @@ const EspFlasher = ({ isShow, onClose, packageInfo, targetChip }) => {
       setTerminalClass(() => mod.Terminal);
     });
   }, []);
+
+  const disconnect = () => {
+    if (transportRef.current) {
+      transportRef.current.disconnect().catch(() => {});
+      transportRef.current = null;
+    }
+  };
 
   useEffect(() => {
     if (isShow && TerminalClass && terminalRef.current && !termRef.current) {
@@ -47,20 +54,14 @@ const EspFlasher = ({ isShow, onClose, packageInfo, targetChip }) => {
 
     return () => {
       if (!isShow) {
-        if (transportRef.current) {
-          transportRef.current.disconnect().catch(() => {});
-          transportRef.current = null;
-        }
+        disconnect();
         termRef.current = null;
       }
     };
   }, [isShow, TerminalClass]);
 
   const closeModal = () => {
-    if (transportRef.current) {
-      transportRef.current.disconnect().catch(() => {});
-      transportRef.current = null;
-    }
+    disconnect();
     if (onClose) onClose();
   };
 
@@ -78,8 +79,18 @@ const EspFlasher = ({ isShow, onClose, packageInfo, targetChip }) => {
     term.clean = term.clear;
     term.writeLine = term.writeln;
 
+    const reset = async () => {
+      if (transportRef.current) {
+        term.writeln("Resetting device...");
+        await transportRef.current.setRTS(true);
+        await transportRef.current.setDTR(false);
+        await new Promise((resolve) => setTimeout(resolve, 100));
+        await transportRef.current.setDTR(true);
+        await transportRef.current.setRTS(false);
+      }
+    };
+
     try {
-      // 请求串口
       const port = await navigator.serial.requestPort();
       const transport = new Transport(port, true);
       transportRef.current = transport;
@@ -103,14 +114,19 @@ const EspFlasher = ({ isShow, onClose, packageInfo, targetChip }) => {
         term.writeln(
           `Chip not match between target(${targetChip}) and connected device(${loader.chip.CHIP_NAME})! Stop flash!`,
         );
-        await transportRef.current.disconnect();
+
+        await reset();
+        disconnect();
         return;
       }
 
       let content = packageInfo.buffer;
-      if (!content) content = fileCache.current.get("bin")?.buffer;
+      if (!content && fetchedPackage.current == packageInfo.pkg) {
+        // bin has been fetched
+        content = fileCache.current.get("bin")?.buffer;
+      }
       if (!content) {
-        // trigger download firmware
+        // fetchFirmwares called
         await fetchFirmwares({
           ascription: packageInfo.ascription,
           boardID: packageInfo.boardID,
@@ -146,11 +162,9 @@ const EspFlasher = ({ isShow, onClose, packageInfo, targetChip }) => {
       });
 
       term.writeln("Flash finished. Disconnecting device.");
-      await transportRef.current.setRTS(true);
-      await new Promise((resolve) => setTimeout(resolve, 100));
-      await transportRef.current.setRTS(false);
-      await transportRef.current.disconnect();
-      transportRef.current = null;
+
+      await reset();
+      disconnect();
     } catch (error) {
       term.writeln(`FLASH ERROR: ${error.message}`);
     } finally {
