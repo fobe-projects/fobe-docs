@@ -185,16 +185,15 @@ const FirmwareCard = ({
               flasherAble ? (
                 <button onClick={onFlash}> Flash </button>
               ) : (
-                <a
+                <button
                   href="#"
-                  download
                   onClick={(e) => {
                     e.preventDefault();
                     handleDownload(boardAscription.packages[0]);
                   }}
                 >
                   Download {boardAscription.packages[0]}
-                </a>
+                </button>
               )
             ) : null}
           </div>
