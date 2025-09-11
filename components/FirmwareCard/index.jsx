@@ -19,6 +19,7 @@ const FirmwareCard = ({
 
   const [selectedRelease, setSelectRelease] = useState({});
   const [releaseOpts, setReleaseOpts] = useState([]);
+  const [serialSupport, setSerialSupport] = useState(false);
 
   const { fileCache, fetchedPackage, fetchFirmwares, loading } =
     useFirmwareManager();
@@ -81,6 +82,7 @@ const FirmwareCard = ({
       });
     }
 
+    setSerialSupport("serial" in navigator);
     if (isEsp32 && boardAscription.packages.some((pg) => pg === "bin")) {
       setFlasherAble(true);
     }
@@ -183,7 +185,13 @@ const FirmwareCard = ({
 
             {boardAscription.packages.length > 0 ? (
               flasherAble ? (
-                <button onClick={onFlash}> Flash </button>
+                serialSupport ? (
+                  <button onClick={onFlash}> Flash </button>
+                ) : (
+                  <button disabled>
+                    No serial support.Please use a different browser.
+                  </button>
+                )
               ) : (
                 <a
                   href="#"
