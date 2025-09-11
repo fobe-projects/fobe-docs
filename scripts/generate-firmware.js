@@ -1,7 +1,9 @@
+#!/usr/bin/env node
+
 const fs = require("fs");
 const path = require("path");
 
-const OUTPUT_DIR = path.join(__dirname, "..", "src", "");
+const OUTPUT_DIR = path.join(__dirname, "..", "static/boards", "");
 
 async function fetchFromApi(apiUrl) {
   const response = await fetch(apiUrl, {
@@ -113,12 +115,12 @@ async function main() {
     }
 
     const firmwareDirSha = await getFirmwareDirSha();
-    const repo_releases = await loadFileTree(firmwareDirSha);
+    const firmwareJson = await loadFileTree(firmwareDirSha);
 
-    const outputFile = path.join(OUTPUT_DIR, "releases.json");
-    fs.writeFileSync(outputFile, JSON.stringify(repo_releases, null, 2));
+    const outputFile = path.join(OUTPUT_DIR, "firmware.json");
+    fs.writeFileSync(outputFile, JSON.stringify(firmwareJson, null, 2));
     console.log(
-      `Successfully saved releases to ${path.relative(process.cwd(), outputFile)}`,
+      `Successfully saved firmware JSON to ${path.relative(process.cwd(), outputFile)}`,
     );
   } catch (error) {
     console.error("Error during script execution:", error);

@@ -1,0 +1,73 @@
+{
+  "circuitpython": [
+    {
+      "tag_name": "10.0.0-beta.3-4-gedb8ae8384",
+      "dir": "10.0.0-beta.3",
+      "prerelease": true,
+      "packages": [
+        "fobe_idea_mesh_tracker_c1-20250909-10.0.0-beta.3-4-gedb8ae8384.tar.xz",
+        "fobe_quill_esp32s3_mesh-20250909-10.0.0-beta.3-4-gedb8ae8384.tar.xz",
+        "fobe_quill_nrf52840_mesh-20250909-10.0.0-beta.3-4-gedb8ae8384.tar.xz"
+      ],
+      "updated_at": "2025-09-09"
+    },
+    {
+      "tag_name": "9.2.8",
+      "dir": "9.2.8",
+      "prerelease": false,
+      "packages": [
+        "fobe_idea_mesh_tracker_c1-20250904-9.2.8.tar.xz",
+        "fobe_quill_nrf52840_mesh-20250904-9.2.8.tar.xz"
+      ],
+      "updated_at": "2025-09-04"
+    }
+  ],
+  "meshtastic": [
+    {
+      "tag_name": "v2.7.8.65a738b",
+      "dir": "v2.7.8.65a738b",
+      "prerelease": false,
+      "packages": [
+        "Meshtastic_nRF52_factory_erase_v3_S140_6.1.0.uf2",
+        "Meshtastic_nRF52_factory_erase_v3_S140_7.3.0.uf2",
+        "bleota-s3.bin",
+        "device-install.bat",
+        "device-install.sh",
+        "device-update.bat",
+        "device-update.sh",
+        "firmware-fobe_idea_mesh_tracker_c1-2.7.8.65a738b-ota.zip",
+        "firmware-fobe_idea_mesh_tracker_c1-2.7.8.65a738b.uf2",
+        "firmware-fobe_quill_esp32s3_mesh-2.7.8.65a738b-update.bin",
+        "firmware-fobe_quill_esp32s3_mesh-2.7.8.65a738b.bin",
+        "firmware-fobe_quill_nrf52840_mesh-2.7.8.65a738b-ota.zip",
+        "firmware-fobe_quill_nrf52840_mesh-2.7.8.65a738b.uf2",
+        "littlefs-fobe_quill_esp32s3_mesh-2.7.8.65a738b.bin"
+      ],
+      "updated_at": ""
+    }
+  ],
+  "micropython": [
+    {
+      "tag_name": "v1.26.0",
+      "dir": "v1.26.0",
+      "prerelease": false,
+      "packages": [
+        "FOBE_IDEA_MESH_TRACKER_C1-20250904-v1.26.0.tar.xz",
+        "FOBE_QUILL_ESP32S3_MESH-20250904-v1.26.0.tar.xz",
+        "FOBE_QUILL_NRF52840_MESH-20250904-v1.26.0.tar.xz"
+      ],
+      "updated_at": "2025-09-04"
+    },
+    {
+      "tag_name": "v1.27.0-preview.112.g2545d91f4",
+      "dir": "v1.27.0-preview",
+      "prerelease": true,
+      "packages": [
+        "FOBE_IDEA_MESH_TRACKER_C1-20250909-v1.27.0-preview.112.g2545d91f4.tar.xz",
+        "FOBE_QUILL_ESP32S3_MESH-20250909-v1.27.0-preview.112.g2545d91f4.tar.xz",
+        "FOBE_QUILL_NRF52840_MESH-20250909-v1.27.0-preview.112.g2545d91f4.tar.xz"
+      ],
+      "updated_at": "2025-09-09"
+    }
+  ]
+}

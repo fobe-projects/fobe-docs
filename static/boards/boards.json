@@ -1,20 +1,20 @@
 [
   {
-    "id": "fobe_quill_nrf52840_mesh",
-    "name": "FoBE Quill NRF52840 Mesh",
-    "manufacturer": "Fobe",
-    "image": "/img/products/f1101.render.shot-box.r1a.png"
+    "id": "fobe_idea_mesh_tracker_c1",
+    "name": "FoBE Idea Mesh Tracker C1",
+    "manufacturer": "FoBE",
+    "image": "/img/products/f2102.render.shot-box.r1lg.png"
   },
   {
     "id": "fobe_quill_esp32s3_mesh",
     "name": "FoBE Quill ESP32S3 Mesh",
-    "manufacturer": "Fobe",
+    "manufacturer": "FoBE",
     "image": "/img/products/f1102.render.shot-box.r1a.png"
   },
   {
-    "id": "fobe_idea_mesh_tracker_c1",
-    "name": "FoBE Idea Mesh Tracker C1",
-    "manufacturer": "Fobe",
-    "image": "/img/products/f2102.render.shot-box.r1lg.png"
+    "id": "fobe_quill_nrf52840_mesh",
+    "name": "FoBE Quill NRF52840 Mesh",
+    "manufacturer": "FoBE",
+    "image": "/img/products/f1101.render.shot-box.r1a.png"
   }
 ]

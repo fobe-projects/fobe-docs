@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - main
-    # Review gh actions docs if you want to further define triggers, paths, etc
-    # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#on
+  schedule:
+    - cron: 0 12 * * *
 
 jobs:
   build:
@@ -22,10 +22,16 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-      - name: Run fetch-tag script before build
-        run: node scripts/fetch-tags.js
+
+      - name: Generate boards data
+        run: npm run generate-boards
+
+      - name: Generate firmware data
+        run: npm run generate-firmware
+
       - name: Build website
         run: npm run build
+
       - name: Upload Build Artifact
         uses: actions/upload-pages-artifact@v3
         with:
@@ -35,7 +41,6 @@ jobs:
     name: Deploy to GitHub Pages
     needs: build
 
-    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
     permissions:
       pages: write # to deploy to Pages
       id-token: write # to verify the deployment originates from an appropriate source

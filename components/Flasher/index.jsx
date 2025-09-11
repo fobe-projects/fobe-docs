@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
-import releases from "../../src/releases.json";
+import releases from "../../static/boards/firmware.json";
 import EspFlasher from "./esptool";
 import FirmwareCard from "./firmware";
 import Monitor from "./monitor";
@@ -138,7 +138,7 @@ const Board = ({ board }) => {
   );
 };
 
-const Flasher = (args) => {
+const Flasher = () => {
   const [boardId, setBoardId] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -162,7 +162,7 @@ const Flasher = (args) => {
     setLoading(true);
     try {
       const [boardObj, markdownText] = await Promise.all([
-        fetch(`/boards/${id}/index.json`).then((res) => res.json()),
+        fetch(`/boards/${id}/board.json`).then((res) => res.json()),
         fetch(`/boards/${id}/README.md`).then((res) => res.text()),
       ]);
       boardObj.description = markdownText;
@@ -201,7 +201,7 @@ const Flasher = (args) => {
 
     handleUrlChange();
 
-    fetch(args.boards_path)
+    fetch("/boards/boards.json")
       .then((res) => res.json())
       .then((data) => {
         setBoards(data);
