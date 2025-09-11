@@ -112,8 +112,8 @@ const FirmwareCard = ({
 
   const onFlash = () => {
     onFlashClick({
-      url: fileCache.current.get("bin")?.url, // 传给 flasher
-      buffer: fileCache.current.get("bin")?.buffer, // 直接 Uint8Array，也可以传
+      url: fileCache.current.get("bin")?.url,
+      buffer: fileCache.current.get("bin")?.buffer,
       boardID: boardID,
       ascription,
       pkg: selectedRelease.value,

@@ -13,6 +13,7 @@ export function useFirmwareManager() {
     return new Promise((resolve, reject) => {
       (async () => {
         setLoading(true);
+        fileCache.current = new Map();
         try {
           let firmware_url =
             "https://raw.githubusercontent.com/fobe-projects/fobe-projects.github.io/refs/heads/main/firmwares";
@@ -40,6 +41,7 @@ export function useFirmwareManager() {
               url,
               buffer,
             });
+            fetchedPackage.current = pkg;
             resolve(fileCache.current);
             return;
           }
