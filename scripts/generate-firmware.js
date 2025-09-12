@@ -69,11 +69,19 @@ async function loadFileTree(sha) {
       // Match style: v1.27.0-preview.97.g4dd4407d9
       let match1 = file_name.match(/(v[\d.]+-preview\.\d+.[^.]+)/);
       if (match1) matchKey = match1[1];
-      // Match style: 10.0.0-beta.3-2-g0c2a8f3219
-      let match2 = file_name.match(
-        /(\d+\.\d+\.\d+-beta\.\d+-+(?:\d+-g[0-9a-f]+)?)/i,
-      );
+      // Match style: v1.27.0-preview (simple preview without build number)
+      let match2 = file_name.match(/(v\d+\.\d+\.\d+-preview)(?!\.[\d])/);
       if (match2) matchKey = match2[1];
+      // Match style: 10.0.0-beta.3-2-g0c2a8f3219 or 10.0.0-beta.3
+      let match3 = file_name.match(
+        /(\d+\.\d+\.\d+-beta\.\d+)(?:-\d+-g[0-9a-f]+)?/i,
+      );
+      if (match3) matchKey = match3[1];
+      // Match style: v1.26.0-beta.1 or v1.26.0-alpha.1 or v1.26.0-rc.1
+      let match4 = file_name.match(
+        /(v\d+\.\d+\.\d+-(beta|alpha|rc)\.\d+)(?:-\d+-g[0-9a-f]+)?/i,
+      );
+      if (match4) matchKey = match4[1];
 
       if (matchKey) {
         const tarTag = resObj[dirLevel[0]].find((d) => d.tag_name == matchKey);

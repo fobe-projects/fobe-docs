@@ -1,25 +1,37 @@
 {
   "circuitpython": [
     {
-      "tag_name": "10.0.0-beta.3-4-gedb8ae8384",
+      "tag_name": "10.0.0-beta.3",
       "dir": "10.0.0-beta.3",
       "prerelease": true,
       "packages": [
-        "fobe_idea_mesh_tracker_c1-20250909-10.0.0-beta.3-4-gedb8ae8384.tar.xz",
-        "fobe_quill_esp32s3_mesh-20250909-10.0.0-beta.3-4-gedb8ae8384.tar.xz",
-        "fobe_quill_nrf52840_mesh-20250909-10.0.0-beta.3-4-gedb8ae8384.tar.xz"
+        "fobe_idea_mesh_tracker_c1-20250912-10.0.0-beta.3.tar.xz",
+        "fobe_quill_esp32s3_mesh-20250912-10.0.0-beta.3.tar.xz",
+        "fobe_quill_nrf52840_mesh-20250912-10.0.0-beta.3.tar.xz"
       ],
-      "updated_at": "2025-09-09"
+      "updated_at": "2025-09-12"
     },
     {
       "tag_name": "9.2.8",
       "dir": "9.2.8",
       "prerelease": false,
       "packages": [
-        "fobe_idea_mesh_tracker_c1-20250904-9.2.8.tar.xz",
-        "fobe_quill_nrf52840_mesh-20250904-9.2.8.tar.xz"
+        "fobe_idea_mesh_tracker_c1-20250912-9.2.8.tar.xz",
+        "fobe_quill_esp32s3_mesh-20250912-9.2.8.tar.xz",
+        "fobe_quill_nrf52840_mesh-20250912-9.2.8.tar.xz"
       ],
-      "updated_at": "2025-09-04"
+      "updated_at": "2025-09-12"
+    },
+    {
+      "tag_name": "9.2.9",
+      "dir": "9.2.9",
+      "prerelease": false,
+      "packages": [
+        "fobe_idea_mesh_tracker_c1-20250912-9.2.9.tar.xz",
+        "fobe_quill_esp32s3_mesh-20250912-9.2.9.tar.xz",
+        "fobe_quill_nrf52840_mesh-20250912-9.2.9.tar.xz"
+      ],
+      "updated_at": "2025-09-12"
     }
   ],
   "meshtastic": [
@@ -55,6 +67,17 @@
         "FOBE_IDEA_MESH_TRACKER_C1-20250904-v1.26.0.tar.xz",
         "FOBE_QUILL_ESP32S3_MESH-20250904-v1.26.0.tar.xz",
         "FOBE_QUILL_NRF52840_MESH-20250904-v1.26.0.tar.xz"
+      ],
+      "updated_at": "2025-09-04"
+    },
+    {
+      "tag_name": "v1.27.0-preview",
+      "dir": "v1.27.0-preview",
+      "prerelease": true,
+      "packages": [
+        "FOBE_IDEA_MESH_TRACKER_C1-20250904-v1.27.0-preview.tar.xz",
+        "FOBE_QUILL_ESP32S3_MESH-20250904-v1.27.0-preview.tar.xz",
+        "FOBE_QUILL_NRF52840_MESH-20250904-v1.27.0-preview.tar.xz"
       ],
       "updated_at": "2025-09-04"
     },
