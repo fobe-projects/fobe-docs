@@ -77,6 +77,7 @@ makuna/RTC@^2.5.0
 4. Copy the following code into your sketch or PlatformIO project:
 ```cpp
 #include <RtcPCF8563.h>
+#include <Wire.h>
 
 #define I2C_SDA_PIN PIN_MFP3    // SDA pin for MFP to I2C cable, change if needed
 #define I2C_SCL_PIN PIN_MFP4    // SCL pin for MFP to I2C cable, change if needed

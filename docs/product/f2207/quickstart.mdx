@@ -78,6 +78,7 @@ mikalhart/TinyGPSPlus@^1.1.0
 4. Copy the following code into your sketch or PlatformIO project:
 ```cpp
 #include <TinyGPSPlus.h>
+#include <SoftwareSerial.h>
 
 #define GNSS_BAUD 9600          // GNSS module baud rate
 #define GNSS_RX_PIN PIN_MFP1    // RX pin for GNSS communication, change if needed
