@@ -24,7 +24,8 @@
     "update-api-reference": "npm run generate-api-reference && npm run highlight-api-reference && npm run move-generated-reference",
     "check-spelling": "cspell '**/*.{jsx,js,md,mdx}'",
     "generate-boards": "node scripts/generate-boards.js",
-    "generate-firmware": "node scripts/generate-firmware.js"
+    "generate-firmware": "node scripts/generate-firmware.js",
+    "prune-screenshots": "node scripts/prune-screenshots.js"
   },
   "devDependencies": {
     "@docusaurus/core": "3.8.1",
