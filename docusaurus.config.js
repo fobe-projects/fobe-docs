@@ -173,7 +173,7 @@ module.exports = {
       },
 
       { name: "viewport", content: "width=device-width, initial-scale=1.0" },
-      { name: "theme-color", content: "#0c7d7b" },
+      { name: "theme-color", content: "#003e21" },
 
       { name: "canonical", content: "https://docs.fobestudio.com" },
       { name: "mobile-web-app-capable", content: "yes" },
@@ -211,7 +211,9 @@ module.exports = {
     },
 
     colorMode: {
-      respectPrefersColorScheme: true,
+      respectPrefersColorScheme: false,
+      defaultMode: "light",
+      disableSwitch: true,
     },
 
     /* Colors for website */
