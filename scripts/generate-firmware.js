@@ -113,6 +113,14 @@ async function loadFileTree(sha) {
       }
     }
   });
+
+  // Sort each firmware's releases by tag_name in descending order
+  for (const key in resObj) {
+    resObj[key].sort((a, b) =>
+      b.tag_name.localeCompare(a.tag_name, undefined, { numeric: true }),
+    );
+  }
+
   return resObj;
 }
 
