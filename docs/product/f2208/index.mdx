@@ -25,7 +25,7 @@ order: 1
 <br/>
 ## **Introduction**
 
-The **FoBE Breakout ADS1115** integrates the [TI ADS1115](https://www.ti.com.cn/cn/lit/ds/symlink/ads1115.pdf) 16-bit ADC with programmable gain amplifier and the EEPROM for calibration data storage. The module provides multiple measurement capabilities including 0-10V voltage measurement, 4-20mA current measurement, and NTC temperature measurement with built-in 2.5V reference. Multiple connectivity options are provided for easy integration into various applications.
+The **FoBE Breakout ADS1115** integrates the TI-ADS1115 16-bit ADC with programmable gain amplifier and the EEPROM for calibration data storage. The module provides multiple measurement capabilities including 0-10V voltage measurement, 4-20mA current measurement, and NTC temperature measurement with built-in 2.5V reference. Multiple connectivity options are provided for easy integration into various applications.
 
 <br/>
 ## **Applications**
@@ -57,8 +57,9 @@ The **FoBE Breakout ADS1115** integrates the [TI ADS1115](https://www.ti.com.cn/
     - NTC measurement and ADC calibration support
 
 **Connectivity**
-    - Dual 4-Pin JST SH1.0 Connectors (IIC)
-    - 6-Pin 2.54mm Header Holes
+    - MFP-IIC interface (JST-SH1.0 4-Pin)
+    - 6 x 2.54mm Pin Header
+    - 4 x 3.81mm Screw Terminal Block
 
 <br/>
 ## **Measure Channels**
@@ -68,5 +69,5 @@ The **FoBE Breakout ADS1115** integrates the [TI ADS1115](https://www.ti.com.cn/
 |0 |4-20mA current |Measured via 120Ω shunt resistor to ground |
 |1 |0-10V voltage |Measured through voltage divider (10kΩ/39kΩ) |
 |2 |NTC temperature |Measured via voltage divider with 100kΩ resistor and 2.5V reference |
-|3 |ADC calibration |Connected to internal 2.5V voltage reference |
+|3 |NTC Reference |Connected to internal 2.5V voltage reference |
 
