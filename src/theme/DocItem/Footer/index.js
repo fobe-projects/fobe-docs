@@ -65,9 +65,7 @@ export default function DocItemFooter() {
         reserved. | <a href={"disclaimer"}>Disclaimer</a> |{" "}
         <a href={"privacy"}>Privacy</a> |{" "}
         {/* The cookie consent modal only shows when theres attached GTM container with CookieYes integration */}
-        <a href="#" className="cky-banner-element">
-          Manage Cookies Settings
-        </a>
+        <span className="cky-banner-element">Manage Cookies Settings</span>
       </div>
     </footer>
   );

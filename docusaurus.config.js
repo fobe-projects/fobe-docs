@@ -6,8 +6,9 @@ const path = require("node:path");
 const gtmContainerId = "GTM-PQDT48Z5"; // cspell: disable-line
 
 module.exports = {
-  title: "FoBE Documentation",
-  tagline: "High performance, composable, headless commerce API.",
+  title: "FoBE Studio Documentation",
+  tagline:
+    "Explore FoBE Studio Documentation for complete IoT solutions. Learn about hardware design and software development.",
   url: "https://docs.fobestudio.com",
   baseUrl: "/",
   onBrokenAnchors: "throw",
@@ -120,61 +121,72 @@ module.exports = {
   ],
 
   themeConfig: {
+    // Optimized SEO metadata
     metadata: [
+      // Core SEO tags
       {
         name: "keywords",
         content:
-          "fobe, documentation, api, graphql, commerce, headless, ecommerce, fobe_studio, developer, docs",
-      }, // cspell: disable-line
+          "FoBE, development board, embedded systems, IoT, hardware, firmware, MicroPython, Arduino, Zephyr, open source, tutorial, SDK, Meshtastic, electronics, wireless communication, prototyping, ESP32, nRF52840, board documentation",
+      },
       {
         name: "description",
         content:
-          "FoBE Studio Documentation - High performance, composable, headless commerce API. Complete developer guide and API reference.",
-      }, // cspell: disable-line
+          "Explore FoBE Studio Documentation for complete IoT solutions. Learn about hardware design and software development.",
+      },
       { name: "author", content: "FoBE Studio" },
       { name: "robots", content: "index, follow" },
       { name: "language", content: "en" },
 
+      // Open Graph tags for rich social sharing
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "FoBE Documentation" },
       {
         property: "og:title",
-        content: "FoBE Documentation - Headless Commerce API",
+        content:
+          "FoBE Studio – Connecting Every Byte, Empowering Every Device.",
       },
       {
         property: "og:description",
         content:
-          "High performance, composable, headless commerce API. Complete developer guide and API reference for building modern ecommerce applications.",
-      }, // cspell: disable-line
+          "We are dedicated to offering comprehensive, one-stop IoT solutions that encompass hardware design, software development, and cloud platform architecture.",
+      },
+      { property: "og:url", content: "https://docs.fobestudio.com" },
       {
         property: "og:image",
         content: "https://docs.fobestudio.com/img/og-image.png",
       },
-      { property: "og:image:width", content: "1200" },
-      { property: "og:image:height", content: "630" },
-      { property: "og:url", content: "https://docs.fobestudio.com" },
+      { property: "og:image:width", content: "1080" },
+      { property: "og:image:height", content: "608" },
+      { property: "og:image:alt", content: "FoBE Documentation preview image" },
       { property: "og:locale", content: "en_US" },
 
+      // Twitter Card metadata
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@fobe_studio" },
       { name: "twitter:creator", content: "@fobe_studio" },
       {
         name: "twitter:title",
-        content: "FoBE Documentation - Headless Commerce API",
+        content:
+          "FoBE Studio – Connecting Every Byte, Empowering Every Device.",
       },
       {
         name: "twitter:description",
         content:
-          "High performance, composable, headless commerce API. Complete developer guide and API reference.",
+          "We are dedicated to offering comprehensive, one-stop IoT solutions that encompass hardware design, software development, and cloud platform architecture.",
       },
       {
         name: "twitter:image",
         content: "https://docs.fobestudio.com/img/twitter-image.png",
       },
+      {
+        name: "twitter:image:alt",
+        content: "FoBE Documentation Twitter preview",
+      },
 
+      // Miscellaneous tags
       { name: "viewport", content: "width=device-width, initial-scale=1.0" },
       { name: "theme-color", content: "#003e21" },
-
       { name: "canonical", content: "https://docs.fobestudio.com" },
       { name: "mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-status-bar-style", content: "default" },
