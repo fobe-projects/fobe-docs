@@ -48,29 +48,6 @@ module.exports = {
         icon: "box",
       },
     },
-    // {
-    //   type: "category",
-    //   label: "Solutions",
-    //   link: { type: "doc", id: "solutions/index" },
-    //   items: [
-    //     "solutions/meshbus",
-    //     "solutions/dtu",
-    //     "solutions/env-telemetry",
-    //     "solutions/dpc",
-    //     {
-    //       type: "category",
-    //       label: "Meshtastic",
-    //       link: { type: "doc", id: "solutions/meshtastic" },
-    //       items: [
-    //         "solutions/meshtastic/idea-cube",
-    //         "solutions/meshtastic/solar-power",
-    //       ],
-    //     },
-    //   ],
-    //   customProps: {
-    //     icon: "platform",
-    //   },
-    // },
 
     title("Development Boards"),
     {
@@ -217,12 +194,6 @@ module.exports = {
         },
       ],
     },
-    // {
-    //   type: "category",
-    //   label: "Shield",
-    //   link: { type: "doc", id: "product/shield" },
-    //   items: [],
-    // },
 
     title("Platforms"),
     {
@@ -240,6 +211,20 @@ module.exports = {
     {
       type: "doc",
       id: "platform/zephyr",
+    },
+
+    title("Solution"),
+    {
+      type: "doc",
+      id: "solution/telemetry",
+    },
+    {
+      type: "doc",
+      id: "solution/dpc",
+    },
+    {
+      type: "doc",
+      id: "solution/meshtastic",
     },
 
     title("Additional Resources"),
