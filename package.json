@@ -28,12 +28,12 @@
     "prune-screenshots": "node scripts/prune-screenshots.js"
   },
   "devDependencies": {
-    "@docusaurus/core": "3.8.1",
-    "@docusaurus/faster": "3.8.1",
-    "@docusaurus/preset-classic": "3.8.1",
-    "@docusaurus/theme-classic": "3.8.1",
-    "@docusaurus/theme-mermaid": "3.8.1",
-    "@docusaurus/types": "3.8.1",
+    "@docusaurus/core": "^3.9.1",
+    "@docusaurus/faster": "^3.9.1",
+    "@docusaurus/preset-classic": "^3.9.1",
+    "@docusaurus/theme-classic": "^3.9.1",
+    "@docusaurus/theme-mermaid": "^3.9.1",
+    "@docusaurus/types": "^3.9.1",
     "@graphql-markdown/diff": "^1.1.8",
     "@graphql-markdown/docusaurus": "^1.26.2",
     "@graphql-tools/graphql-file-loader": "^8.0.1",
@@ -54,7 +54,8 @@
     "uuid": "^10.0.0"
   },
   "dependencies": {
-    "@docusaurus/plugin-sitemap": "^3.8.1",
+    "@docusaurus/plugin-sitemap": "^3.9.1",
+    "@mermaid-js/layout-elk": "^0.1.9",
     "@sentry/react": "^9.29.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "esptool-js": "^0.5.7",

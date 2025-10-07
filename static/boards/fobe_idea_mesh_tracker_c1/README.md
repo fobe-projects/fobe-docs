@@ -5,7 +5,6 @@ The board features a rotary encoder, two buttons for easy user interface operati
 ## Technical Details
 
 - **Core Components:**
-
   - nRF52840 MCU
   - GPS module with IPEX antenna connector
   - LoRa transceiver with IPEX antenna connector
@@ -14,7 +13,6 @@ The board features a rotary encoder, two buttons for easy user interface operati
   - Buzzer for audio feedback
 
 - **User Interface:**
-
   - Rotary encoder for easy navigation
   - Two user buttons
   - Two indicator LEDs

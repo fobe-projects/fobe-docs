@@ -102,20 +102,6 @@ module.exports = {
         },
       ],
     },
-    // {
-    //   type: "category",
-    //   label: "Pico Series",
-    //   link: { type: 'doc', id: 'product/pico' },
-    //   items: [
-    //   ],
-    // },
-    // {
-    //   type: "category",
-    //   label: "DevKit Series",
-    //   link: { type: 'doc', id: 'product/devkit' },
-    //   items: [
-    //   ],
-    // },
     {
       type: "category",
       label: "IDEA Series",
@@ -136,20 +122,20 @@ module.exports = {
       ],
     },
 
-    // title("Modules"),
-    // {
-    //   type: "category",
-    //   label: "Core",
-    //   link: { type: "doc", id: "product/core" },
-    //   items: [
-    //     {
-    //       type: "category",
-    //       label: "F6001",
-    //       link: { type: "doc", id: "product/f6001/index" },
-    //       items: ["product/f6001/quickstart", "product/f6001/resources"],
-    //     },
-    //   ],
-    // },
+    title("Modules"),
+    {
+      type: "category",
+      label: "Module",
+      link: { type: "doc", id: "product/module" },
+      items: [
+        {
+          type: "category",
+          label: "F6001",
+          link: { type: "doc", id: "product/f6001/index" },
+          items: ["product/f6001/quickstart", "product/f6001/resources"],
+        },
+      ],
+    },
 
     title("Extensions"),
     {
