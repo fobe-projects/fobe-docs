@@ -85,21 +85,21 @@ features and optimizations.
 
         ```yaml
         manifest:
-        remotes:
-            - name: zephyr
-                url-base: https://github.com/zephyrproject-rtos
-            - name: fobe
-                url-base: https://github.com/fobe-projects
-        projects:
-            - name: zephyr
-                remote: zephyr
-                revision: v4.2.0
-                path: zephyr
-                import: true
-            - name: fobe-zephyr-sdk
-                remote: fobe
-                path: fobe
-                revision: main
+            remotes:
+                - name: zephyr
+                  url-base: https://github.com/zephyrproject-rtos
+                - name: fobe
+                  url-base: https://github.com/fobe-projects
+            projects:
+                - name: zephyr
+                  remote: zephyr
+                  revision: v4.2.0
+                  path: zephyr
+                  import: true
+                - name: fobe-zephyr-sdk
+                  remote: fobe
+                  path: fobe
+                  revision: main
         ```
 
         Add `src/main.c` file with the following content
