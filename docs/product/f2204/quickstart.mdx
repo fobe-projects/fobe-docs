@@ -1,10 +1,63 @@
 ---
-title: Quick Start with FoBE Breakout BM8563
-sidebar_label: Quick Start
-keywords: [FoBE Breakout BM8563, F2204, BM8563, RTC, Real Time Clock, Calendar, Quickstart, Getting Started, Setup, I2C, JST SH, STEMMA QT, Qwiic, Module, IoT, Low Power, Security, Access Control, Attendance, Meter]
+title: Getting Started with FoBE Breakout BM8563
+description: Getting Started with FoBE Breakout BM8563 real-time clock/calendar module.
+sidebar_label: Getting Started
+image: /img/products/f2204-r1a.main.png
+slug: /breakout_bm8563_getting_started
+toc_max_heading_level: 4
+sidebar_position: 4
+keywords:
+  - FoBE
+  - BM8563
+  - RTC
+  - Development Kit
+tags:
+  - FoBE
+  - Breakout
+  - BM8563
+  - RTC
+last_update:
+  date: 10/30/2025
+  author: Fernando
 ---
 
-This guide introduces the **FoBE Breakout BM8563** and how to use it.
+# Getting Started with FoBE Breakout BM8563
+
+<div style={{ textAlign: 'center' }}>
+  <img src="/img/products/f2204-r1a.main.png" alt="FoBE Breakout BM8563 Main" style={{ width: '320px', height: 'auto' }} />
+</div>
+<div className="theme-button-buy" style={{ textAlign: 'center' }}>
+  <a href="https://store.fobestudio.com/products/f2204" target="_blank" rel="noopener noreferrer">
+          <button>Get One 🛍️</button>
+  </a>
+</div>
+
+## Introduction
+
+The **FoBE Breakout BM8563** integrates the GATEMODE BM8563 real-time clock/calendar IC, providing complete date and time information with automatic calendar calculations including leap years. The clock operates in both 12-hour and 24-hour modes with full binary-coded decimal (BCD) format. Multiple connectivity options are provided for easy integration into various applications.
+
+## Applications
+
+- Security access controllers and door controllers
+- Time recorders and attendance systems
+- IC water-flow meters and gas meters
+
+## Key Features
+
+- BM8563
+    - Provides year, month, day, weekday, hours, minutes and seconds information
+    - Century flag for extended date range
+    - Ultra-low power consumption: 0.25μA at VDD = 3.0V
+    - I²C interface with slave address: Read A3H and Write A2H
+    - Programmable clock output (32.768kHz, 1024Hz, 32Hz and 1Hz)
+    - Alarm and timer functions
+    - Built-in power voltage detecting circuit
+    - Open-drain interrupt pin
+    - Automatic leap year compensation
+
+- Connectivity
+    - MFP-IIC interface (JST-SH1.0 4-Pin)
+    - 6 x 2.54mm Pin Header
 
 ## Hardware diagram
 
@@ -179,3 +232,14 @@ Time        02:04:48
 Status      Running     
 Valid       Yes         
 ```
+## Resources
+
+**[PDF]** [FoBE Breakout BM8563 Datasheet](/assets/files/f2204/f2204.prj.datasheet.r1a.pdf)
+
+**[PDF]** [FoBE Breakout BM8563 Schematic](/assets/files/f2204/f2204.prj.sch.r1a.pdf)
+
+**[PDF]** [FoBE Breakout BM8563 Dimension](/assets/files/f2204/f2204.prj.dim.r1a.pdf)
+
+**[OBJ]** [FoBE Breakout BM8563 3D Model](/assets/files/f2204/f2204.prj.model.r1a.obj)
+
+**[PDF]** [GATEMODE BM8563 Datasheet](https://www.makerguides.com/wp-content/uploads/2025/01/BM8563-datasheet.pdf)

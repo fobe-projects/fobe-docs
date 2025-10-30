@@ -1,29 +1,93 @@
 ---
-title: Quick Start with FoBE Breakout GP8303
-sidebar_label: Quick Start
+title: Getting Started with FoBE Breakout GP8303
+description: Getting Started with FoBE Breakout GP8303 Digital-to-Analog Converter Module.
+sidebar_label: Getting Started
+image: /img/products/f2209-r1a.main.png
+slug: /breakout_gp8303_getting_started
+toc_max_heading_level: 4
+sidebar_position: 9
+keywords:
+  - FoBE
+  - Breakout
+  - GP8303
+  - DAC
+  - 0-10V
+tags:
+  - FoBE
+  - Breakout
+  - DAC
+last_update:
+  date: 10/30/2025
+  author: Fernando
 ---
 
-This guide introduces the **FoBE Breakout GP8303** and how to use it.
+# Geetting Started with FoBE Breakout GP8303
+
+<div style={{ textAlign: 'center' }}>
+  <img src="/img/products/f2209-r1a.main.png" alt="FoBE Breakout GP8303 Main" style={{ width: '320px', height: 'auto' }} />
+</div>
+<div className="theme-button-buy" style={{ textAlign: 'center' }}>
+  <a href="https://store.fobestudio.com/products/f2209" target="_blank" rel="noopener noreferrer">
+          <button>Get One 🛍️</button>
+  </a>
+</div>
+
+## Introduction
+
+The **FoBE Breakout GP8303** integrates the Linearin-GP8303 I2C to 4-20mA DAC converter and the EEPROM for calibration data storage. The module converts 12-bit digital values (0x000-0xFFF) to precise 4-20mA analog current output with excellent linearity of 0.1%. Multiple connectivity options are provided for easy integration into various applications.
+
+## Applications
+
+- Function signal generators and test equipment
+- Automatic controllers for lighting and fountain systems
+- Industrial automation and process control
+- Electromechanical equipment debugging and calibration
+- Small-scale testing and measurement devices
+
+## Key Features
+
+- GP8303
+    - 12-bit DAC resolution (0x000-0xFFF input range)
+    - 4-20mA analog current output
+    - Excellent output current linearity: 0.1%
+    - Output open circuit alarm function
+    - 3-bit I²C hardware address configuration
+    - Power supply voltage: 18V to 36V
+    - Low power consumption: < 5mA
+    - Fast startup time: < 2ms
+    - Wide operating temperature: -40°C to +85°C
+
+- M24C64 EEPROM
+    - 64Kbit (8KB) data storage capacity
+    - 32-byte page size for efficient writing
+    - Write protection for entire memory array
+    - Enhanced ESD/Latch-Up protection
+    - More than 4 million write cycles endurance
+    - More than 200-years data retention
+
+- Connectivity
+    - MFP-IIC interface (JST-SH1.0 4-Pin)
+    - 6 x 2.54mm Pin Header
+    - 4 x 3.81mm Screw Terminal Block
 
 ## Hardware diagram
 
 The following figure illustrates the **FoBE Breakout GP8303** hardware diagram.
 
-<br/>
 <div style={{ textAlign: 'center' }}>
   <img src="/img/products/f2209-r1a.digram.png" alt="FoBE Breakout GP8303 Hardware Diagram" style={{ width: '80%', height: 'auto' }} />
 </div>
-<br/>
+
 
 ## Mechanical dimensions
 
 **FoBE Breakout GP8303** is a single-sided 25.4mm x 50.8mm (1" x 2") 1.6mm thick PCB with two SH1.0 4-pin connectors, a set of 6-pin 2.54mm header holes, and 4 x 3.81mm screw terminal blocks for output. Fixing by 4 x 1.6mm Screw holes.
 
-<br/>
+
 <div style={{ textAlign: 'center' }}>
   <img src="/img/products/f2209-r1a.dimensions.png" alt="FoBE Breakout GP8303 Mechanical Dimensions" style={{ width: '80%', height: 'auto' }} />
 </div>
-<br/>
+
 
 ## Interfaces
 
@@ -86,11 +150,11 @@ The M24C64 EEPROM I²C address can be configured using solder pads A0-A2:
 Let's get started with the FoBE Quill ESP32S3 Mesh using the MFP interface.
 
 1. Connect the **FoBE Breakout GP8303** to the FoBE Quill ESP32S3 Mesh using the MFP interface.
-<br/>
+
 <div style={{ textAlign: 'center' }}>
   <img src="/img/products/breakout-debugger-connection1.png" alt="FoBE Breakout GP8303 Connection" style={{ width: '80%', height: 'auto' }} />
 </div>
-<br/>
+
 
 2. Create a sketch or PlatformIO project, or follow the [FoBE Quill ESP32S3 Programming Guide](/quill_esp32s3_mesh_programming) for pre-configuration.
 
@@ -170,3 +234,13 @@ DAC current set to 1024 (approx. 5mA).
 - The GP8303 I²C address can be changed by soldering the appropriate address jumper pads on the board.
 - Ensure proper 18V-36V power supply connection to VIN terminal for correct current output operation.
 :::
+
+## Resources
+
+**[PDF]** [FoBE Breakout GP8303 Datasheet](/assets/files/f2209/f2209.prj.datasheet.r1a.pdf)
+
+**[PDF]** [FoBE Breakout GP8303 Schematic](/assets/files/f2209/f2209.prj.sch.r1a.pdf)
+
+**[PDF]** [FoBE Breakout GP8303 Dimension](/assets/files/f2209/f2209.prj.dim.r1a.pdf)
+
+**[OBJ]** [FoBE Breakout GP8303 3D Model](/assets/files/f2209/f2209.prj.model.r1a.obj)

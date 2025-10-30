@@ -1,29 +1,98 @@
 ---
-title: Quick Start with FoBE Breakout L76K
-sidebar_label: Quick Start
+title: Getting Started with FoBE Breakout L76K
+description: Getting Started with FoBE Breakout L76K GPS module.
+sidebar_label: Getting Started
+image: /img/products/f2207-r1a.main.png
+slug: /breakout_l76k_getting_started
+toc_max_heading_level: 4
+sidebar_position: 7
+keywords:
+  - FoBE
+  - L76K
+  - GPS
+  - Development Kit
+tags:
+  - FoBE
+  - Breakout
+  - GPS
+last_update:
+  date: 10/30/2025
+  author: Fernando
 ---
 
-This guide introduces the **FoBE Breakout L76K** and how to use it.
+# Getting Started with FoBE Breakout L76K
+
+<div style={{ textAlign: 'center' }}>
+  <img src="/img/products/f2207-r1a.main.png" alt="FoBE Breakout L76K Main" style={{ width: '320px', height: 'auto' }} />
+</div>
+<div className="theme-button-buy" style={{ textAlign: 'center' }}>
+  <a href="https://store.fobestudio.com/products/f2207" target="_blank" rel="noopener noreferrer">
+          <button>Get One 🛍️</button>
+  </a>
+</div>
+
+
+## Introduction
+
+The **FoBE Breakout L76K** integrates the Quectel L76K multi-constellation GNSS receiver, supporting GPS, BeiDou, GLONASS, Galileo, and QZSS satellite systems. The module provides fast and accurate positioning with AGNSS support, featuring both multi-system joint positioning and single system independent positioning capabilities. Multiple connectivity options are provided for easy integration into various applications.
+
+## Applications
+
+- Mobile applications requiring precise geolocation capabilities
+- Asset tracking and fleet management systems
+- Navigation and positioning devices
+- IoT applications with location awareness
+- Geofencing and location-based services
+
+## Key Features
+
+- L76K GNSS Receiver
+    - Multi-constellation support: GPS, BeiDou, GLONASS, Galileo, QZSS
+    - Multi-system joint positioning and single system positioning modes
+    - AGNSS (Assisted GNSS) function for faster positioning
+    - High-performance positioning with excellent accuracy
+    - Low power consumption with standby mode support
+    - Fast Time-To-First-Fix (TTFF) performance
+    - Built-in jamming detection and mitigation
+    - Wide operating temperature range
+
+- Power Management
+    - Built-in 3.1V rechargeable button cell battery for RTC
+    - Power supply: 3.3V via connector
+    - Low-power standby mode with wake functionality
+    - Reset functionality for system recovery
+
+- Antenna Support
+    - Onboard U.FL antenna connector
+    - Support for passive and active antennas
+    - Optional active antenna power supply
+
+- Connectivity
+    - MFP (JST-SH1.0 6-Pin) Interface
+      - Power supply (3.3V)
+      - UART interface for data communication
+      - Wake and reset control pins
+    - 6-Pin 2.54mm Header Holes
 
 ## Hardware diagram
 
 The following figure illustrates the **FoBE Breakout L76K** hardware diagram.
 
-<br/>
+
 <div style={{ textAlign: 'center' }}>
   <img src="/img/products/f2207-r1a.digram.png" alt="FoBE Breakout L76K Hardware Diagram" style={{ width: '80%', height: 'auto' }} />
 </div>
-<br/>
+
 
 ## Mechanical dimensions
 
 **FoBE Breakout L76K** is a single-sided 25.4mm x 25.4mm (1" x 1") 1.6mm thick PCB with a SH1.0 6-pin connector and a set of 6-pin 2.54mm header holes. Fixing by 4 x 1.6mm Screw holes.
 
-<br/>
+
 <div style={{ textAlign: 'center' }}>
   <img src="/img/products/f2207-r1a.dimensions.png" alt="FoBE Breakout L76K Mechanical Dimensions" style={{ width: '80%', height: 'auto' }} />
 </div>
-<br/>
+
 
 ## Interfaces
 
@@ -46,7 +115,7 @@ The module features two jumper pads:
 
 |Interface |Description |
 |-------------------------------|---------|
-|CONSTELLATION |Satellite constellation selector:<br/>Soldered: GPS + GLONASS<br/>Open: BeiDou + GPS (Default) |
+|CONSTELLATION |Satellite constellation selector:Soldered: GPS + GLONASSOpen: BeiDou + GPS (Default) |
 |LED-JUMPER |Disconnect this jumper to turn off the PPS LED for further power saving |
 
 ### Additional Features
@@ -62,11 +131,11 @@ The module features two jumper pads:
 Let's get started with the FoBE Quill ESP32S3 Mesh using the MFP interface.
 
 1. Connect the **FoBE Breakout L76K** to the FoBE Quill ESP32S3 Mesh using the MFP interface.
-<br/>
+
 <div style={{ textAlign: 'center' }}>
   <img src="/img/products/f2207-r1a.connection.png" alt="FoBE Breakout L76K Connection" style={{ width: '80%', height: 'auto' }} />
 </div>
-<br/>
+
 
 2. Create a sketch or PlatformIO project, or follow the [FoBE Quill ESP32S3 Programming Guide](/quill_esp32s3_mesh_programming) for pre-configuration.
 
@@ -310,3 +379,12 @@ TTFF        3.236       SEC
 Latest NMEA Data Stream:
 $GNGSA,A,1,,,,,,,,,,,,,25.5,24.8,25.5,1*0D                
 ```
+## Resources
+
+**[PDF]** [FoBE Breakout L76K Datasheet](/assets/files/f2207/f2207.prj.datasheet.r1a.pdf)
+
+**[PDF]** [FoBE Breakout L76K Schematic](/assets/files/f2207/f2207.prj.sch.r1a.pdf)
+
+**[PDF]** [FoBE Breakout L76K Dimension](/assets/files/f2207/f2207.prj.dim.r1a.pdf)
+
+**[OBJ]** [FoBE Breakout L76K 3D Model](/assets/files/f2207/f2207.prj.model.r1a.obj)

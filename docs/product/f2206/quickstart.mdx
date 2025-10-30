@@ -1,29 +1,78 @@
 ---
-title: Quick Start with FoBE Breakout AS5600
-sidebar_label: Quick Start
+title: Getting Started with FoBE Breakout AS5600
+description: Getting Started with FoBE Breakout AS5600 digital contactless magnetic rotary position sensor.
+sidebar_label: Getting Started
+image: /img/products/f2206-r1a.main.png
+slug: /breakout_as5600_getting_started
+toc_max_heading_level: 4
+sidebar_position: 6
+keywords:
+  - FoBE
+  - AS5600
+  - Sensor
+  - Development Kit
+tags:
+  - FoBE
+  - Breakout
+  - Sensor
+last_update:
+  date: 10/30/2025
+  author: Fernando
 ---
 
-This guide introduces the **FoBE Breakout AS5600** and how to use it.
+<div style={{ textAlign: 'center' }}>
+  <img src="/img/products/f2206-r1a.main.png" alt="FoBE Breakout AS5600 Main" style={{ width: '320px', height: 'auto' }} />
+</div>
+<div className="theme-button-buy" style={{ textAlign: 'center' }}>
+  <a href="https://store.fobestudio.com/products/f2206" target="_blank" rel="noopener noreferrer">
+          <button>Get One 🛍️</button>
+  </a>
+</div>
+
+## Introduction
+
+The **FoBE Breakout AS5600** integrates the AMS-AS5600 programmable 12-bit high-resolution contactless magnetic rotary position sensor. The sensor can function as a magnetic potentiometer or magnetic encoder with excellent reliability and durability, providing contactless angle measurement without rotation angle limitations. Multiple connectivity options are provided for easy integration into various applications.
+
+## Applications
+
+- Motor closed-loop control systems
+- Robot arms and automation equipment
+- Tripod heads and camera mounts
+- Industrial machine control and positioning
+
+## Key Features
+
+- AS5600
+    - Contactless angle measurement for highest reliability and durability
+    - 12-bit DAC output resolution for high precision
+    - Programmable angular range from 18° up to 360°
+    - Simple user-programmable start and stop positions via I²C interface
+    - Selectable output: analog ratiometric to VDD or PWM-encoded digital
+    - Automatic magnet detection for easy setup
+    - Low-power consumption with automatic low-power mode entry
+    - Wide temperature range: -40°C to +125°C
+    - Robust environmental tolerance
+    - Non-contact operation with no rotation angle limitation
+
+- Connectivity
+    - MFP-IIC interface (JST-SH1.0 4-Pin)
+    - 5 x 2.54mm Pin Header
 
 ## Hardware diagram
 
 The following figure illustrates the **FoBE Breakout AS5600** hardware diagram.
 
-<br/>
 <div style={{ textAlign: 'center' }}>
   <img src="/img/products/f2206-r1a.digram.png" alt="FoBE Breakout AS5600 Hardware Diagram" style={{ width: '80%', height: 'auto' }} />
 </div>
-<br/>
 
 ## Mechanical dimensions
 
 **FoBE Breakout AS5600** is a single-sided 25.4mm x 25.4mm (1" x 1") 1.6mm thick PCB with two SH1.0 4-pin connectors and a set of 5-pin 2.54mm header holes. Fixing by 4 x 1.6mm Screw holes.
 
-<br/>
 <div style={{ textAlign: 'center' }}>
   <img src="/img/products/f2206-r1a.dimensions.png" alt="FoBE Breakout AS5600 Mechanical Dimensions" style={{ width: '80%', height: 'auto' }} />
 </div>
-<br/>
 
 ## Interfaces
 
@@ -33,10 +82,23 @@ The module provides dual 5-Pin JST SH1.0 connectors, compatible with STEMMA QT /
 |-----------------------|--------|---------|
 |GND |GND |Ground |
 |3V3 |3V3 |Power supply, Only 3.3V |
-|SDA |SDA |I2C-Data line |
 |SCL |SCL |I2C-Clock line |
 |OUT |— |Analog/PWM output |
-
+---
+title: Quick Start with FoBE Breakout AS5600
+description: Quick Start with FoBE Breakout AS5600.
+sidebar_label: Quick Start
+image: /img/products/f2206-r1a.main.png
+toc_max_heading_level: 4
+sidebar_position: 1
+tags:
+  - FoBE
+  - Breakout
+  - Sensor
+last_update:
+  date: 10/30/2025
+  author: Fernando
+---
 ## Advanced
 
 ### Jumper
@@ -45,8 +107,8 @@ The module features two jumper pads:
 
 |Interface |Description |
 |-------------------------------|---------|
-|PROGRAM OPTION |Angle programming mode selector:<br/>Connected: Programming via OUT pin<br/>Disconnected: Programming via I²C interface (Default) |
-|DIRECTION POLARITY |Direction polarity selector:<br/>Lower position: Values increase clockwise<br/>Upper position: Values increase counterclockwise |
+|PROGRAM OPTION |Angle programming mode selector:Connected: Programming via OUT pinDisconnected: Programming via I²C interface (Default) |
+|DIRECTION POLARITY |Direction polarity selector:Lower position: Values increase clockwiseUpper position: Values increase counterclockwise |
 
 ## Programming
 
@@ -55,11 +117,11 @@ The module features two jumper pads:
 Let's get started with the FoBE Quill ESP32S3 Mesh using the MFP interface.
 
 1. Connect the **FoBE Breakout AS5600** to the FoBE Quill ESP32S3 Mesh using the MFP interface.
-<br/>
+
 <div style={{ textAlign: 'center' }}>
   <img src="/img/products/breakout-debugger-connection.png" alt="FoBE Breakout AS5600 Connection" style={{ width: '80%', height: 'auto' }} />
 </div>
-<br/>
+
 
 2. Create a sketch or PlatformIO project, or follow the [FoBE Quill ESP32S3 Programming Guide](/quill_esp32s3_mesh_programming) for pre-configuration.
 
@@ -198,6 +260,12 @@ ANGLE       2665        RAW
 DEGREES     234.23      °          
 VELOCITY    0.00        °/s        
 MAGNITUDE   1122                    
-STATUS      51                      
-AGC         128                              
-```
+## Resources
+
+**[PDF]** [FoBE Breakout AS5600 Datasheet](/assets/files/f2206/f2206.prj.datasheet.r1a.pdf)
+
+**[PDF]** [FoBE Breakout AS5600 Schematic](/assets/files/f2206/f2206.prj.sch.r1a.pdf)
+
+**[PDF]** [FoBE Breakout AS5600 Dimension](/assets/files/f2206/f2206.prj.dim.r1a.pdf)
+
+**[OBJ]** [FoBE Breakout AS5600 3D Model](/assets/files/f2206/f2206.prj.model.r1a.obj)

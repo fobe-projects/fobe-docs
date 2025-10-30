@@ -1,29 +1,98 @@
 ---
-title: Quick Start with FoBE Breakout GP8403
-sidebar_label: Quick Start
+title: Getting Started with FoBE Breakout GP8403
+description: Getting Started with FoBE Breakout GP8403 Digital-to-Analog Converter Module.
+sidebar_label: Getting Started
+image: /img/products/f2210-r1a.main.png
+slug: /breakout_gp8403_getting_started
+toc_max_heading_level: 4
+sidebar_position: 10
+keywords:
+  - FoBE
+  - Breakout
+  - GP8403
+  - DAC
+  - 4-20mA
+tags:
+  - FoBE
+  - Breakout
+  - DAC
+last_update:
+  date: 10/30/2025
+  author: Fernando
 ---
 
-This guide introduces the **FoBE Breakout GP8403** and how to use it.
+# Getting Started with FoBE Breakout GP8403
+
+<div style={{ textAlign: 'center' }}>
+  <img src="/img/products/f2210-r1a.main.png" alt="FoBE Breakout GP8403 Main" style={{ width: '320px', height: 'auto' }} />
+</div>
+<div className="theme-button-buy" style={{ textAlign: 'center' }}>
+  <a href="https://store.fobestudio.com/products/f2210" target="_blank" rel="noopener noreferrer">
+          <button>Get One 🛍️</button>
+  </a>
+</div>
+
+## Introduction
+
+The **FoBE Breakout GP8403** integrates the Linearin-GP8403 I2C to dual-channel voltage DAC converter and the ST- M24C64 EEPROM for calibration data storage. The module converts 12-bit digital values (0x000-0xFFF) to precise 0-5V or 0-10V analog voltage output with excellent linearity and accuracy. Multiple connectivity options are provided for easy integration into various applications.
+
+## Applications
+
+- General signal conversion and conditioning
+- Motor speed regulation and LED dimming control
+- Inverter and power supply control systems
+- Industrial analog signal isolation and processing
+
+
+## Key Features
+
+- GP8403
+    - Dual-channel 12-bit DAC resolution (0x000-0xFFF input range)
+    - Selectable output ranges: 0-5V or 0-10V per channel
+    - Excellent output voltage accuracy: < 0.5% (0.1% with calibration)
+    - Outstanding voltage linearity: 0.1%
+    - Output short circuit protection with automatic recovery
+    - I²C interface with programmable address
+    - Input I²C signal high level: 2.7V to 5.5V
+    - Power supply voltage: 9V to 36V
+    - Low power consumption: < 5mA
+    - Fast startup time: < 2ms
+    - Wide operating temperature: -40°C to +85°C
+
+- M24C64 EEPROM
+    - 64Kbit (8KB) data storage capacity
+    - 32-byte page size for efficient writing
+    - Write protection for entire memory array
+    - Enhanced ESD/Latch-Up protection
+    - More than 4 million write cycles endurance
+    - More than 200-years data retention
+
+- Connectivity
+    - MFP-IIC interface (JST-SH1.0 4-Pin)
+    - 6 x 2.54mm Pin Header
+    - 4 x 3.81mm Screw Terminal Block
+
+
 
 ## Hardware diagram
 
 The following figure illustrates the **FoBE Breakout GP8403** hardware diagram.
 
-<br/>
+
 <div style={{ textAlign: 'center' }}>
   <img src="/img/products/f2210-r1a.digram.png" alt="FoBE Breakout GP8403 Hardware Diagram" style={{ width: '80%', height: 'auto' }} />
 </div>
-<br/>
+
 
 ## Mechanical dimensions
 
 **FoBE Breakout GP8403** is a single-sided 25.4mm x 50.8mm (1" x 2") 1.6mm thick PCB with two SH1.0 4-pin connectors, a set of 6-pin 2.54mm header holes, and 4 x 3.81mm screw terminal blocks for power and dual output. Fixing by 4 x 1.6mm Screw holes.
 
-<br/>
+
 <div style={{ textAlign: 'center' }}>
   <img src="/img/products/f2210-r1a.dimensions.png" alt="FoBE Breakout GP8403 Mechanical Dimensions" style={{ width: '80%', height: 'auto' }} />
 </div>
-<br/>
+
 
 ## Interfaces
 
@@ -86,11 +155,11 @@ The M24C64 EEPROM I²C address can be configured using solder pads A0-A2:
 Let's get started with the FoBE Quill ESP32S3 Mesh using the MFP interface.
 
 1. Connect the **FoBE Breakout GP8403** to the FoBE Quill ESP32S3 Mesh using the MFP interface.
-<br/>
+
 <div style={{ textAlign: 'center' }}>
   <img src="/img/products/breakout-debugger-connection1.png" alt="FoBE Breakout GP8403 Connection" style={{ width: '80%', height: 'auto' }} />
 </div>
-<br/>
+
 
 2. Create a sketch or PlatformIO project, or follow the [FoBE Quill ESP32S3 Programming Guide](/quill_esp32s3_mesh_programming) for pre-configuration.
 
@@ -191,3 +260,13 @@ Channel 1 set to approximately 5V.
 - Ensure proper 9V-36V power supply connection to VIN terminal for correct voltage output operation.
 - Each channel can be independently configured for 0-5V or 0-10V output range.
 :::
+
+## Resources
+
+**[PDF]** [FoBE Breakout GP8403 Datasheet](/assets/files/f2210/f2210.prj.datasheet.r1a.pdf)
+
+**[PDF]** [FoBE Breakout GP8403 Schematic](/assets/files/f2210/f2210.prj.sch.r1a.pdf)
+
+**[PDF]** [FoBE Breakout GP8403 Dimension](/assets/files/f2210/f2210.prj.dim.r1a.pdf)
+
+**[OBJ]** [FoBE Breakout GP8403 3D Model](/assets/files/f2210/f2210.prj.model.r1a.obj)

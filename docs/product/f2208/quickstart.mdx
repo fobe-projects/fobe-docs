@@ -1,29 +1,100 @@
 ---
-title: Quick Start with FoBE Breakout ADS1115
-sidebar_label: Quick Start
+title: Getting Started with FoBE Breakout ADS1115
+description: Getting Started with FoBE Breakout ADS1115 Analog-to-Digital Converter Module.
+sidebar_label: Getting Started
+image: /img/products/f2208-r1a.main.png
+slug: /breakout_ads1115_getting_started
+toc_max_heading_level: 4
+sidebar_position: 8
+keywords:
+  - FoBE
+  - ADS1115
+  - ADC
+  - Development Kit
+tags:
+  - FoBE
+  - Breakout
+  - ADC
+last_update:
+  date: 10/30/2025
+  author: Fernando
 ---
 
-This guide introduces the **FoBE Breakout ADS1115** and how to use it.
+# Getting Started with FoBE Breakout ADS1115
+
+<div style={{ textAlign: 'center' }}>
+  <img src="/img/products/f2208-r1a.main.png" alt="FoBE Breakout ADS1115 Main" style={{ width: '320px', height: 'auto' }} />
+</div>
+<div className="theme-button-buy" style={{ textAlign: 'center' }}>
+  <a href="https://store.fobestudio.com/products/f2208" target="_blank" rel="noopener noreferrer">
+          <button>Get One 🛍️</button>
+  </a>
+</div>
+
+## Introduction
+
+The **FoBE Breakout ADS1115** integrates the TI-ADS1115 16-bit ADC with programmable gain amplifier and the EEPROM for calibration data storage. The module provides multiple measurement capabilities including 0-10V voltage measurement, 4-20mA current measurement, and NTC temperature measurement with built-in 2.5V reference. Multiple connectivity options are provided for easy integration into various applications.
+
+## Applications
+
+- Portable instrumentation and measurement systems
+- Battery monitoring and power management
+- Temperature sensing and monitoring
+- Factory automation and process controls
+
+## Key Features
+
+- ADS1115
+    - 16-bit high resolution analog-to-digital conversion
+    - 4 single-ended inputs or 2 differential inputs
+    - Programmable data rate: 8 SPS to 860 SPS
+    - Internal programmable gain amplifier (PGA): up to x16
+    - Internal low-drift voltage reference and oscillator
+    - I²C interface with programmable address
+    - Interrupt/ready pin for conversion completion
+
+- M24C64 EEPROM
+    - 64Kbit (8KB) data storage capacity
+    - I²C interface with programmable address
+    - Calibration data storage capability
+
+- Built-in Reference
+    - 2.5V precision voltage reference
+    - NTC measurement and ADC calibration support
+
+- Connectivity
+    - MFP-IIC interface (JST-SH1.0 4-Pin)
+    - 6 x 2.54mm Pin Header
+    - 4 x 3.81mm Screw Terminal Block
+
+## Measure Channels
+
+|Channel |Measurement Type |Description |
+|--------|-----------------|------------|
+|0 |4-20mA current |Measured via 120Ω shunt resistor to ground |
+|1 |0-10V voltage |Measured through voltage divider (10kΩ/39kΩ) |
+|2 |NTC temperature |Measured via voltage divider with 100kΩ resistor and 2.5V reference |
+|3 |NTC Reference |Connected to internal 2.5V voltage reference |
 
 ## Hardware diagram
 
 The following figure illustrates the **FoBE Breakout ADS1115** hardware diagram.
 
-<br/>
+
 <div style={{ textAlign: 'center' }}>
   <img src="/img/products/f2208-r1a.digram.png" alt="FoBE Breakout ADS1115 Hardware Diagram" style={{ width: '80%', height: 'auto' }} />
 </div>
-<br/>
+
 
 ## Mechanical dimensions
 
 **FoBE Breakout ADS1115** is a single-sided 25.4mm x 25.4mm (1" x 1") 1.6mm thick PCB with two SH1.0 4-pin connectors and a set of 6-pin 2.54mm header holes. Fixing by 4 x 1.6mm Screw holes.
 
-<br/>
+
 <div style={{ textAlign: 'center' }}>
   <img src="/img/products/f2208-r1a.dimensions.png" alt="FoBE Breakout ADS1115 Mechanical Dimensions" style={{ width: '80%', height: 'auto' }} />
 </div>
-<br/>
+
 
 ## Interfaces
 
@@ -90,11 +161,11 @@ The module features one jumper pad:
 Let's get started with the FoBE Quill ESP32S3 Mesh using the MFP interface.
 
 1. Connect the **FoBE Breakout ADS1115** to the FoBE Quill ESP32S3 Mesh using the MFP interface.
-<br/>
+
 <div style={{ textAlign: 'center' }}>
   <img src="/img/products/breakout-debugger-connection1.png" alt="FoBE Breakout ADS1115 Connection" style={{ width: '100%', height: 'auto' }} />
 </div>
-<br/>
+
 
 2. Create a sketch or PlatformIO project, or follow the [FoBE Quill ESP32S3 Programming Guide](/quill_esp32s3_mesh_programming) for pre-configuration.
 
@@ -207,3 +278,13 @@ AIN3        16300       3.056250    REF-3V      3.056250
 - If you want to use custom pins, you can change the `IIC_SDA_PIN` and `IIC_SCL_PIN` definitions to your desired GPIO pins.
 - The ADS1115 is configured to use the default I²C address 0x48. You can change the address by soldering the appropriate jumper pads on the board.
 :::
+
+## Resources
+
+**[PDF]** [FoBE Breakout ADS1115 Datasheet](/assets/files/f2208/f2208.prj.datasheet.r1a.pdf)
+
+**[PDF]** [FoBE Breakout ADS1115 Schematic](/assets/files/f2208/f2208.prj.sch.r1a.pdf)
+
+**[PDF]** [FoBE Breakout ADS1115 Dimension](/assets/files/f2208/f2208.prj.dim.r1a.pdf)
+
+**[OBJ]** [FoBE Breakout ADS1115 3D Model](/assets/files/f2208/f2208.prj.model.r1a.obj)

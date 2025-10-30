@@ -1,30 +1,94 @@
 ---
-title: Quick Start with FoBE Breakout CMSIS-DAP Lite
-sidebar_label: Quick Start
-keywords: [FoBE Breakout CMSIS-DAP Lite, F2211, CMSIS-DAP, DAPLink, Quickstart, Getting Started, Setup, Emulator, Debugger, Programmer, ARM Cortex-M, JTAG, SWD, WCH CH32V203F6P6, USB-C, Virtual COM, IoT, Low Power, STM32, nRF52]
+title: Getting Started with FoBE Breakout CMSIS-DAP Lite
+description: Getting Started with FoBE Breakout CMSIS-DAP Lite.
+sidebar_label: Getting Started
+image: /img/products/f2211-r1a.main.png
+slug: /breakout_cmsis_dap_lite_getting_started
+toc_max_heading_level: 4
+sidebar_position: 11
+keywords:
+  - FoBE
+  - Breakout
+  - Debugger
+  - DAPLink
+tags:
+  - FoBE
+  - Breakout
+  - Debugger
+last_update:
+  date: 10/30/2025
+  author: Fernando
 ---
 
-This guide introduces the **FoBE Breakout CMSIS-DAP Lite** and how to use it.
+# Getting Started with FoBE Breakout CMSIS-DAP Lite
+
+<div style={{ textAlign: 'center' }}>
+  <img src="/img/products/f2211-r1a.main.png" alt="FoBE Breakout CMSIS-DAP Lite Main" style={{ width: '320px', height: 'auto' }} />
+</div>
+<div className="theme-button-buy" style={{ textAlign: 'center' }}>
+  <a href="https://store.fobestudio.com/products/f2211" target="_blank" rel="noopener noreferrer">
+          <button>Get One 🛍️</button>
+  </a>
+</div>
+
+## Introduction
+
+The **FoBE Breakout CMSIS-DAP Lite** integrates the WCH-CH32V203F6P6 microcontroller running CMSIS-DAP firmware, providing a professional debugging and programming solution for ARM Cortex-M based microcontrollers. The module supports JTAG, SWD debugging interfaces, virtual serial port communication, and offers both 3.3V and 5V power output capabilities for target board supply.
+
+## Applications
+
+- ARM Cortex-M microcontroller debugging and programming
+- STM32, nRF51/52, and other Cortex-M development
+- Educational and prototyping projects
+- Firmware development and testing
+- Hardware-in-the-loop testing systems
+
+## Key Features
+
+- CMSIS-DAP Interface
+    - Compatible with all ARM Cortex-M based microcontrollers
+    - Support for STM32, nRF51/52, and other Cortex-M series
+    - JTAG and SWD debugging interfaces
+    - Virtual serial port communication
+    - Drag-and-drop programming support
+    - STLINK compatible and upgradeable firmware
+
+- Development Environment Support
+    - Keil/MDK development environment
+    - IAR Embedded Workbench
+    - OpenOCD open-source debugging tool
+    - ARM Mbed online compiler
+
+- Power Supply
+    - USB-C power input: 5V
+    - Dual voltage output: 3.3V and 5V
+    - Direct target board power supply capability
+    - Power output protection circuits
+
+- Connectivity
+    - 12-Pin 2.54mm Header Interface
+    - USB-C connector for host communication
+    - Status LED indicators
 
 ## Hardware diagram
 
 The following figure illustrates the **FoBE Breakout CMSIS-DAP Lite** hardware diagram.
 
-<br/>
+
 <div style={{ textAlign: 'center' }}>
   <img src="/img/products/f2211-r1a.digram.png" alt="FoBE Breakout CMSIS-DAP Lite Hardware Diagram" style={{ width: '80%', height: 'auto' }} />
 </div>
-<br/>
+
 
 ## Mechanical dimensions
 
 **FoBE Breakout CMSIS-DAP Lite** is a single-sided 25.4mm x 25.4mm (1" x 1") 1.6mm thick PCB with a USB-C connector and a set of 12-pin 2.54mm header. Features two buttons for reset and bootloader mode, and a DAP-LED for status indication. Fixing by 4 x 1.6mm Screw holes.
 
-<br/>
+
 <div style={{ textAlign: 'center' }}>
   <img src="/img/products/f2211-r1a.dimensions.png" alt="FoBE Breakout CMSIS-DAP Lite Mechanical Dimensions" style={{ width: '80%', height: 'auto' }} />
 </div>
-<br/>
+
 
 ## Interfaces
 
@@ -51,11 +115,11 @@ The module provides a 12-pin 2.54mm header interface for connection to target bo
 
 Connect the **FoBE Breakout CMSIS-DAP Lite** to the FoBE Quill nRF52840 Mesh using the provided Dupont wires.
 
-<br/>
+
 <div style={{ textAlign: 'center' }}>
   <img src="/img/products/f2211-r1a.connection.png" alt="FoBE Breakout CMSIS-DAP Lite Connection" style={{ width: '80%', height: 'auto' }} />
 </div>
-<br/>
+
 
 ### Setup Instructions
 
@@ -81,3 +145,13 @@ Connect the **FoBE Breakout CMSIS-DAP Lite** to the FoBE Quill nRF52840 Mesh usi
 - Use appropriate voltage levels (3.3V or 5V) for your target device
 - The virtual serial port can be used for debugging output and communication
 :::
+
+## Resources
+
+**[PDF]** [FoBE Breakout CMSIS-DAP Lite Datasheet](/assets/files/f2211/f2211.prj.datasheet.r1a.pdf)
+
+**[PDF]** [FoBE Breakout CMSIS-DAP Lite Schematic](/assets/files/f2211/f2211.prj.sch.r1a.pdf)
+
+**[PDF]** [FoBE Breakout CMSIS-DAP Lite Dimension](/assets/files/f2211/f2211.prj.dim.r1a.pdf)
+
+**[OBJ]** [FoBE Breakout CMSIS-DAP Lite 3D Model](/assets/files/f2211/f2211.prj.model.r1a.obj)
