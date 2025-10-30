@@ -23,7 +23,7 @@ last_update:
 # Getting Started with FoBE Mesh Tracker C1
 
 <div style={{ textAlign: 'center' }}>
-  <img src="/img/products/f2102-r1lg.main.png" style={{ width: '80%', height: 'auto' }} />
+  <img src="/img/products/f2102-r1lg.main.png" style={{ width: '320px', height: 'auto' }} />
 </div>
 <div className="theme-button-buy" style={{ textAlign: 'center' }}>
   <a href="https://store.fobestudio.com/products/f2102" target="_blank" rel="noopener noreferrer">
@@ -33,9 +33,9 @@ last_update:
 
 ## Introduction
 
-FoBE Mesh Tracker C1 is a complete application board designed for outdoor LoRa communication. It integrates a nRF52840 MCU, GPS, buzzer, display screen, and LoRa transceiver, providing all the necessary features for an outdoor LoRa communication device.
+FoBE Mesh Tracker C1 is a fully integrated application board for outdoor LoRa communication. It integrates an nRF52840 MCU, GPS, buzzer, OLED display, and a LoRa transceiver, providing everything needed for an outdoor LoRa device.
 
-The board features a rotary encoder, two buttons for easy user interface operation, an onboard BLE antenna for convenient configuration, a 0.96-inch OLED screen, and two indicator LEDs. It also includes a USB-C connector, reserved SWDIO/SWCLK header holes on the side, an 8-pin header for external expansion with 6 GPIO pins, and two IPEX antenna connectors for LoRa and GPS antennas.
+The board features a rotary encoder, one user button, one reset button, an onboard BLE antenna for convenient configuration, two indicator LEDs, a USB-C connector, reserved SWDIO/SWCLK header pads, an 8-pin expansion header exposing 6 GPIOs, and two IPEX connectors for the LoRa and GPS antennas.
 
 ## Key Features
 
@@ -48,41 +48,58 @@ The board features a rotary encoder, two buttons for easy user interface operati
 
 - User Interface
   - Rotary encoder for easy navigation
-  - Two user buttons
+  - One user button and one reset button
   - Two indicator LEDs
   - Onboard BLE antenna
 
 - Connectivity and Expansion
   - USB-C connector
-  - Reserved SWDIO/SWCLK header holes
-  - 8-pin header with 6 GPIO Pins for external expansion
-  - 2-Pin MX1.25 battery input interface
-  - 6-Pin SH1.0 FPC external module interface x 2
+  - Reserved SWDIO/SWCLK header pads
+  - 8-pin header exposing 6 GPIO pins for external expansion
+  - 2-pin MX1.25 battery input interface
+  - Two 6-pin SH1.0 FPC connectors for external modules
 
 ## Hardware diagram
 
-The following figure illustrates the FoBE IDEA Mesh Tracker C1 hardware diagram.
+The following figures show the FoBE Mesh Tracker C1 hardware diagrams.
 
 <div style={{ textAlign: 'center' }}>
-  <img src="/img/products/f2102-r1lg.digram.png" alt="FoBE IDEA Mesh Tracker C1 Hardware Diagram" style={{ width: '80%', height: 'auto' }} />
+  <img src="/img/products/f2102-r1lg.digram.png" alt="FoBE  Tracker C1 Hardware Diagram" style={{ width: '80%', height: 'auto' }} />
 </div>
 
 <div style={{ textAlign: 'center' }}>
-  <img src="/img/products/f2102-r1lg.digram-1.png" alt="FoBE IDEA Mesh Tracker C1 Hardware Diagram-1" style={{ width: '80%', height: 'auto' }} />
+  <img src="/img/products/f2102-r1lg.digram-1.png" alt="FoBE Mesh Tracker C1 Hardware Diagram 2" style={{ width: '80%', height: 'auto' }} />
 </div>
 
 ## Mechanical dimensions
 
-FoBE IDEA Mesh Tracker C1 is a compact PCB with dimensions of 50mm \* 50mm, designed for outdoor LoRa communication.
+The FoBE Mesh Tracker C1 PCB measures 50 mm × 50 mm.
 
 <div style={{ textAlign: 'center' }}>
-  <img src="/img/products/f2102-r1lg.dimensions.png" alt="FoBE IDEA Mesh Tracker C1 Mechanical Dimensions" style={{ width: '80%', height: 'auto' }} />
+  <img src="/img/products/f2102-r1lg.dimensions.png" alt="FoBE Mesh Tracker C1 Mechanical Dimensions" style={{ width: '80%', height: 'auto' }} />
 </div>
 
 ## Power Supply
 
-- GPS power (GNSS-3V3) is controlled by MCU P0.26. GPS data backup power is not controlled.
-- Screen, buzzer, and external header power (PERI-3V3) are controlled by MCU P0.16.
+### USB-C Power
+
+The board can be powered via the USB-C connector (5 V).
+
+Battery charging current is limited to 800 mA.
+
+### Battery Power
+  
+The board can be powered by a single-cell Li-ion/Li-Po battery connected to the 2-pin MX1.25 battery input interface. The battery voltage range is 3.7 V to 4.2 V.
+
+### Peripheral Power Control
+  
+#### GNSS Module
+  
+GPS power (GNSS-3V3) is controlled by MCU P0.26. Backup power for GNSS data is not switchable.
+
+#### Peripheral
+
+The OLED display, buzzer, and MFP (PERI-3V3) are controlled by MCU P0.16.
 
 ## Status Indicators
 
@@ -98,21 +115,17 @@ The board has two buttons:
 - Reset Button
 - User Button (connected to MCU P1.00)
 
-## Shielding Pads
-
-The MCU and LoRa IC have reserved shielding pads, allowing users to add shielding covers for improved signal performance.
-
 ## Battery Management
 
 - The battery charging IC directly manages the battery connection.
 - The NTC header is directly connected to the charging IC.
-- Battery voltage is measured using a voltage divider circuit (1M and 1.5M resistors), and the measurement is read by MCU P0.05.
+- Battery voltage is measured using a voltage divider (1 MΩ and 1.5 MΩ resistors) and read by MCU P0.05.
 
 ## Sub-GHz Radio (LoRa)
 
-The FoBE IDEA Mesh Tracker C1 board features an on-board sub-GHz radio module based on the Semtech SX1262. It supports LoRa and (G)FSK modulation and operates in the 433 MHz, 868 MHz, and 915 MHz frequency bands (depending on the model). An integrated 1.8V TCXO ensures excellent stability across temperature variations.
+The FoBE Mesh Tracker C1 board features an on-board sub-GHz radio module based on the Semtech SX1262. It supports LoRa and (G)FSK modulation and operates in the 433 MHz, 868 MHz, or 915 MHz bands (depending on the model). An integrated 1.8 V TCXO ensures excellent stability across temperature variations.
 
-Key specifications include a low active receive current of just 4.2 mA, a maximum transmit power of up to +22 dBm, and high sensitivity down to -148 dBm, providing excellent interference immunity.
+Key specifications include a receive current as low as 4.2 mA, a maximum transmit power of up to +22 dBm, and sensitivity down to -148 dBm, providing excellent interference immunity.
 
 The module connects to the nRF52840 SoC via SPI for long-range wireless communication:
 
@@ -141,7 +154,7 @@ The GPS module has the following pin assignments:
 
 ## Configuration Jumper
 
-The board features a jumper pads:
+The board features a jumper pad:
 
 | Interface     | Description                                                                                                                           |
 | ------------- | ------------------------------------------------------------------------------------------------------------------------------------- |

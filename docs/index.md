@@ -72,7 +72,6 @@ Learn about hardware and software using tutorials and developer guides.
 
         [<Minimize2 size={16} strokeWidth={1.5}/> **IDEA** _Multi-functional integrated creative prototyping board._](/idea_series)
 
-
         [<Blocks size={16} strokeWidth={1.5}/> **Module** _Module designed for a wide range of IoT applications._](/product/module)
 
     </Chapters>
