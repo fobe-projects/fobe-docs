@@ -290,8 +290,9 @@ module.exports = {
         },
         sitemap: {
           lastmod: "datetime",
-          changefreq: "daily",
+          changefreq: "weekly",
           priority: 0.5,
+          ignorePatterns: ["/404", "/404/**"],
         },
         docs: {
           breadcrumbs: true,
