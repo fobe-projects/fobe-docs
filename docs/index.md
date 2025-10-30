@@ -66,7 +66,7 @@ Learn about hardware and software using tutorials and developer guides.
 <Block title="Development" >
     <Chapters>
 
-        [<Feather size={16} strokeWidth={1.5}/> **Quill** _Versatile MCU board series._](/product/quill)
+        [<Feather size={16} strokeWidth={1.5}/> **Quill** _Versatile MCU board series._](/quill_series)
 
         [<TableProperties size={16} strokeWidth={1.5}/> **Breakout** _Compact and flexible functional expansion board._](/product/breakout)
 

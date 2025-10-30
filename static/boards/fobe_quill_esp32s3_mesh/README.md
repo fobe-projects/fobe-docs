@@ -28,7 +28,7 @@ This development board features efficient battery charging management, discrete 
 
 ## Tutorials
 
-- [FoBE Quill ESP32S3 Mesh](./product/f1102)
+- [FoBE Quill ESP32S3 Mesh](/quill_esp32s3_mesh_getting_started)
 
 ## Purchase
 

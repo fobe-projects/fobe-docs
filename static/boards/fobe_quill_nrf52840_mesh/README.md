@@ -27,7 +27,7 @@ This development board is feature-rich, including a battery charger, dedicated p
 
 ## Tutorials
 
-- [FoBE Quill NRF52840 Mesh](./product/f1101)
+- [FoBE Quill NRF52840 Mesh](/quill_nrf52840_mesh_getting_started)
 
 ## Purchase
 

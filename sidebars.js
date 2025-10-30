@@ -58,24 +58,12 @@ module.exports = {
         {
           type: "category",
           label: "Quill nRF52840 Mesh",
-          link: { type: "doc", id: "product/f1101/index" },
-          items: [
-            "product/f1101/quickstart",
-            "product/f1101/programming",
-            "product/f1101/applications",
-            "product/f1101/resources",
-          ],
+          items: ["product/f1101/quickstart", "product/f1101/programming"],
         },
         {
           type: "category",
           label: "Quill ESP32S3 Mesh",
-          link: { type: "doc", id: "product/f1102/index" },
-          items: [
-            "product/f1102/quickstart",
-            "product/f1102/programming",
-            "product/f1102/applications",
-            "product/f1102/resources",
-          ],
+          items: ["product/f1102/quickstart", "product/f1102/programming"],
         },
       ],
     },
