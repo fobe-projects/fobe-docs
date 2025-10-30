@@ -221,7 +221,6 @@ const Flasher = () => {
   ) : boardId == null ? (
     <>
       <header className={styles.header}>
-        <h1>Firmware Hub</h1>
         <div className={styles.headerRow}>
           <input
             type="text"

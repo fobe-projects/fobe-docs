@@ -88,14 +88,13 @@ module.exports = {
     title("Modules"),
     {
       type: "category",
-      label: "Module",
-      link: { type: "doc", id: "product/module" },
+      label: "Core Series",
+      link: { type: "doc", id: "product/core" },
       items: [
         {
           type: "category",
-          label: "F6001",
-          link: { type: "doc", id: "product/f6001/index" },
-          items: ["product/f6001/quickstart", "product/f6001/resources"],
+          label: "FoBE Core nRF52840 Mesh",
+          items: ["product/f6001/quickstart"],
         },
       ],
     },
@@ -199,19 +198,19 @@ module.exports = {
       id: "platform/zephyr",
     },
 
-    title("Solution"),
-    {
-      type: "doc",
-      id: "solution/telemetry",
-    },
-    {
-      type: "doc",
-      id: "solution/dpc",
-    },
-    {
-      type: "doc",
-      id: "solution/meshtastic",
-    },
+    // title("Solution"),
+    // {
+    //   type: "doc",
+    //   id: "solution/telemetry",
+    // },
+    // {
+    //   type: "doc",
+    //   id: "solution/dpc",
+    // },
+    // {
+    //   type: "doc",
+    //   id: "solution/meshtastic",
+    // },
 
     title("Additional Resources"),
     {
