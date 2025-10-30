@@ -2,7 +2,7 @@
 title: Getting Started with FoBE Mesh Tracker C1
 description: Getting Started with FoBE Mesh Tracker C1.
 sidebar_label: Getting Started
-image: /img/products/f2102-r1lg.main.png
+image: /img/products/f2102-r1lg.main.webp
 slug: /mesh_tracker_c1_getting_started
 toc_max_heading_level: 4
 sidebar_position: 1
@@ -27,7 +27,7 @@ import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
 <div style={{ textAlign: 'center' }}>
-  <img src="/img/products/f2102-r1lg.main.png" style={{ width: '320px', height: 'auto' }} />
+  <img src="/img/products/f2102-r1lg.main.webp" style={{ width: '320px', height: 'auto' }} />
 </div>
 <div className="theme-button-buy" style={{ textAlign: 'center' }}>
   <a href="https://store.fobestudio.com/products/f2102" target="_blank" rel="noopener noreferrer">
@@ -68,11 +68,11 @@ The board features a rotary encoder, one user button, one reset button, an onboa
 The following figures show the FoBE Mesh Tracker C1 hardware diagrams.
 
 <div style={{ textAlign: 'center' }}>
-  <img src="/img/products/f2102-r1lg.digram.png" alt="FoBE  Tracker C1 Hardware Diagram" style={{ width: '80%', height: 'auto' }} />
+  <img src="/img/products/f2102-r1lg.digram.webp" alt="FoBE  Tracker C1 Hardware Diagram" style={{ width: '80%', height: 'auto' }} />
 </div>
 
 <div style={{ textAlign: 'center' }}>
-  <img src="/img/products/f2102-r1lg.digram-1.png" alt="FoBE Mesh Tracker C1 Hardware Diagram 2" style={{ width: '80%', height: 'auto' }} />
+  <img src="/img/products/f2102-r1lg.digram-1.webp" alt="FoBE Mesh Tracker C1 Hardware Diagram 2" style={{ width: '80%', height: 'auto' }} />
 </div>
 
 ## Mechanical dimensions
@@ -80,7 +80,7 @@ The following figures show the FoBE Mesh Tracker C1 hardware diagrams.
 The FoBE Mesh Tracker C1 PCB measures 50 mm × 50 mm.
 
 <div style={{ textAlign: 'center' }}>
-  <img src="/img/products/f2102-r1lg.dimensions.png" alt="FoBE Mesh Tracker C1 Mechanical Dimensions" style={{ width: '80%', height: 'auto' }} />
+  <img src="/img/products/f2102-r1lg.dimensions.webp" alt="FoBE Mesh Tracker C1 Mechanical Dimensions" style={{ width: '80%', height: 'auto' }} />
 </div>
 
 ## Power Supply
@@ -198,7 +198,7 @@ Download the latest firmware from the [Firmware Hub](/firmware-hub?id=fobe_idea_
 
 Double click the **Reset** button, there should be a `FoBE Boot` drive on your PC.
 
-<div style={{ textAlign: 'center' }}><img src="/img/screenshot/2025-07-21-14-46-54.png" alt="2025-07-21-14-46-54.png" style={{ width: '20%', height: 'auto' }} /></div>
+<div style={{ textAlign: 'center' }}><img src="/img/screenshot/2025-07-21-14-46-54.webp" alt="2025-07-21-14-46-54.webp" style={{ width: '20%', height: 'auto' }} /></div>
 
 Drag the `firmware-fobe_idea_mesh_tracker_c1-2.7.3.cf574c7.uf2` file to the drive. The installation will run automatically, then the drive will disappear.
 
@@ -225,22 +225,37 @@ Now you can use the FoBE Quill nRF52840 Mesh with the Meshtastic network. You ca
 
 More information can be found in the [Meshtastic documentation](https://meshtastic.org/docs/).
 
-## FAQ
+import FAQStructuredData from '../../../src/theme/DocFAQ';
 
-### I can't upload firmware to the board, what should I do?
-You can try to click the **Reset** button twice quickly to enter the bootloader mode. If that doesn't work, please check your USB cable and connection.
+export const faqs = [
+  {
+    question: "I can't upload firmware to the board, what should I do?",
+    answer:
+      "You can try to click the Reset button twice quickly to enter the bootloader mode. If that doesn't work, please check your USB cable and connection.",
+  },
+  {
+    question: "How do I connect the LoRa and GPS antennas?",
+    answer:
+      'The LoRa antenna should be connected to the UF.L connector labeled "LoRa", and the GPS antenna should be connected to the UF.L connector labeled "GPS".',
+  },
+  {
+    question:
+      'How do I power the board?',
+    answer: 'You can power the board via the USB-C connector or by connecting a single-cell Li-ion/Li-Po battery to the 2-pin MX1.25 battery input interface.',
+  },
+  {
+    question: 'How do I charge the battery?',
+    answer:
+      'When the board is powered via the USB-C connector, the battery will be charged automatically. The charging indicator LED will light up during charging.',
+  },
+  {
+    question: 'How do I update the bootloader?',
+    answer:
+      'You can find the bootloader project and instructions in the [FoBE Bootloader Repository](https://github.com/fobe-projects/fobe-nrf52-bootloader), please follow the instructions to update the bootloader.',
+  },
+];
 
-### How do I connect the LoRa and GPS antennas?
-The LoRa antenna should be connected to the UF.L connector labeled "LoRa", and the GPS antenna should be connected to the UF.L connector labeled "GPS".
-
-### How do I power the board?
-You can power the board via the USB-C connector or by connecting a single-cell Li-ion/Li-Po battery to the 2-pin MX1.25 battery input interface.
-
-### How do I charge the battery?
-When the board is powered via the USB-C connector, the battery will be charged automatically. The charging indicator LED will light up during charging.
-
-### How do I update the bootloader?
-You can find the bootloader project and instructions in the [FoBE Bootloader Repository](https://github.com/fobe-projects/fobe-nrf52-bootloader), please follow the instructions to update the bootloader.
+<FAQStructuredData faqs={faqs} />
 
 ## Resources
 

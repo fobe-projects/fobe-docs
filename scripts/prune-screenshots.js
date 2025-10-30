@@ -23,7 +23,7 @@ const docsFiles = getAllFiles(docsDir);
 // Get screenshot files
 const screenshots = fs.readdirSync(screenshotDir).filter((file) => {
   const ext = path.extname(file).toLowerCase();
-  return [".png", ".jpg", ".jpeg", ".gif", ".svg"].includes(ext);
+  return [".webp", ".png", ".jpg", ".jpeg", ".gif", ".svg"].includes(ext);
 });
 
 // Check if each screenshot is referenced
