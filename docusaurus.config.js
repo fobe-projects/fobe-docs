@@ -290,7 +290,7 @@ module.exports = {
           priority: 0.5,
         },
         docs: {
-          breadcrumbs: false,
+          breadcrumbs: true,
           routeBasePath: "/",
           path: "docs",
           editUrl: function ({ version, versionDocsDirPath, docPath }) {

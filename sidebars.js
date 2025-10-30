@@ -92,9 +92,8 @@ module.exports = {
         },
         {
           type: "category",
-          label: "IDEA Mesh Tracker C1",
-          link: { type: "doc", id: "product/f2102/index" },
-          items: ["product/f2102/quickstart", "product/f2102/resources"],
+          label: "Mesh Tracker C1",
+          items: ["product/f2102/quickstart"],
         },
       ],
     },
