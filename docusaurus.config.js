@@ -144,7 +144,7 @@ module.exports = {
       {
         property: "og:title",
         content:
-          "FoBE Studio – Connecting Every Byte, Empowering Every Device.",
+          "FoBE Studio - Connecting Every Byte, Empowering Every Device.",
       },
       {
         property: "og:description",

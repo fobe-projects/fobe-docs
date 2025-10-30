@@ -25,28 +25,28 @@ import Chapters from "@site/components/Chapters";
 import CardGrid from "@site/components/CardGrid";
 
 import {
-    MessageCircleQuestion,
-    Store,
-    BotMessageSquare,
-    Github,
-    Feather,
-    CircuitBoard,
-    Minimize2,
-    Blocks,
-    ChevronsLeftRightEllipsis   ,
-    Signal,
-    MessageSquareQuote,
-    Tag,
-    BadgePercent,
-    Split,
-    ShoppingBag,
-    TableProperties,
-    CreditCard,
-    Earth,
-    Truck,
-    Download,
-    Package,
-    LayoutDashboard,
+MessageCircleQuestion,
+Store,
+BotMessageSquare,
+Github,
+Feather,
+CircuitBoard,
+Minimize2,
+Blocks,
+ChevronsLeftRightEllipsis ,
+Signal,
+MessageSquareQuote,
+Tag,
+BadgePercent,
+Split,
+ShoppingBag,
+TableProperties,
+CreditCard,
+Earth,
+Truck,
+Download,
+Package,
+LayoutDashboard,
 } from "lucide-react";
 
 Learn about hardware and software using tutorials and developer guides.
@@ -70,12 +70,13 @@ Learn about hardware and software using tutorials and developer guides.
 
         [<TableProperties size={16} strokeWidth={1.5}/> **Breakout** _Compact and flexible functional expansion board._](/product/breakout)
 
-        [<Minimize2 size={16} strokeWidth={1.5}/> **IDEA** _Multi-functional integrated creative prototyping board._](/product/idea)
+        [<Minimize2 size={16} strokeWidth={1.5}/> **IDEA** _Multi-functional integrated creative prototyping board._](/idea_series)
 
 
         [<Blocks size={16} strokeWidth={1.5}/> **Module** _Module designed for a wide range of IoT applications._](/product/module)
-        
+
     </Chapters>
+
 </Block>
 
 <Block title="Solutions" >
@@ -86,4 +87,5 @@ Learn about hardware and software using tutorials and developer guides.
 
         [<LayoutDashboard size={16} strokeWidth={1.5}/> **FoBE DPC** _High-concurrency IoT data processing platform._](solution/dpc)
     </Chapters>
+
 </Block>

@@ -86,14 +86,13 @@ module.exports = {
       items: [
         {
           type: "category",
-          label: "IDEA Mesh Solar Power",
-          link: { type: "doc", id: "product/f2101/index" },
-          items: ["product/f2101/quickstart", "product/f2101/resources"],
+          label: "Mesh Tracker C1",
+          items: ["product/f2102/quickstart"],
         },
         {
           type: "category",
-          label: "Mesh Tracker C1",
-          items: ["product/f2102/quickstart"],
+          label: "Mesh Solar Power",
+          items: ["product/f2101/quickstart"],
         },
       ],
     },

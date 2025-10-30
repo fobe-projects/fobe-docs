@@ -9,6 +9,12 @@ keywords:
   - FoBE
   - nRF52840
   - Mesh
+  - LoRa
+tags:
+  - FoBE
+  - nRF52840
+  - Mesh
+  - LoRa
 last_update:
   date: 10/30/2025
   author: Fernando
