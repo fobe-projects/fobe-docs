@@ -11,11 +11,13 @@ module.exports = {
     "Explore FoBE Studio Documentation for complete IoT solutions. Learn about hardware design and software development.",
   url: "https://docs.fobestudio.com",
   baseUrl: "/",
+  onBrokenLinks: "throw",
   onBrokenAnchors: "throw",
+  onDuplicateRoutes: "warn",
   // Used for publishing and more
   projectName: "fobe-documentation-web",
   organizationName: "fobe-projects",
-  deploymentBranch: "gh-pages",
+  deploymentBranch: "main",
   trailingSlash: false,
   favicon: "img/favicon.png",
 
@@ -28,6 +30,9 @@ module.exports = {
 
   markdown: {
     mermaid: true,
+    hooks: {
+      onBrokenMarkdownLinks: "warn",
+    },
     parseFrontMatter: async (params) => {
       const result = await params.defaultParseFrontMatter(params);
 
@@ -126,8 +131,7 @@ module.exports = {
       // Core SEO tags
       {
         name: "keywords",
-        content:
-          "FoBE, development board, embedded systems, IoT, hardware, firmware, MicroPython, Arduino, Zephyr, open source, tutorial, SDK, Meshtastic, electronics, wireless communication, prototyping, ESP32, nRF52840, board documentation",
+        content: "FoBE,documentation,blog,IoT,development",
       },
       {
         name: "description",
@@ -168,7 +172,7 @@ module.exports = {
       {
         name: "twitter:title",
         content:
-          "FoBE Studio – Connecting Every Byte, Empowering Every Device.",
+          "FoBE Studio - Connecting Every Byte, Empowering Every Device.",
       },
       {
         name: "twitter:description",
