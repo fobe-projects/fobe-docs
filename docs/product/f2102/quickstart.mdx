@@ -39,14 +39,14 @@ import TabItem from "@theme/TabItem";
 
 FoBE Mesh Tracker C1 is a fully integrated application board for outdoor LoRa communication. It integrates an nRF52840 MCU, GPS, buzzer, OLED display, and a LoRa transceiver, providing everything needed for an outdoor LoRa device.
 
-The board features a rotary encoder, one user button, one reset button, an onboard BLE antenna for convenient configuration, two indicator LEDs, a USB-C connector, reserved SWDIO/SWCLK header pads, an 8-pin expansion header exposing 6 GPIOs, and two IPEX connectors for the LoRa and GPS antennas.
+The board features a rotary encoder, one user button, one reset button, an onboard BLE antenna for convenient configuration, two indicator LEDs, a USB-C connector, reserved SWDIO/SWCLK header pads, an 8-pin expansion header exposing 6 GPIOs, and two UF.L connectors for the LoRa and GPS antennas.
 
 ## Key Features
 
 - Core Components
   - nRF52840 MCU
-  - GPS module with IPEX antenna connector
-  - LoRa transceiver with IPEX antenna connector
+  - GPS module with UF.L antenna connector
+  - LoRa transceiver with UF.L antenna connector
   - 0.96-inch OLED screen
   - Buzzer for audio feedback
 
@@ -224,6 +224,23 @@ adafruit-nrfutil --verbose dfu serial --package firmware-fobe_quill_nrf52840_mes
 Now you can use the FoBE Quill nRF52840 Mesh with the Meshtastic network. You can use the Meshtastic app to configure your device and start using it.
 
 More information can be found in the [Meshtastic documentation](https://meshtastic.org/docs/).
+
+## FAQ
+
+### I can't upload firmware to the board, what should I do?
+You can try to click the **Reset** button twice quickly to enter the bootloader mode. If that doesn't work, please check your USB cable and connection.
+
+### How do I connect the LoRa and GPS antennas?
+The LoRa antenna should be connected to the UF.L connector labeled "LoRa", and the GPS antenna should be connected to the UF.L connector labeled "GPS".
+
+### How do I power the board?
+You can power the board via the USB-C connector or by connecting a single-cell Li-ion/Li-Po battery to the 2-pin MX1.25 battery input interface.
+
+### How do I charge the battery?
+When the board is powered via the USB-C connector, the battery will be charged automatically. The charging indicator LED will light up during charging.
+
+### How do I update the bootloader?
+You can find the bootloader project and instructions in the [FoBE Bootloader Repository](https://github.com/fobe-projects/fobe-nrf52-bootloader), please follow the instructions to update the bootloader.
 
 ## Resources
 
