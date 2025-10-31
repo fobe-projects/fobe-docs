@@ -40,7 +40,7 @@ jobs:
           since: 1
           since-unit: day
           key: ${{ secrets.INDEXNOW_KEY }}
-          endpoint: www.seznam.cz
+          endpoint: search.seznam.cz
       - name: Submit IndexNow to Amazon
         uses: bojieyang/indexnow-action@v2
         with:
