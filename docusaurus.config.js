@@ -292,7 +292,7 @@ module.exports = {
           lastmod: "datetime",
           changefreq: "weekly",
           priority: 0.5,
-          ignorePatterns: ["/404", "/404/**"],
+          ignorePatterns: ["/404", "/404/**", "/tags", "/tags/**", "/search"],
         },
         docs: {
           breadcrumbs: true,
