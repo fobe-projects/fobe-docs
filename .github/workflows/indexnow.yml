@@ -41,14 +41,6 @@ jobs:
           since-unit: day
           key: ${{ secrets.INDEXNOW_KEY }}
           endpoint: search.seznam.cz
-      - name: Submit IndexNow to Amazon
-        uses: bojieyang/indexnow-action@v2
-        with:
-          sitemap-location: https://docs.fobestudio.com/sitemap.xml
-          since: 1
-          since-unit: day
-          key: ${{ secrets.INDEXNOW_KEY }}
-          endpoint: indexnow.amazonbot.amazon
       - name: Submit IndexNow to Naver
         uses: bojieyang/indexnow-action@v2
         with:
