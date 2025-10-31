@@ -1,0 +1,67 @@
+name: IndexNow Submission
+
+on:
+  # schedule:
+  #     - cron: 0 0,12 * * *
+  workflow_dispatch:
+
+jobs:
+  indexnow:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Submit IndexNow to Bing
+        uses: bojieyang/indexnow-action@v2
+        with:
+          sitemap-location: https://docs.fobestudio.com/sitemap.xml
+          since: 1
+          since-unit: day
+          key: ${{ secrets.INDEXNOW_KEY }}
+          endpoint: www.bing.com
+      - name: Submit IndexNow to indexnow.org
+        uses: bojieyang/indexnow-action@v2
+        with:
+          sitemap-location: https://docs.fobestudio.com/sitemap.xml
+          since: 1
+          since-unit: day
+          key: ${{ secrets.INDEXNOW_KEY }}
+          endpoint: api.indexnow.org
+      - name: Submit IndexNow to Yandex
+        uses: bojieyang/indexnow-action@v2
+        with:
+          sitemap-location: https://docs.fobestudio.com/sitemap.xml
+          since: 1
+          since-unit: day
+          key: ${{ secrets.INDEXNOW_KEY }}
+          endpoint: yandex.com
+      - name: Submit IndexNow to Seznam
+        uses: bojieyang/indexnow-action@v2
+        with:
+          sitemap-location: https://docs.fobestudio.com/sitemap.xml
+          since: 1
+          since-unit: day
+          key: ${{ secrets.INDEXNOW_KEY }}
+          endpoint: www.seznam.cz
+      - name: Submit IndexNow to Amazon
+        uses: bojieyang/indexnow-action@v2
+        with:
+          sitemap-location: https://docs.fobestudio.com/sitemap.xml
+          since: 1
+          since-unit: day
+          key: ${{ secrets.INDEXNOW_KEY }}
+          endpoint: indexnow.amazonbot.amazon
+      - name: Submit IndexNow to Naver
+        uses: bojieyang/indexnow-action@v2
+        with:
+          sitemap-location: https://docs.fobestudio.com/sitemap.xml
+          since: 1
+          since-unit: day
+          key: ${{ secrets.INDEXNOW_KEY }}
+          endpoint: searchadvisor.naver.com
+      - name: Submit IndexNow to Yep
+        uses: bojieyang/indexnow-action@v2
+        with:
+          sitemap-location: https://docs.fobestudio.com/sitemap.xml
+          since: 1
+          since-unit: day
+          key: ${{ secrets.INDEXNOW_KEY }}
+          endpoint: indexnow.yep.com

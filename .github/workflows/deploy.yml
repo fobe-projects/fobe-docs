@@ -60,14 +60,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
-  indexnow:
-    name: Submit IndexNow
-    needs: deploy
-    runs-on: ubuntu-latest
-    steps:
-      - name: Submit IndexNow
-        uses: bojieyang/indexnow-action@v2
-        with:
-          sitemap-location: https://docs.fobestudio.com/sitemap.xml
-          key: ${{ secrets.INDEXNOW_KEY }}
