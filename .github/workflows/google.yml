@@ -1,0 +1,16 @@
+name: Google Index Submission
+
+on:
+  # schedule:
+  #     - cron: 0 0,12 * * *
+  workflow_dispatch:
+
+jobs:
+  indexnow:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Submit Index to Google
+        uses: robingenz/action-google-indexing@v1.0.2
+        with:
+          siteUrl: docs.fobestudio.com
+          gcpServiceAccountKey: ${{ secrets.GCP_SA_KEY }}
