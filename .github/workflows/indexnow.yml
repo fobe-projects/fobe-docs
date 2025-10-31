@@ -41,11 +41,3 @@ jobs:
           since-unit: day
           key: ${{ secrets.INDEXNOW_KEY }}
           endpoint: search.seznam.cz
-      - name: Submit IndexNow to Yep
-        uses: bojieyang/indexnow-action@v2
-        with:
-          sitemap-location: https://docs.fobestudio.com/sitemap.xml
-          since: 1
-          since-unit: day
-          key: ${{ secrets.INDEXNOW_KEY }}
-          endpoint: indexnow.yep.com
