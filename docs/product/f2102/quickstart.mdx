@@ -227,7 +227,7 @@ More information can be found in the [Meshtastic documentation](https://meshtast
 
 import FAQStructuredData from '../../../src/theme/DocFAQ';
 
-export const faqs = [
+<FAQStructuredData faqs={[
   {
     question: "I can't upload firmware to the board, what should I do?",
     answer:
@@ -253,9 +253,24 @@ export const faqs = [
     answer:
       'You can find the bootloader project and instructions in the [FoBE Bootloader Repository](https://github.com/fobe-projects/fobe-nrf52-bootloader), please follow the instructions to update the bootloader.',
   },
-];
+]} />
 
-<FAQStructuredData faqs={faqs} />
+## FAQs
+
+### I can't upload firmware to the board, what should I do?
+You can try to click the Reset button twice quickly to enter the bootloader mode. If that doesn't work, please check your USB cable and connection.
+
+### How do I connect the LoRa and GPS antennas?
+The LoRa antenna should be connected to the UF.L connector labeled "LoRa", and the GPS antenna should be connected to the UF.L connector labeled "GPS".
+
+### How do I power the board?
+You can power the board via the USB-C connector or by connecting a single-cell Li-ion/Li-Po battery to the 2-pin MX1.25 battery input interface.
+
+### How do I charge the battery?
+When the board is powered via the USB-C connector, the battery will be charged automatically. The charging indicator LED will light up during charging.
+
+### How do I update the bootloader?
+You can find the bootloader project and instructions in the [FoBE Bootloader Repository](https://github.com/fobe-projects/fobe-nrf52-bootloader), please follow the instructions to update the bootloader.
 
 ## Resources
 
