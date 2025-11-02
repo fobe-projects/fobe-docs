@@ -84,45 +84,80 @@ module.exports = {
 
   plugins: [
     [
-      "@graphql-markdown/docusaurus",
+      "@docusaurus/plugin-client-redirects",
       {
-        schema: "./schema.graphql",
-        rootPath: "./docs", // docs will be generated under rootPath/baseURL
-        baseURL: "api-reference",
-        homepage: "./template/api-reference.mdx",
-        linkRoot: "../../../",
-        loaders: {
-          GraphQLFileLoader: "@graphql-tools/graphql-file-loader",
-        },
-        groupByDirective: {
-          directive: "doc",
-          field: "category",
-          fallback: "Miscellaneous",
-        },
-        docOptions: {
-          frontMatter: {
-            api_reference: true,
+        redirects: [
+          {
+            to: "/quill_nrf52840_mesh_getting_started",
+            from: ["/product/f1101", "/product/f1101/quickstart"],
           },
-        },
-        printTypeOptions: {
-          hierarchy: "entity",
-        },
+          {
+            to: "/quill_esp32s3_mesh_getting_started",
+            from: ["/product/f1102", "/product/f1102/quickstart"],
+          },
+          {
+            to: "/mesh_solar_power_getting_started",
+            from: ["/product/f2101", "/product/f2101/quickstart"],
+          },
+          {
+            to: "/mesh_tracker_c1_getting_started",
+            from: ["/product/f2102", "/product/f2102/quickstart"],
+          },
+          {
+            to: "/breakout_lps22_getting_started",
+            from: ["/product/f2201", "/product/f2201/quickstart"],
+          },
+          {
+            to: "/breakout_sht40_getting_started",
+            from: ["/product/f2202", "/product/f2202/quickstart"],
+          },
+          {
+            to: "/breakout_oled_0_42_getting_started",
+            from: ["/product/f2203", "/product/f2203/quickstart"],
+          },
+          {
+            to: "/breakout_bm8563_getting_started",
+            from: ["/product/f2204", "/product/f2204/quickstart"],
+          },
+          {
+            to: "/breakout_ens160_getting_started",
+            from: ["/product/f2205", "/product/f2205/quickstart"],
+          },
+          {
+            to: "/breakout_as5600_getting_started",
+            from: ["/product/f2206", "/product/f2206/quickstart"],
+          },
+          {
+            to: "/breakout_l76k_getting_started",
+            from: ["/product/f2207", "/product/f2207/quickstart"],
+          },
+          {
+            to: "/breakout_ads1115_getting_started",
+            from: ["/product/f2208", "/product/f2208/quickstart"],
+          },
+          {
+            to: "/breakout_gp8303_getting_started",
+            from: ["/product/f2209", "/product/f2209/quickstart"],
+          },
+          {
+            to: "/breakout_gp8403_getting_started",
+            from: ["/product/f2210", "/product/f2210/quickstart"],
+          },
+          {
+            to: "/breakout_cmsis_dap_lite_getting_started",
+            from: ["/product/f2211", "/product/f2211/quickstart"],
+          },
+          {
+            to: "/breakout_mfp_hub_getting_started",
+            from: ["/product/f2212", "/product/f2212/quickstart"],
+          },
+          {
+            to: "/core_nrf52840_mesh_getting_started",
+            from: ["/product/f6001", "/product/f6001/quickstart"],
+          },
+        ],
       },
     ],
-    // Disabling due to known bug which causes slowdowns in the build process
-    // https://github.com/facebook/docusaurus/discussions/11199
-    function disableExpensiveBundlerOptimizationPlugin() {
-      return {
-        name: "disable-expensive-bundler-optimizations",
-        configureWebpack(_config, isServer) {
-          return {
-            optimization: {
-              concatenateModules: false,
-            },
-          };
-        },
-      };
-    },
   ],
 
   themeConfig: {

@@ -34,9 +34,6 @@
     "@docusaurus/theme-classic": "^3.9.2",
     "@docusaurus/theme-mermaid": "^3.9.2",
     "@docusaurus/types": "^3.9.2",
-    "@graphql-markdown/diff": "^1.1.8",
-    "@graphql-markdown/docusaurus": "^1.26.2",
-    "@graphql-tools/graphql-file-loader": "^8.0.1",
     "@types/react": "^18.3.11",
     "cspell": "^9.0.2",
     "dotenv": "^16.5.0",
@@ -54,6 +51,7 @@
     "uuid": "^10.0.0"
   },
   "dependencies": {
+    "@docusaurus/plugin-client-redirects": "^3.9.2",
     "@docusaurus/plugin-sitemap": "^3.9.2",
     "@mermaid-js/layout-elk": "^0.1.9",
     "@sentry/react": "^9.29.0",
