@@ -75,7 +75,7 @@ module.exports = {
         {
           type: "category",
           label: "Mesh Tracker C1",
-          items: ["product/f2102/quickstart"],
+          items: ["product/f2102/quickstart", "product/f2102/programming"],
         },
         {
           type: "category",

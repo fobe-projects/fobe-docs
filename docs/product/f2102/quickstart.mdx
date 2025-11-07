@@ -170,60 +170,29 @@ The board features a jumper pad:
 
 [Meshtastic](https://meshtastic.org) is a popular open-source project that allows you to create an off-grid, decentralized mesh network built to run on affordable, low-power devices.
 
-The FoBE Quill nRF52840 Mesh is compatible with Meshtastic, allowing you to build your own mesh network using this development board.
+The FoBE Mesh Tracker C1 is compatible with **Meshtastic**, allowing you to build your own mesh network using this development board.
 
-#### Flashing firmware
+:::tip
+Get and Flash the latest Meshtastic firmware from the [Firmware Hub](/firmware-hub?id=fobe_idea_mesh_tracker_c1).
+:::
 
-This tutorial will guide users to flash the FoBE Quill nRF52840 Mesh to the Meshtastic version, for those who want to use the Meshtastic network.
+:::info
+Source code is available on the [FoBE Meshtastic Firmware Repository](https://github.com/fobe-projects/meshtastic-firmware).
+:::
 
-#### Preparation
+### MeshCore
 
-- FoBE Quill nRF52840 Mesh Board x 1
-- USB-C cable x 1
-- Computer with Python 3 installed
+[MeshCore](https://meshcore.co.uk) is a multi platform system for enabling secure text based communications utilising LoRa radio hardware. It can be used for Off-Grid Communication, Emergency Response & Disaster Recovery, Outdoor Activities, Tactical Security including law enforcement and private security and also IoT sensor networks.
 
-#### Wiring
+The FoBE Mesh Tracker C1 is compatible with **MeshCore**, allowing you to build your own mesh network using this development board.
 
-Connect the FoBE Quill nRF52840 Mesh to your computer using a USB-C cable.
+:::tip
+Get and Flash the latest MeshCore firmware from the [Firmware Hub](/firmware-hub?id=fobe_idea_mesh_tracker_c1).
+:::
 
-#### Flash Meshtastic firmware
-
-Download the latest firmware from the [Firmware Hub](/firmware-hub?id=fobe_idea_mesh_tracker_c1).
-
-<Tabs defaultValue="uf2" values={[
-    { label: "UF2", value: "uf2" },
-    { label: "Hex", value: "hex" },
-]}>
-<TabItem value="uf2">
-
-Double click the **Reset** button, there should be a `FoBE Boot` drive on your PC.
-
-<div style={{ textAlign: 'center' }}><img src="/img/screenshot/2025-07-21-14-46-54.webp" alt="Guide Screenshot" style={{ width: '20%', height: 'auto' }} /></div>
-
-Drag the `firmware-fobe_idea_mesh_tracker_c1-2.7.3.cf574c7.uf2` file to the drive. The installation will run automatically, then the drive will disappear.
-
-</TabItem>
-<TabItem value="hex">
-
-This is recommended method, to install latest version:
-
-```shell
-pip3 install --user adafruit-nrfutil
-```
-
-To flash the firmware, run the following command:
-
-```shell
-adafruit-nrfutil --verbose dfu serial --package firmware-fobe_quill_nrf52840_mesh-2.7.3.cf574c7.zip \
---port <your_device_port> -b 115200
-```
-
-</TabItem>
-</Tabs>
-
-Now you can use the FoBE Quill nRF52840 Mesh with the Meshtastic network. You can use the Meshtastic app to configure your device and start using it.
-
-More information can be found in the [Meshtastic documentation](https://meshtastic.org/docs/).
+:::info
+Source code is available on the [FoBE MeshCore Firmware Repository](https://github.com/fobe-projects/meshcore-firmware).
+:::
 
 import FAQStructuredData from '../../../src/theme/DocFAQ';
 
