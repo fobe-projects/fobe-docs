@@ -4,21 +4,24 @@
   "manufacturer": "FoBE",
   "image": "/img/products/f1101.render.shot-box.r1a.webp",
   "mcu": "NRF52840",
+  "series": "nrf52",
   "features": ["NFC", "Bluetooth"],
-  "circuitpython": {
-    "id": "fobe_quill_nrf52840_mesh",
-    "enabled": true,
-    "packages": ["uf2", "hex", "bin"],
-    "variants": []
-  },
-  "meshtastic": {
-    "id": "fobe_quill_nrf52840_mesh",
-    "enabled": true,
-    "packages": ["uf2"]
-  },
-  "micropython": {
-    "id": "FOBE_QUILL_NRF52840_MESH",
-    "enabled": true,
-    "packages": ["uf2", "hex"]
+  "firmwares": {
+    "circuitpython": {
+      "id": "fobe_quill_nrf52840_mesh",
+      "enabled": true,
+      "packages": ["uf2", "hex", "bin"],
+      "variants": []
+    },
+    "meshtastic": {
+      "id": "fobe_quill_nrf52840_mesh",
+      "enabled": true,
+      "packages": ["uf2"]
+    },
+    "micropython": {
+      "id": "FOBE_QUILL_NRF52840_MESH",
+      "enabled": true,
+      "packages": ["uf2", "hex"]
+    }
   }
 }

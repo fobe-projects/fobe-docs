@@ -4,21 +4,24 @@
   "manufacturer": "FoBE",
   "image": "/img/products/f1102.render.shot-box.r1a.webp",
   "mcu": "ESP32-S3",
+  "series": "esp32",
   "features": ["Wi-Fi", "Bluetooth"],
-  "circuitpython": {
-    "id": "fobe_quill_esp32s3_mesh",
-    "enabled": true,
-    "packages": ["app-bin", "bin", "elf", "uf2"],
-    "variants": []
-  },
-  "meshtastic": {
-    "id": "fobe_quill_esp32s3_mesh",
-    "enabled": true,
-    "packages": ["bin"]
-  },
-  "micropython": {
-    "id": "FOBE_QUILL_ESP32S3_MESH",
-    "enabled": true,
-    "packages": ["app-bin", "bin", "elf", "map", "uf2"]
+  "firmwares": {
+    "circuitpython": {
+      "id": "fobe_quill_esp32s3_mesh",
+      "enabled": true,
+      "packages": ["app-bin", "bin", "elf", "uf2"],
+      "variants": []
+    },
+    "meshtastic": {
+      "id": "fobe_quill_esp32s3_mesh",
+      "enabled": true,
+      "packages": ["bin"]
+    },
+    "micropython": {
+      "id": "FOBE_QUILL_ESP32S3_MESH",
+      "enabled": true,
+      "packages": ["app-bin", "bin", "elf", "map", "uf2"]
+    }
   }
 }

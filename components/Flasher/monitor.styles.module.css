@@ -4,6 +4,8 @@
 
 .modalOverlay {
   position: fixed;
+  inset: 0 !important;
+  transform: none !important;
   top: 0;
   left: 0;
   right: 0;
@@ -16,6 +18,7 @@
 }
 
 .modalContent {
+  margin: auto;
   max-width: 80%;
   padding: 20px;
   background-color: var(--ifm-color-emphasis-0);
