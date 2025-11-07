@@ -93,7 +93,11 @@
     "QDEC",
     "ksps",
     "Radionica",
-    "Modulino"
+    "Modulino",
+    "conv",
+    "Chiho",
+    "Xxxs",
+    "MFCC"
   ],
   "allowCompoundWords": true,
   "useGitignore": true,
