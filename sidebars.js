@@ -48,6 +48,14 @@ module.exports = {
         icon: "box",
       },
     },
+    {
+      type: "link",
+      label: "Blog",
+      href: "blog",
+      customProps: {
+        icon: "platform",
+      },
+    },
 
     title("Development Boards"),
     {

@@ -279,6 +279,8 @@ module.exports = {
       },
     },
 
+    blog: {},
+
     mermaid: {
       theme: {
         light: "neutral",
@@ -296,14 +298,14 @@ module.exports = {
       },
       items: [
         {
-          type: "search",
-          position: "left",
-        },
-        {
           to: "https://store.fobestudio.com",
           label: "Store 🛍️",
           position: "right",
           className: "store-button-cta",
+        },
+        {
+          type: "search",
+          position: "right",
         },
       ],
     },
@@ -328,6 +330,19 @@ module.exports = {
           changefreq: "weekly",
           priority: 0.5,
           ignorePatterns: ["/404", "/404/**", "/tags", "/tags/**", "/search"],
+        },
+        blog: {
+          feedOptions: {
+            type: "all",
+            copyright: `Copyright © ${new Date().getFullYear()} FoBE Studio`,
+            createFeedItems: async (params) => {
+              const { blogPosts, defaultCreateFeedItems, ...rest } = params;
+              return defaultCreateFeedItems({
+                blogPosts: blogPosts.filter((item, index) => index < 12),
+                ...rest,
+              });
+            },
+          },
         },
         docs: {
           breadcrumbs: true,
