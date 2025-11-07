@@ -1,7 +1,7 @@
 import "xterm/css/xterm.css";
 
 import { ESPLoader, Transport } from "esptool-js";
-import React, { useEffect, useRef,useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   FaAngleRight,
   FaArrowLeft,
@@ -286,7 +286,6 @@ const ReleaseGrid = ({
             <button className={styles.roundedButton} onClick={onDfuEnter}>
               {dfuOK ? <FaCheck /> : <FaCode />}
               <span>Enter DFU mode</span>
-              {/* todo Executed */}
               <div className={styles.tooltip} role="tooltip">
                 Enter DFU mode - this mode enables you to flash your firmware.
                 If you did not trigger the DFU mode manually, please click this
