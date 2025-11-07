@@ -2,14 +2,7 @@
 title: "Talk to Your Mesh: Hands‑Free Speech Commands for Meshtastic"
 description: How we integrated a lightweight, low-power Speech Command module into Meshtastic to enable hands-free mesh interaction.
 slug: speech-command-for-meshtastic
-authors:
-  - name: Chiho Sin
-    title: Co-creator of FoBE Studio
-    url: https://github.com/fobe-projects
-    image_url: https://github.com/chihosin.png
-    socials:
-      x: Fernando_Xxxs
-      github: fobe-projects
+authors: [chiho]
 tags:
   - Meshtastic
   - Speech Command
@@ -24,17 +17,21 @@ keywords:
   - Firmware
   - Speech Commands
   - TinyML
-image: https://i.imgur.com/mErPwqL.png
+image: /img/screenshot/2025-11-08-01-53-36.png
 hide_table_of_contents: false
 ---
 
+<!-- markdownlint-disable MD033 -->
 <iframe width="100%" height="720px" src="https://www.youtube.com/embed/9K7N0RUiVE0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<!-- markdownlint-enable MD033 -->
 
 ## Why Speech Command?
 
 Voice control is everywhere at home—**lights**, **fans**, **assistants**—but it’s still rare in **offline, low‑bandwidth outdoor mesh**.
 
 Adding a local, on‑device **Speech Command** layer to Meshtastic means you can trigger actions by _speaking_—even with **gloves on**, **hands busy**, or **eyes up** in the field. Spoken intent becomes **compact, low‑bandwidth commands**, speeding up response and laying the groundwork for **richer, domain‑specific voice interactions**.
+
+<!-- truncate -->
 
 ## Challenge of Speech Command in Mesh
 
@@ -45,7 +42,7 @@ Unlike typical smart home devices—which rely on cloud-based speech recognition
 - **Environmental noise**: Outdoor noise can impact recognition accuracy.
 - **Limited compute resources**: Mesh devices have constrained processing power and can't run large, complex models.
 
-We needed a **lightweight speech recognition module** that runs efficiently under these constraints, while still delivering reliable accuracy and fast response. Based on these requirements, we built a demo version of speech command integration and tested it on Meshtastic devices。
+We needed a **lightweight speech recognition module** that runs efficiently under these constraints, while still delivering reliable accuracy and fast response. Based on these requirements, we built a demo version of **Speech Command integration** and tested it on Meshtastic devices.
 
 ## How to Build It
 
@@ -56,7 +53,7 @@ The following sections detail how the Speech Command module was implemented and 
 We chose the **FoBE Mesh Tracker C1** as the test platform because it’s based on the **nRF52840**, giving enough compute headroom for a lightweight on‑device speech model while keeping excellent energy characteristics for outdoor use. Its flexible expansion interface lets us snap in a microphone module quickly for audio capture.
 
 - FoBE Mesh Tracker C1: [Product page](https://fobestudio.com/products/fobe_idea_mesh_tracker_c1)
-- Flexible microphone module: [Module docs](https://fobe-projects.github.io/fobe-docs/hardwaremesh-tracker-c1/microphone-module/)
+- Flexible microphone module: [Module docs](https://fobestudio.com/products/fobe-flexible-mp34dt05)
 
 ![FoBE Mesh Tracker C1 and Flexible Microphone Module](/img/screenshot/2025-11-08-01-53-36.png)
 
@@ -167,5 +164,6 @@ This demo **validates on‑device Speech Command** for Meshtastic under tight re
 - **Noise robustness**: dual‑mic (beamforming), spectral denoise, multi‑window voting to resist wind and impact noise.
 - **Multilingual & customization**: user‑specific fine‑tuning or few‑shot on‑device adaptation for accent / language variants.
 - **Reliability safeguards**: confidence thresholds + optional fallback (e.g., button confirm when below margin).
+- **Lower power**: refined duty‑cycling, wake‑word gating before feature extraction, and peripheral clock scaling to extend battery life.
 
 **If you have better ideas, let us know on [Discord](https://discord.com/channels/1397243709434757230/1436456987306234028) or [GitHub](https://github.com/fobe-projects/meshtastic-firmware)!**
