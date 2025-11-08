@@ -1,7 +1,5 @@
-import "xterm/css/xterm.css";
-
 import { ESPLoader, Transport } from "esptool-js";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect,useRef, useState } from "react";
 import {
   FaAngleRight,
   FaArrowLeft,
@@ -13,7 +11,6 @@ import {
   FaSearch,
   FaTerminal,
 } from "react-icons/fa";
-import { Terminal } from "xterm";
 
 import boards from "../../static/boards/boards.json";
 import firmwares from "../../static/boards/firmware.json";
@@ -356,9 +353,10 @@ const Flasher = () => {
   const [releases, setReleases] = useState({});
   const release = useRef(null);
   const boardFwId = useRef(null);
+  const erase = useRef(false);
 
-  const terminalContainer = useRef(null);
-  const termRef = useRef(null);
+  const [flashStatus, setFlashStatus] = useState("");
+  const [progress, setProgress] = useState(0);
 
   const { fileCache, fetchedPackage, fetchFirmwares } = useFirmwareManager();
 
@@ -399,7 +397,8 @@ const Flasher = () => {
       release.current = arg;
       setView("Flash");
       await new Promise((resolve) => setTimeout(resolve, 100));
-      handleFlash(arg1);
+      erase.current = arg1;
+      handleFlash();
     } else {
       setView("Default");
     }
@@ -415,107 +414,77 @@ const Flasher = () => {
     }
   };
 
-  useEffect(() => {
-    if (view !== "Flash") return;
-    if (!terminalContainer.current) return;
-    const term = new Terminal({ convertEol: true });
-    term.open(terminalContainer.current);
-    termRef.current = term;
-    termRef.current.clear();
-    return () => term.dispose();
-  }, [view]);
+  const handleFlash = async () => {
+    setFlashStatus("Flashing...");
+    setProgress(1);
 
-  const handleFlash = async (erase) => {
     if (boardData.series == "nrf52") {
-      await flashNRF52(erase);
+      await flashNRF52();
     } else if (boardData.series == "esp32") {
-      await flashESP32(erase);
+      await flashESP32();
     }
   };
 
-  const flashNRF52 = async (erase) => {
+  const flashNRF52 = async () => {
     try {
       const port = await navigator.serial.requestPort({});
-      termRef.current.clear();
-
       // Load local firmware file instead of downloading
-      termRef.current.writeln("Loading firmware...");
-
+      // Progress and status handled by progress bar
       const response = await fetch("/firmware.zip");
       if (!response.ok) throw new Error("Failed to load local firmware");
-
       const zipData = await response.blob();
 
-      termRef.current.writeln(
-        "Flashing...(Please make sure your device in DFU mode!!! And hold the connect)",
+      setFlashStatus(
+        "Flashing...(Please make sure your device in DFU mode!!!)",
       );
 
-      const dfu = new Dfu(port, erase);
+      const dfu = new Dfu(port, erase.current);
       await dfu.dfuUpdate(zipData, async (progress) => {
-        console.log(progress);
-        termRef.current.writeln(`flash progress: ${progress}`);
+        setProgress(progress);
       });
-
-      termRef.current.writeln("Completed!");
+      // Optionally set progress to 100 on complete
+      setProgress(100);
+      setFlashStatus("Flashed");
     } catch (error) {
-      termRef.current.writeln(`FLASH ERROR: ${error.message}`);
+      // Optionally handle error (could set progress to 0 or display error)
+      setProgress(0);
+      setFlashStatus(error.message);
     }
   };
 
-  const flashESP32 = async (erase) => {
-    const term = termRef.current;
-    term.clean = term.clear;
-    term.writeLine = term.writeln;
-
+  const flashESP32 = async () => {
     let transport = null;
     const reset = async () => {
       if (transport) {
-        term.writeln("Resetting device...");
         await transport.setRTS(true);
         await transport.setDTR(false);
         await new Promise((resolve) => setTimeout(resolve, 100));
         await transport.setDTR(true);
         await transport.setRTS(false);
-
         transport.disconnect().catch(() => {});
       }
     };
-
     try {
       const port = await navigator.serial.requestPort();
       transport = new Transport(port, true);
-
       const loader = new ESPLoader({
         transport,
         baudrate: 115200,
-        terminal: term,
       });
-
-      term.writeln("Preparing firmware...");
-
       await loader.main();
-
       const targetChip = boardData.mcu;
       if (targetChip != loader.chip.CHIP_NAME) {
-        console.log(
-          "chip not match between",
-          targetChip,
-          loader.chip.CHIP_NAME,
-        );
-        term.writeln(
+        await reset();
+        setFlashStatus(
           `Chip not match between target(${targetChip}) and connected device(${loader.chip.CHIP_NAME})! Stop flash!`,
         );
-        await reset();
         return;
       }
-
       let content = release.current.buffer;
       if (!content && fetchedPackage.current == release.current.pkg) {
-        // bin has been fetched
         content = fileCache.current.get("bin")?.buffer;
       }
       if (!content) {
-        // fetchFirmwares called
         await fetchFirmwares({
           ascription: firmware,
           boardID: boardFwId.current,
@@ -524,18 +493,12 @@ const Flasher = () => {
         });
         content = fileCache.current.get("bin")?.buffer;
       }
-
       if (!content) throw new Error("No firmware available");
-
-      // uint8ArrayToBinaryString
       let binary = "";
       for (let i = 0; i < content.byteLength; i++) {
         binary += String.fromCharCode(content[i]);
       }
       content = binary;
-
-      term.writeln("Starting flash...");
-
       await loader.writeFlash({
         fileArray: [
           {
@@ -544,22 +507,21 @@ const Flasher = () => {
           },
         ],
         flashSize: "keep",
-        eraseAll: erase,
+        eraseAll: erase.current,
         compress: true,
         flashMode: "keep",
         flashFreq: "keep",
         reportProgress: (fileIndex, written, total) => {
-          if (written === total) {
-            term.writeln("Done flashing!");
-          }
+          const progressPercent = (written / total) * 100;
+          setProgress(progressPercent);
         },
       });
-
-      term.writeln("Flash finished. Disconnecting device.");
-
+      setProgress(100);
+      setFlashStatus("Flashed");
       await reset();
     } catch (error) {
-      term.writeln(`FLASH ERROR: ${error.message}`);
+      setFlashStatus(error.message);
+      setProgress(0);
     } finally {
       transport && transport.disconnect().catch(() => {});
     }
@@ -605,9 +567,21 @@ const Flasher = () => {
                   </h3>
                 </div>
               </div>
-            </div>
-            <div>
-              <div ref={terminalContainer} />
+              <div className={styles.containerHeaderLabel}>
+                <h5>{flashStatus}</h5>
+                <button
+                  className={styles.roundedButton}
+                  disabled={progress != 0 && progress != 100}
+                  onClick={handleFlash}
+                >
+                  Flash Again
+                </button>
+              </div>
+              <progress
+                className={styles.flashProgress}
+                value={progress}
+                max="100"
+              ></progress>
             </div>
           </div>
         ) : view == "RelSel" ? (

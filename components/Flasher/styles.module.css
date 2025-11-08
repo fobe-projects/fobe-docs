@@ -67,23 +67,27 @@
 .containerHeader {
   padding: 0px 16px;
 
-  div.containerContent {
-    padding: unset;
-    background-color: unset;
-    justify-content: flex-start;
-    align-content: flex-end;
-  }
-
   p {
     margin: unset;
   }
+
+  .containerHeaderLabel,
+  .containerContent {
+    padding: unset;
+  }
+}
+
+.containerHeader > div.containerContent {
+  background-color: unset;
+  justify-content: flex-start;
+  align-content: flex-end;
 }
 
 .containerHeaderTitle {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  /* gap: 16px; */
   margin-bottom: 16px;
 
   h3 {
@@ -101,7 +105,7 @@
   gap: 16px;
   justify-content: space-between;
 
-  button {
+  button:not([class]) {
     background-color: inherit;
     display: inline-flex;
     border: unset;
@@ -109,8 +113,8 @@
     height: 2rem;
   }
 
-  button:hover,
-  button:focus {
+  button:not([class]):hover,
+  button:not([class]):focus {
     background-color: var(--ifm-color-emphasis-0);
     /* subtle background on hover/focus */
     border-radius: var(--ifm-card-border-radius);
@@ -119,17 +123,25 @@
   }
 }
 
+.containerHeaderLabel,
 .containerContent {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 16px;
   padding: 8px 16px;
-  background-color: var(--gray1);
+
+  h5 {
+    margin: unset;
+  }
 
   .containerContent {
     padding: unset;
   }
+}
+
+.containerContent {
+  background-color: var(--gray1);
 }
 
 /* Common button style */
@@ -152,6 +164,16 @@
 
 .roundedButton input {
   margin: unset;
+}
+
+.roundedButton:disabled,
+.roundedButton[disabled] {
+  opacity: 0.5; /* 透明度变低，看起来灰掉 */
+  cursor: not-allowed;
+  box-shadow: none;
+  background-color: var(--gray3);
+  color: var(--gray8);
+  border-color: var(--gray5);
 }
 
 /* Select with float label */
@@ -385,4 +407,22 @@
 .roundedButton:focus-within .tooltip,
 .roundedButton:hover .tooltip {
   display: block;
+}
+
+.flashProgress {
+  width: 100%;
+  block-size: 1.5rem;
+  border: none;
+  appearance: none;
+  margin-top: 16px;
+}
+
+.flashProgress::-webkit-progress-bar {
+  background-color: var(--ifm-color-success-lightest);
+  border-radius: 8px;
+}
+
+.flashProgress::-webkit-progress-value {
+  background-color: var(--ifm-color-success-darkest);
+  border-radius: 8px;
 }
