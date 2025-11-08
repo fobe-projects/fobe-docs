@@ -52,8 +52,8 @@ The following sections detail how the Speech Command module was implemented and 
 
 We chose the **FoBE Mesh Tracker C1** as the test platform because it’s based on the **nRF52840**, giving enough compute headroom for a lightweight on‑device speech model while keeping excellent energy characteristics for outdoor use. Its flexible expansion interface lets us snap in a microphone module quickly for audio capture.
 
-- FoBE Mesh Tracker C1: [Product page](https://fobestudio.com/products/fobe_idea_mesh_tracker_c1)
-- Flexible microphone module: [Module docs](https://fobestudio.com/products/fobe-flexible-mp34dt05)
+- [FoBE Mesh Tracker C1](https://fobestudio.com/products/fobe_idea_mesh_tracker_c1)
+- [FoBE Flexible MP34DT05](https://fobestudio.com/products/fobe-flexible-mp34dt05)
 
 ![FoBE Mesh Tracker C1 and Flexible Microphone Module](/img/screenshot/2025-11-08-01-53-36.png)
 
