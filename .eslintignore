@@ -3,3 +3,4 @@ docusaurus.config.js
 build/
 docs/
 template/
+components/Flasher/zip.min.js

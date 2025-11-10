@@ -15,6 +15,17 @@
       "updated_at": "2025-09-16"
     },
     {
+      "tag_name": "10.0.0",
+      "dir": "10.0.0",
+      "prerelease": false,
+      "packages": [
+        "fobe_idea_mesh_tracker_c1-20251009-10.0.0.tar.xz",
+        "fobe_quill_esp32s3_mesh-20251009-10.0.0.tar.xz",
+        "fobe_quill_nrf52840_mesh-20251009-10.0.0.tar.xz"
+      ],
+      "updated_at": "2025-10-09"
+    },
+    {
       "tag_name": "9.2.9",
       "dir": "9.2.9",
       "prerelease": false,
@@ -38,6 +49,80 @@
     }
   ],
   "meshtastic": [
+    {
+      "tag_name": "v2.7.13.2465acf",
+      "dir": "v2.7.13.2465acf",
+      "prerelease": false,
+      "packages": [
+        "Meshtastic_nRF52_factory_erase_v3_S140_6.1.0.uf2",
+        "Meshtastic_nRF52_factory_erase_v3_S140_7.3.0.uf2",
+        "bleota-s3.bin",
+        "device-install.bat",
+        "device-install.sh",
+        "device-update.bat",
+        "device-update.sh",
+        "firmware-fobe_idea_mesh_tracker_c1-2.7.13.2465acf-ota.zip",
+        "firmware-fobe_idea_mesh_tracker_c1-2.7.13.2465acf.uf2",
+        "firmware-fobe_idea_mesh_tracker_c1_voice-2.7.13.2465acf-ota.zip",
+        "firmware-fobe_idea_mesh_tracker_c1_voice-2.7.13.2465acf.uf2",
+        "firmware-fobe_quill_esp32s3_mesh-2.7.13.2465acf-update.bin",
+        "firmware-fobe_quill_esp32s3_mesh-2.7.13.2465acf.bin",
+        "firmware-fobe_quill_nrf52840_mesh-2.7.13.2465acf-ota.zip",
+        "firmware-fobe_quill_nrf52840_mesh-2.7.13.2465acf.uf2",
+        "firmware-fobe_quill_nrf52840_mesh_solar-2.7.13.2465acf-ota.zip",
+        "firmware-fobe_quill_nrf52840_mesh_solar-2.7.13.2465acf.uf2",
+        "littlefs-fobe_quill_esp32s3_mesh-2.7.13.2465acf.bin"
+      ],
+      "updated_at": ""
+    },
+    {
+      "tag_name": "v2.7.11.9e364e4",
+      "dir": "v2.7.11.9e364e4",
+      "prerelease": false,
+      "packages": [
+        "Meshtastic_nRF52_factory_erase_v3_S140_6.1.0.uf2",
+        "Meshtastic_nRF52_factory_erase_v3_S140_7.3.0.uf2",
+        "bleota-s3.bin",
+        "device-install.bat",
+        "device-install.sh",
+        "device-update.bat",
+        "device-update.sh",
+        "firmware-fobe_idea_mesh_tracker_c1-2.7.11.9e364e4-ota.zip",
+        "firmware-fobe_idea_mesh_tracker_c1-2.7.11.9e364e4.uf2",
+        "firmware-fobe_quill_esp32s3_mesh-2.7.11.9e364e4-update.bin",
+        "firmware-fobe_quill_esp32s3_mesh-2.7.11.9e364e4.bin",
+        "firmware-fobe_quill_nrf52840_mesh-2.7.11.9e364e4-ota.zip",
+        "firmware-fobe_quill_nrf52840_mesh-2.7.11.9e364e4.uf2",
+        "firmware-fobe_quill_nrf52840_mesh_solar-2.7.11.9e364e4-ota.zip",
+        "firmware-fobe_quill_nrf52840_mesh_solar-2.7.11.9e364e4.uf2",
+        "littlefs-fobe_quill_esp32s3_mesh-2.7.11.9e364e4.bin"
+      ],
+      "updated_at": ""
+    },
+    {
+      "tag_name": "v2.7.10.7584cd5",
+      "dir": "v2.7.10.7584cd5",
+      "prerelease": false,
+      "packages": [
+        "Meshtastic_nRF52_factory_erase_v3_S140_6.1.0.uf2",
+        "Meshtastic_nRF52_factory_erase_v3_S140_7.3.0.uf2",
+        "bleota-s3.bin",
+        "device-install.bat",
+        "device-install.sh",
+        "device-update.bat",
+        "device-update.sh",
+        "firmware-fobe_idea_mesh_tracker_c1-2.7.10.7584cd5-ota.zip",
+        "firmware-fobe_idea_mesh_tracker_c1-2.7.10.7584cd5.uf2",
+        "firmware-fobe_quill_esp32s3_mesh-2.7.10.7584cd5-update.bin",
+        "firmware-fobe_quill_esp32s3_mesh-2.7.10.7584cd5.bin",
+        "firmware-fobe_quill_nrf52840_mesh-2.7.10.7584cd5-ota.zip",
+        "firmware-fobe_quill_nrf52840_mesh-2.7.10.7584cd5.uf2",
+        "firmware-fobe_quill_nrf52840_mesh_solar-2.7.10.7584cd5-ota.zip",
+        "firmware-fobe_quill_nrf52840_mesh_solar-2.7.10.7584cd5.uf2",
+        "littlefs-fobe_quill_esp32s3_mesh-2.7.10.7584cd5.bin"
+      ],
+      "updated_at": ""
+    },
     {
       "tag_name": "v2.7.9.40bbbcd",
       "dir": "v2.7.9.40bbbcd",
@@ -84,6 +169,17 @@
     }
   ],
   "micropython": [
+    {
+      "tag_name": "v1.27.0-preview.300.g3909ad63d",
+      "dir": "v1.27.0-preview",
+      "prerelease": true,
+      "packages": [
+        "FOBE_IDEA_MESH_TRACKER_C1-20251009-v1.27.0-preview.300.g3909ad63d.tar.xz",
+        "FOBE_QUILL_ESP32S3_MESH-20251009-v1.27.0-preview.300.g3909ad63d.tar.xz",
+        "FOBE_QUILL_NRF52840_MESH-20251009-v1.27.0-preview.300.g3909ad63d.tar.xz"
+      ],
+      "updated_at": "2025-10-09"
+    },
     {
       "tag_name": "v1.27.0-preview.150.gcf8a2df1a",
       "dir": "v1.27.0-preview",

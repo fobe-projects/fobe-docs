@@ -118,5 +118,6 @@
         "/`.*`/g"
       ]
     }
-  ]
+  ],
+  "ignorePaths": ["components/Flasher/zip.min.js"]
 }

@@ -8,7 +8,7 @@ import styles from "./monitor.styles.module.css";
 const BAUD_RATES = [115200, 230400, 460800, 921600];
 const DEFAULT_BAUD_RATE = 115200;
 
-const Monitor = () => {
+const Monitor = ({ show, onClose: onClose }) => {
   // DOM References
   const terminalRef = useRef(null);
   const termRef = useRef(null);
@@ -62,6 +62,12 @@ const Monitor = () => {
       }
     };
   }, [showModal, TerminalClass, handleTerminalData]);
+
+  useEffect(() => {
+    if (show) {
+      openModal();
+    }
+  }, [show]);
 
   // Serial Port Operations
   const readFromPort = useCallback(async () => {
@@ -158,6 +164,9 @@ const Monitor = () => {
   const closeModal = useCallback(() => {
     disconnectSerialPort();
     setShowModal(false);
+    if (onClose) {
+      onClose();
+    }
   }, [disconnectSerialPort]);
 
   // Event Handlers
@@ -167,12 +176,6 @@ const Monitor = () => {
 
   return (
     <>
-      {/* Modal Trigger */}
-      <div className={styles.modalTrigger}>
-        <button onClick={openModal}>Serial Monitor</button>
-      </div>
-
-      {/* Modal Content */}
       {showModal && (
         <div className={styles.modalOverlay}>
           <div className={styles.modalContent}>

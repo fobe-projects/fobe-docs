@@ -9,6 +9,7 @@ export function useFirmwareManager() {
   const fetchedPackage = useRef("");
   const [loading, setLoading] = useState(false);
 
+  // pkg: 第一个 "-" 之后的内容
   const fetchFirmwares = async ({ ascription, boardID, dir, pkg }) => {
     return new Promise((resolve, reject) => {
       (async () => {
@@ -20,6 +21,7 @@ export function useFirmwareManager() {
           if (ascription.toLowerCase() === "micropython") {
             firmware_url = `${firmware_url}/micropython/${dir}/${boardID}-${pkg}`;
           } else if (ascription.toLowerCase() === "circuitpython") {
+            // https://raw.githubusercontent.com/fobe-projects/fobe-projects.github.io/refs/heads/main/firmwares/circuitpython/10.0.0-beta.3/fobe_idea_mesh_tracker_c1-20250916-10.0.0-beta.3-2-gc9d65d14f2.tar.xz
             firmware_url = `${firmware_url}/circuitpython/${dir}/${boardID.toLowerCase()}-${pkg}`;
           } else if (ascription.toLowerCase() === "meshtastic") {
             firmware_url = `${firmware_url}/meshtastic/${dir}/firmware-${boardID.toLowerCase()}-${pkg}`;
@@ -51,6 +53,7 @@ export function useFirmwareManager() {
             throw new Error(`Download error: ${response.status}`);
           }
 
+          // decompressed tar.xz
           const decompressedResponse = new Response(
             new XzReadableStream(response.body),
           );
@@ -88,6 +91,7 @@ export function useFirmwareManager() {
                 name: header.name.split("/").pop(),
                 url,
                 buffer: fileBuffer,
+                size: header.size,
               });
               next();
             });
