@@ -114,6 +114,7 @@
     border: unset;
     align-items: center;
     height: 2rem;
+    font-size: 20px;
   }
 
   button:not([class]):hover,
@@ -142,12 +143,12 @@
 }
 
 .containerContent {
-  background-color: var(--gray1);
+  /* background-color: var(--gray1); */
 }
 
 /* Common button style */
 .roundedButton {
-  display: inline-flex;
+  display: inherit;
   padding: 8px 16px;
   gap: 0.25rem;
   border-radius: var(--spacer-6);
@@ -161,10 +162,11 @@
     box-shadow 0.2s ease;
   font-weight: 600;
   position: relative;
-}
+  font-size: 15px;
 
-.roundedButton input {
-  margin: unset;
+  svg {
+    font-size: 15px;
+  }
 }
 
 .roundedButton:disabled,
@@ -182,7 +184,7 @@
 .iconSelectorFloatLabel {
   position: relative;
   display: inline-block;
-  width: 40%;
+  width: 50%;
 }
 
 .iconSelectorFloatLabel select {
@@ -359,7 +361,6 @@
 /* selector no close when chose option */
 .iconSelectorNoClose {
   position: relative;
-  width: 20%;
 
   > select {
     width: 100%;

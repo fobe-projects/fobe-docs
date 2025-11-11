@@ -281,6 +281,26 @@ const ReleaseGrid = ({
               {fsFirmwares[firmware].name}
             </h3>
           </div>
+          <div className={styles.iconSelectorNoClose}>
+            <select
+              id={"pkg-selector"}
+              value=""
+              onChange={async (e) => {
+                const pkgType = e.target.value;
+                if (!pkgType) return;
+                await onPkgDownload(selectedRelease, pkgType);
+              }}
+            >
+              <option value="" disabled>
+                Download
+              </option>
+              {packages.map((f_type, idx) => (
+                <option key={idx} value={f_type}>
+                  {f_type}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
         <div className={styles.containerContent}>
@@ -290,14 +310,18 @@ const ReleaseGrid = ({
               {selectorOpts}
             </select>
           </div>
-          {selectedRelease.note ? (
-            <div>
-              <b>Release Note:</b>
+          <div>
+            <b>Release Note</b>
+            {selectedRelease.note ? (
               <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>
                 {selectedRelease.note}
               </ReactMarkdown>
-            </div>
-          ) : null}
+            ) : (
+              <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>
+                *No release note available.*
+              </ReactMarkdown>
+            )}
+          </div>
         </div>
       </div>
 
@@ -345,27 +369,6 @@ const ReleaseGrid = ({
               <b>Enter DFU mode</b> before flashing
             </div>
           </button>
-        </div>
-
-        <div className={styles.iconSelectorNoClose}>
-          <select
-            id={"pkg-selector"}
-            value=""
-            onChange={async (e) => {
-              const pkgType = e.target.value;
-              if (!pkgType) return;
-              await onPkgDownload(selectedRelease, pkgType);
-            }}
-          >
-            <option value="" disabled>
-              Download
-            </option>
-            {packages.map((f_type, idx) => (
-              <option key={idx} value={f_type}>
-                {f_type}
-              </option>
-            ))}
-          </select>
         </div>
       </div>
     </div>
@@ -470,9 +473,7 @@ const Flasher = () => {
 
       // const zipData = await response.blob();
 
-      setFlashStatus(
-        "Flashing...(Please make sure your device in DFU mode!!!)",
-      );
+      setFlashStatus("Flashing... (Please make sure your device in DFU mode)");
 
       const dfu = new Dfu(port, erase.current);
       await dfu.dfuUpdate(content, async (progress) => {
