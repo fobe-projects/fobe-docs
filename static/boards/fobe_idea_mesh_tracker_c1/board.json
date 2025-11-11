@@ -16,7 +16,7 @@
     "meshtastic": {
       "id": "fobe_idea_mesh_tracker_c1",
       "enabled": true,
-      "packages": ["uf2"]
+      "packages": ["uf2", "zip"]
     },
     "micropython": {
       "id": "FOBE_IDEA_MESH_TRACKER_C1",

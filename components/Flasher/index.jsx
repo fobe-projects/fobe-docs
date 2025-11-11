@@ -116,7 +116,7 @@ const BoardGrid = ({ boards, onClick }) => {
   );
 };
 
-const FirmwareGrid = ({ firmwares, title, onClick }) => {
+const FirmwareGrid = ({ firmwares, series, title, onClick }) => {
   return (
     <div>
       <div className={styles.containerHeader}>
@@ -138,7 +138,14 @@ const FirmwareGrid = ({ firmwares, title, onClick }) => {
 
       <ul className={styles.list}>
         {Object.entries(firmwares)
-          .filter(([_, fw]) => fw.packages.some((d) => d === "bin"))
+          .filter(([_, fw]) => {
+            if (series == "nrf52") {
+              return fw.packages.some((d) => d === "zip");
+            } else if (series == "esp32") {
+              return fw.packages.some((d) => d === "bin");
+            }
+            return false;
+          })
           .map(([key, _]) => (
             <li key={key} onClick={() => onClick("FwSel", key)}>
               <button>
@@ -147,7 +154,6 @@ const FirmwareGrid = ({ firmwares, title, onClick }) => {
                 </span>
                 <span>{fsFirmwares[key].name}</span>
               </button>
-              {/* <img className={styles.icon} src={`/img/features/${feature}.svg`} /> */}
               <a
                 href={`https://github.com/fobe-projects/${key == "Meshtastic" ? "meshtastic-firmware" : key}`}
                 target="_blank"
@@ -210,16 +216,18 @@ const ReleaseGrid = ({
         .slice(-releaseTake)
         .forEach((d, idxx) => {
           if (firmware.toLowerCase() == "meshtastic") {
-            const rel_val = d.slice(d.indexOf("-", 9) + 1); // 9 is "firmware-".length
+            // firmware-{boardID}-{releaseTag}.{fSuffix}
+            // add new format: firmware-{boardID}_{variant}-{releaseTag}-{type}.{fSuffix}
+            const rel_val = d.slice(d.indexOf(boardFwId) + boardFwId.length);
             const ignore_str_idx = rel_val.lastIndexOf(".");
             selectorOptions.push(
               <option
                 key={`${index}-${idxx}`}
                 data-rel={index}
                 data-type={rel_val.slice(ignore_str_idx)}
-                value={rel_val}
+                value={rel_val.slice(0, ignore_str_idx)}
               >
-                {rel_val.slice(0, ignore_str_idx)}
+                {rel_val.slice(1, ignore_str_idx)}
               </option>,
             );
             return;
@@ -270,7 +278,7 @@ const ReleaseGrid = ({
               <FaChalkboard />
               {board.name}
               <FaAngleRight />
-              {firmware}
+              {fsFirmwares[firmware].name}
             </h3>
           </div>
         </div>
@@ -282,12 +290,14 @@ const ReleaseGrid = ({
               {selectorOpts}
             </select>
           </div>
-          <div>
-            <b>Release Note:</b>
-            <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>
-              {selectedRelease.note}
-            </ReactMarkdown>
-          </div>
+          {selectedRelease.note ? (
+            <div>
+              <b>Release Note:</b>
+              <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>
+                {selectedRelease.note}
+              </ReactMarkdown>
+            </div>
+          ) : null}
         </div>
       </div>
 
@@ -441,18 +451,31 @@ const Flasher = () => {
   const flashNRF52 = async () => {
     try {
       const port = await navigator.serial.requestPort({});
-      // Load local firmware file instead of downloading
-      // Progress and status handled by progress bar
-      const response = await fetch("/firmware.zip");
-      if (!response.ok) throw new Error("Failed to load local firmware");
-      const zipData = await response.blob();
+
+      let content;
+      if (fetchedPackage.current == `${release.current.pkg}-ota.zip`) {
+        content = fileCache.current.get("zip")?.blob;
+      }
+      if (!content) {
+        await fetchFirmwares({
+          ascription: firmware,
+          boardID: boardFwId.current,
+          dir: release.current.dir,
+          pkg: release.current.value,
+          pkgType: "zip",
+        });
+        content = fileCache.current.get("zip")?.blob;
+      }
+      if (!content) throw new Error("No firmware available");
+
+      // const zipData = await response.blob();
 
       setFlashStatus(
         "Flashing...(Please make sure your device in DFU mode!!!)",
       );
 
       const dfu = new Dfu(port, erase.current);
-      await dfu.dfuUpdate(zipData, async (progress) => {
+      await dfu.dfuUpdate(content, async (progress) => {
         setProgress(progress);
       });
       // Optionally set progress to 100 on complete
@@ -493,8 +516,8 @@ const Flasher = () => {
         );
         return;
       }
-      let content = release.current.buffer;
-      if (!content && fetchedPackage.current == release.current.pkg) {
+      let content;
+      if (fetchedPackage.current == release.current.pkg) {
         content = fileCache.current.get("bin")?.buffer;
       }
       if (!content) {
@@ -541,12 +564,21 @@ const Flasher = () => {
   };
 
   const handleDownload = async (selectedRelease, pkgType) => {
-    if (fetchedPackage.current !== selectedRelease.value) {
+    let downloaded = false;
+    if (firmware == "meshtastic") {
+      downloaded =
+        fetchedPackage.current !== `${selectedRelease.value}-${pkgType}`;
+    } else {
+      downloaded = fetchedPackage.current !== selectedRelease.value;
+    }
+
+    if (downloaded) {
       await fetchFirmwares({
         ascription: firmware,
         boardID: boardFwId.current,
         dir: selectedRelease.dir,
         pkg: selectedRelease.value,
+        pkgType,
       });
     }
     const f_data = fileCache.current.get(pkgType);
@@ -578,7 +610,7 @@ const Flasher = () => {
                     <FaChalkboard />
                     {boardData.name}
                     <FaAngleRight />
-                    {firmware}
+                    {fsFirmwares[firmware].name}
                   </h3>
                 </div>
               </div>
@@ -612,6 +644,7 @@ const Flasher = () => {
         ) : view == "FwSel" ? (
           <FirmwareGrid
             firmwares={boardData.firmwares}
+            series={boardData.series}
             title={boardData.name}
             onClick={handleChangeStep}
           />

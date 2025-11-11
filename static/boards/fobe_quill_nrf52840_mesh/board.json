@@ -16,7 +16,7 @@
     "meshtastic": {
       "id": "fobe_quill_nrf52840_mesh",
       "enabled": true,
-      "packages": ["uf2"]
+      "packages": ["uf2", "zip"]
     },
     "micropython": {
       "id": "FOBE_QUILL_NRF52840_MESH",

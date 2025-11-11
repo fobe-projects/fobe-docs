@@ -6,11 +6,12 @@ import { XzReadableStream } from "xz-decompress";
 
 export function useFirmwareManager() {
   const fileCache = useRef(new Map());
-  const fetchedPackage = useRef("");
+  const fetchedPackage = useRef(""); // 标记 fileCache, 防重复下载：meshtastic 情况下这个标记逻辑特殊处理!
   const [loading, setLoading] = useState(false);
 
-  // pkg: 第一个 "-" 之后的内容
-  const fetchFirmwares = async ({ ascription, boardID, dir, pkg }) => {
+  // pkg: 非 meshtastic 时会是固件包名的第一个 "-" 之后的内容；meshtastic 情况下包含 “-”
+  // pkgType: meshtastic 的特殊处理，因为 meshtastic 不是一个压缩包放所有固件，所以需要根据类型选择下载
+  const fetchFirmwares = async ({ ascription, boardID, dir, pkg, pkgType }) => {
     return new Promise((resolve, reject) => {
       (async () => {
         setLoading(true);
@@ -24,7 +25,12 @@ export function useFirmwareManager() {
             // https://raw.githubusercontent.com/fobe-projects/fobe-projects.github.io/refs/heads/main/firmwares/circuitpython/10.0.0-beta.3/fobe_idea_mesh_tracker_c1-20250916-10.0.0-beta.3-2-gc9d65d14f2.tar.xz
             firmware_url = `${firmware_url}/circuitpython/${dir}/${boardID.toLowerCase()}-${pkg}`;
           } else if (ascription.toLowerCase() === "meshtastic") {
-            firmware_url = `${firmware_url}/meshtastic/${dir}/firmware-${boardID.toLowerCase()}-${pkg}`;
+            firmware_url = `${firmware_url}/meshtastic/${dir}/firmware-${boardID.toLowerCase()}${pkg}`;
+            if (pkgType === "zip") {
+              firmware_url += `-ota.${pkgType}`;
+            } else {
+              firmware_url += `.${pkgType}`;
+            }
 
             const response = await fetch(firmware_url);
             if (!response.ok) {
@@ -41,9 +47,10 @@ export function useFirmwareManager() {
             fileCache.current.set(firmware_url.slice(ldi + 1), {
               name: firmware_url.split("/").pop(),
               url,
+              blob,
               buffer,
             });
-            fetchedPackage.current = pkg;
+            fetchedPackage.current = `${pkg}-${pkgType}`;
             resolve(fileCache.current);
             return;
           }
