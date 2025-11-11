@@ -12,7 +12,7 @@
     "name": "FoBE IDEA Mesh Tracker C1 Voice",
     "manufacturer": "FoBE",
     "mcu_manufacturer": "Nordic",
-    "image": "/img/products/f2102.render.shot-box.r1lg.webp",
+    "image": "",
     "features": ["Bluetooth", "Lora", "GPS", "Microphone"]
   },
   {
