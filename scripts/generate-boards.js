@@ -28,7 +28,7 @@ function readBoardConfig(boardPath) {
     const boardConfig = JSON.parse(content);
 
     // Extract required fields
-    const { id, name, manufacturer, image } = boardConfig;
+    const { id, name, manufacturer, image, features } = boardConfig;
 
     // Validate required fields
     if (!id || !name || !manufacturer) {
@@ -43,6 +43,7 @@ function readBoardConfig(boardPath) {
       name,
       manufacturer,
       image: image || "", // image field is optional
+      features,
     };
   } catch (error) {
     console.error(`Error: Failed to read ${configPath}:`, error.message);

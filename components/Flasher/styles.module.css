@@ -83,7 +83,7 @@
 .containerHeader > div.containerContent {
   background-color: unset;
   justify-content: flex-start;
-  align-content: flex-end;
+  align-items: flex-start;
 }
 
 .containerHeaderTitle {
@@ -130,7 +130,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 16px;
-  padding: 8px 16px;
+  padding: 8px 0px;
 
   h5 {
     margin: unset;
@@ -338,6 +338,16 @@
       visibility: visible;
       opacity: 1;
     }
+
+    .featureTags {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    a {
+      color: inherit !important;
+    }
   }
 }
 
@@ -350,14 +360,6 @@
 .iconSelectorNoClose {
   position: relative;
   width: 20%;
-
-  .selectIcon {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
-  }
 
   > select {
     width: 100%;
@@ -429,4 +431,12 @@
 .flashProgress::-webkit-progress-value {
   background-color: var(--ifm-color-success-darkest);
   border-radius: 8px;
+}
+
+.flashProgressError::-webkit-progress-bar {
+  background-color: var(--ifm-color-danger-darkest);
+}
+
+.flashProgressError::-moz-progress-bar {
+  background-color: var(--ifm-color-danger-darkest);
 }

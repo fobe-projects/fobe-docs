@@ -6,14 +6,18 @@ import {
   FaBolt,
   FaChalkboard,
   FaCheck,
-  FaChevronDown,
   FaCode,
+  FaEraser,
+  FaExternalLinkAlt,
   FaSearch,
   FaTerminal,
 } from "react-icons/fa";
+import ReactMarkdown from "react-markdown";
+import remarkBreaks from "remark-breaks";
+import remarkGfm from "remark-gfm";
 
-import boards from "../../static/boards/boards.json";
-import firmwares from "../../static/boards/firmware.json";
+import fsBoards from "../../static/boards/boards.json";
+import fsFirmwares from "../../static/boards/firmware.json";
 import { Dfu } from "./dfu";
 import Monitor from "./monitor";
 import styles from "./styles.module.css";
@@ -89,13 +93,22 @@ const BoardGrid = ({ boards, onClick }) => {
         {displayBoards.map((board, index) => (
           <li key={index} onClick={() => onClick("BoSel", board)}>
             <button>
-              <img className={styles.icon} title="fobe" src="favicon.ico"></img>
+              <img
+                className={styles.icon}
+                title="fobe"
+                src={`img/manufacturer/${board.manufacturer}.png`}
+              ></img>
               <span>{board.name}</span>
-              {/* <div className={styles.liTooltip}>
-                <img src={board.image} alt={board.name} loading="lazy" />
-              </div> */}
             </button>
-            <img className={styles.icon} src="/img/lora-logo.svg"></img>
+            <div className={styles.featureTags}>
+              {board.features?.map((feature, idx) => (
+                <img
+                  key={idx}
+                  className={styles.icon}
+                  src={`/img/features/${feature}.svg`}
+                />
+              ))}
+            </div>
           </li>
         ))}
       </ul>
@@ -132,8 +145,17 @@ const FirmwareGrid = ({ firmwares, title, onClick }) => {
                 <span>
                   <FaAngleRight />
                 </span>
-                <span>{key}</span>
+                <span>{fsFirmwares[key].name}</span>
               </button>
+              {/* <img className={styles.icon} src={`/img/features/${feature}.svg`} /> */}
+              <a
+                href={`https://github.com/fobe-projects/${key == "Meshtastic" ? "meshtastic-firmware" : key}`}
+                target="_blank"
+                rel="noreferrer"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <FaExternalLinkAlt />
+              </a>
             </li>
           ))}
       </ul>
@@ -246,7 +268,9 @@ const ReleaseGrid = ({
             </button>
             <h3>
               <FaChalkboard />
-              {`${board.name} > ${firmware}`}
+              {board.name}
+              <FaAngleRight />
+              {firmware}
             </h3>
           </div>
         </div>
@@ -259,18 +283,10 @@ const ReleaseGrid = ({
             </select>
           </div>
           <div>
-            <a
-              href={`https://github.com/fobe-projects/${firmware == "Meshtastic" ? "meshtastic-firmware" : firmware}/releases/tag/${selectedRelease.dir}`}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Release Note
-            </a>
-            {selectedRelease.updated_at ? (
-              <p>
-                <small>Last Update: {selectedRelease.updated_at}</small>
-              </p>
-            ) : null}
+            <b>Release Note:</b>
+            <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>
+              {selectedRelease.note}
+            </ReactMarkdown>
           </div>
         </div>
       </div>
@@ -292,6 +308,7 @@ const ReleaseGrid = ({
           ) : null}
 
           <button className={styles.roundedButton}>
+            <FaEraser />
             <label htmlFor="eraseOrNot">Flash with erase</label>
             <input
               type="checkbox"
@@ -339,7 +356,6 @@ const ReleaseGrid = ({
               </option>
             ))}
           </select>
-          <FaChevronDown className={styles.selectIcon} />
         </div>
       </div>
     </div>
@@ -364,7 +380,6 @@ const Flasher = () => {
     if (boardData.id == id) {
       return;
     }
-    // setLoading(true);
     try {
       const [boardObj, markdownText] = await Promise.all([
         fetch(`/boards/${id}/board.json`).then((res) => res.json()),
@@ -375,8 +390,6 @@ const Flasher = () => {
     } catch (err) {
       console.error(`load board: ${id} error`, err);
       setBoardData([]);
-    } finally {
-      // setLoading(false);
     }
   };
 
@@ -391,7 +404,7 @@ const Flasher = () => {
     } else if (type === "FwSel") {
       setFirmware(arg);
       boardFwId.current = boardData["firmwares"][arg]["id"];
-      setReleases(firmwares[arg]);
+      setReleases(fsFirmwares[arg].releases);
       setView("RelSel");
     } else if (type === "RelSel") {
       release.current = arg;
@@ -447,7 +460,7 @@ const Flasher = () => {
       setFlashStatus("Flashed");
     } catch (error) {
       // Optionally handle error (could set progress to 0 or display error)
-      setProgress(0);
+      setProgress(-1);
       setFlashStatus(error.message);
     }
   };
@@ -521,7 +534,7 @@ const Flasher = () => {
       await reset();
     } catch (error) {
       setFlashStatus(error.message);
-      setProgress(0);
+      setProgress(-1);
     } finally {
       transport && transport.disconnect().catch(() => {});
     }
@@ -563,7 +576,9 @@ const Flasher = () => {
                   </button>
                   <h3>
                     <FaChalkboard />
-                    {`${boardData.name} > ${firmware}`}
+                    {boardData.name}
+                    <FaAngleRight />
+                    {firmware}
                   </h3>
                 </div>
               </div>
@@ -571,14 +586,14 @@ const Flasher = () => {
                 <h5>{flashStatus}</h5>
                 <button
                   className={styles.roundedButton}
-                  disabled={progress != 0 && progress != 100}
+                  disabled={progress > 0 && progress < 100}
                   onClick={handleFlash}
                 >
                   Flash Again
                 </button>
               </div>
               <progress
-                className={styles.flashProgress}
+                className={`${styles.flashProgress} ${progress == -1 ? styles.flashProgressError : ""}`}
                 value={progress}
                 max="100"
               ></progress>
@@ -601,7 +616,7 @@ const Flasher = () => {
             onClick={handleChangeStep}
           />
         ) : (
-          <BoardGrid boards={boards} onClick={handleChangeStep} />
+          <BoardGrid boards={fsBoards} onClick={handleChangeStep} />
         )}
       </div>
     </div>

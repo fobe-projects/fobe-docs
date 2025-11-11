@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const fs = require("fs");
+// const { release } = require("os");
 const path = require("path");
 
 const OUTPUT_DIR = path.join(__dirname, "..", "static/boards", "");
@@ -36,25 +37,54 @@ async function getFirmwareDirSha() {
   return fileTree.find((d) => d.path == "firmwares").sha;
 }
 
+async function fetchReleaseNote(fw, tag) {
+  // meshtastic-firmware
+  if (fw == "meshtastic") {
+    fw = "meshtastic-firmware";
+  }
+  const requestUrl = `https://api.github.com/repos/fobe-projects/${fw}/releases/tags/${tag}`;
+  try {
+    const relTag = await fetchFromApi(requestUrl);
+    return relTag.body || "";
+  } catch (err) {
+    console.log(`Fetch release note(${fw} ${tag}) error: ${err}`);
+    return "";
+  }
+}
+
 async function loadFileTree(sha) {
   const requestUrl = `https://api.github.com/repos/fobe-projects/fobe-projects.github.io/git/trees/${sha}?recursive=1`;
   const treeStruct = await fetchFromApi(requestUrl);
   const fileTree = treeStruct.tree;
 
   const resObj = {};
-  fileTree.forEach((d) => {
+  for (const d of fileTree) {
     const dirLevel = d.path.split("/");
+    const fwId = dirLevel[0];
     if (dirLevel.length == 1 && d["type"] == "tree") {
       // ex: [micropython]
-      resObj[dirLevel[0]] = [];
+      resObj[fwId] = {
+        name: fwId,
+        releases: [],
+      };
+      if (fwId == "circuitpython") {
+        resObj[fwId].name = "CircuitPython";
+      } else if (fwId == "micropython") {
+        resObj[fwId].name = "MicroPython";
+      } else if (fwId == "meshtastic") {
+        resObj[fwId].name = "Meshtastic";
+      }
     } else if (dirLevel.length == 2 && d["type"] == "tree") {
       // ex: micropython/ [v1.26.0]
       if (dirLevel[1].includes("preview") || dirLevel[1].includes("beta")) {
-        return;
+        continue;
       }
-      if (!resObj[dirLevel[0]].some((d) => d.tag_name == dirLevel[1])) {
-        resObj[dirLevel[0]].push({
+      if (!resObj[fwId].releases.some((d) => d.tag_name == dirLevel[1])) {
+        console.log(`Fetching release note for ${fwId} ${dirLevel[1]}...`);
+        const note = await fetchReleaseNote(fwId, dirLevel[1]);
+        resObj[fwId].releases.push({
           tag_name: dirLevel[1],
+          note: note,
           dir: dirLevel[1],
           prerelease: false,
           packages: [],
@@ -84,10 +114,14 @@ async function loadFileTree(sha) {
       if (match4) matchKey = match4[1];
 
       if (matchKey) {
-        const tarTag = resObj[dirLevel[0]].find((d) => d.tag_name == matchKey);
+        const tarTag = resObj[fwId].releases.find(
+          (d) => d.tag_name == matchKey,
+        );
         if (!tarTag) {
-          resObj[dirLevel[0]].push({
+          const note = await fetchReleaseNote(fwId, dirLevel[1]);
+          resObj[fwId].releases.push({
             tag_name: matchKey,
+            note,
             dir: dirLevel[1],
             prerelease: true,
             packages: [dirLevel[2]],
@@ -100,8 +134,8 @@ async function loadFileTree(sha) {
           tarTag.packages.push(dirLevel[2]);
         }
       } else {
-        for (let i = 0; i < resObj[dirLevel[0]].length; i++) {
-          const d = resObj[dirLevel[0]][i];
+        for (let i = 0; i < resObj[fwId].releases.length; i++) {
+          const d = resObj[fwId].releases[i];
           if (d.tag_name == dirLevel[1]) {
             const exDate = extractDate(file_name);
             if (d.updated_at < exDate) d.updated_at = exDate;
@@ -112,11 +146,11 @@ async function loadFileTree(sha) {
         }
       }
     }
-  });
+  }
 
   // Sort each firmware's releases by tag_name in descending order
   for (const key in resObj) {
-    resObj[key].sort((a, b) =>
+    resObj[key].releases.sort((a, b) =>
       b.tag_name.localeCompare(a.tag_name, undefined, { numeric: true }),
     );
   }
@@ -134,6 +168,8 @@ async function main() {
     const firmwareJson = await loadFileTree(firmwareDirSha);
 
     const outputFile = path.join(OUTPUT_DIR, "firmware.json");
+
+    // console.log(outputFile);
     fs.writeFileSync(outputFile, JSON.stringify(firmwareJson, null, 2));
     console.log(
       `Successfully saved firmware JSON to ${path.relative(process.cwd(), outputFile)}`,

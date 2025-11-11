@@ -5,7 +5,7 @@
   "image": "/img/products/f1102.render.shot-box.r1a.webp",
   "mcu": "ESP32-S3",
   "series": "esp32",
-  "features": ["Wi-Fi", "Bluetooth"],
+  "features": ["WiFi", "Bluetooth"],
   "firmwares": {
     "circuitpython": {
       "id": "fobe_quill_esp32s3_mesh",

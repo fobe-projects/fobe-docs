@@ -1,11 +1,11 @@
 {
   "id": "fobe_idea_mesh_tracker_c1",
-  "name": "FoBE Idea Mesh Tracker C1",
+  "name": "FoBE IDEA Mesh Tracker C1",
   "manufacturer": "FoBE",
   "image": "/img/products/f2102.render.shot-box.r1lg.webp",
   "mcu": "NRF52840",
   "series": "nrf52",
-  "features": ["NFC", "Bluetooth"],
+  "features": ["Bluetooth", "Lora", "GPS"],
   "firmwares": {
     "circuitpython": {
       "id": "fobe_idea_mesh_tracker_c1",
