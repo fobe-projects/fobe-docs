@@ -158,7 +158,9 @@ export class Dfu {
         return new Promise((resolve, reject) => {
           const timeoutHandle = setTimeout(
             () => {
-              reader.releaseLock();
+              reader.cancel().catch((err) => {
+                console.error("Error cancelling reader on timeout:", err);
+              });
               reject(new Error("Read timeout"));
             },
             DEFAULT_SERIAL_PORT_TIMEOUT * 1000 * 5,
@@ -189,7 +191,12 @@ export class Dfu {
       writer.releaseLock();
     }
 
-    await this.getAck(); // Wait for ACK after sending
+    try {
+      await this.getAck(); // Wait for ACK after sending
+    } catch (err) {
+      console.debug("Caught error in sendPacket -> getAck:", err);
+      throw err;
+    }
   }
 
   async getAck() {
