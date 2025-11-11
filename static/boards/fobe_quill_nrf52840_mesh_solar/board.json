@@ -1,26 +1,26 @@
 {
-  "id": "fobe_idea_mesh_tracker_c1",
-  "name": "FoBE IDEA Mesh Tracker C1",
+  "id": "fobe_quill_nrf52840_mesh_solar",
+  "name": "FoBE Quill NRF52840 Mesh Solar",
   "manufacturer": "FoBE",
-  "image": "/img/products/f2102.render.shot-box.r1lg.webp",
+  "image": "/img/products/f1101.render.shot-box.r1a.webp",
   "mcu": "NRF52840",
   "series": "nrf52",
   "mcu_manufacturer": "Nordic",
-  "features": ["Bluetooth", "Lora", "GPS"],
+  "features": ["NFC", "Bluetooth", "Solar"],
   "firmwares": {
     "circuitpython": {
-      "id": "fobe_idea_mesh_tracker_c1",
+      "id": "fobe_quill_nrf52840_mesh",
       "enabled": true,
       "packages": ["uf2", "hex", "bin"],
       "variants": []
     },
     "meshtastic": {
-      "id": "fobe_idea_mesh_tracker_c1",
+      "id": "fobe_quill_nrf52840_mesh_solar",
       "enabled": true,
       "packages": ["uf2", "zip"]
     },
     "micropython": {
-      "id": "FOBE_IDEA_MESH_TRACKER_C1",
+      "id": "FOBE_QUILL_NRF52840_MESH",
       "enabled": true,
       "packages": ["uf2", "hex"]
     }

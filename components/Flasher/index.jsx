@@ -101,6 +101,10 @@ const BoardGrid = ({ boards, onClick }) => {
               <span>{board.name}</span>
             </button>
             <div className={styles.featureTags}>
+              <img
+                className={styles.icon}
+                src={`/img/features/${board.mcu_manufacturer}.svg`}
+              />
               {board.features?.map((feature, idx) => (
                 <img
                   key={idx}
@@ -205,19 +209,18 @@ const ReleaseGrid = ({
         .filter((d) => {
           if (firmware.toLowerCase() == "meshtastic") {
             return (
-              d.startsWith(`firmware-${boardFwId}`) &&
+              d.startsWith(`firmware-${boardFwId}-`) &&
               d.indexOf("zip") == -1 &&
               d.indexOf("update") == -1
             );
           }
-          return d.startsWith(boardFwId);
+          return d.startsWith(`${boardFwId}-`); // boardID-
         })
         .sort((a, b) => getDate(b).localeCompare(getDate(a)))
         .slice(-releaseTake)
         .forEach((d, idxx) => {
           if (firmware.toLowerCase() == "meshtastic") {
-            // firmware-{boardID}-{releaseTag}.{fSuffix}
-            // add new format: firmware-{boardID}_{variant}-{releaseTag}-{type}.{fSuffix}
+            // firmware-{boardID}-{releaseTag}-{type}.{fSuffix}
             const rel_val = d.slice(d.indexOf(boardFwId) + boardFwId.length);
             const ignore_str_idx = rel_val.lastIndexOf(".");
             selectorOptions.push(

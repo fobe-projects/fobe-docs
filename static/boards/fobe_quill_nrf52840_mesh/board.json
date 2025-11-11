@@ -5,6 +5,7 @@
   "image": "/img/products/f1101.render.shot-box.r1a.webp",
   "mcu": "NRF52840",
   "series": "nrf52",
+  "mcu_manufacturer": "Nordic",
   "features": ["NFC", "Bluetooth"],
   "firmwares": {
     "circuitpython": {

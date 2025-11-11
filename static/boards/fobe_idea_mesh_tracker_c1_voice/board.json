@@ -1,12 +1,12 @@
 {
-  "id": "fobe_idea_mesh_tracker_c1",
-  "name": "FoBE IDEA Mesh Tracker C1",
+  "id": "fobe_idea_mesh_tracker_c1_voice",
+  "name": "FoBE IDEA Mesh Tracker C1 Voice",
   "manufacturer": "FoBE",
   "image": "/img/products/f2102.render.shot-box.r1lg.webp",
   "mcu": "NRF52840",
   "series": "nrf52",
   "mcu_manufacturer": "Nordic",
-  "features": ["Bluetooth", "Lora", "GPS"],
+  "features": ["Bluetooth", "Lora", "GPS", "Microphone"],
   "firmwares": {
     "circuitpython": {
       "id": "fobe_idea_mesh_tracker_c1",
@@ -15,7 +15,7 @@
       "variants": []
     },
     "meshtastic": {
-      "id": "fobe_idea_mesh_tracker_c1",
+      "id": "fobe_idea_mesh_tracker_c1_voice",
       "enabled": true,
       "packages": ["uf2", "zip"]
     },

@@ -28,7 +28,8 @@ function readBoardConfig(boardPath) {
     const boardConfig = JSON.parse(content);
 
     // Extract required fields
-    const { id, name, manufacturer, image, features } = boardConfig;
+    const { id, name, manufacturer, image, mcu_manufacturer, features } =
+      boardConfig;
 
     // Validate required fields
     if (!id || !name || !manufacturer) {
@@ -42,6 +43,7 @@ function readBoardConfig(boardPath) {
       id,
       name,
       manufacturer,
+      mcu_manufacturer,
       image: image || "", // image field is optional
       features,
     };
