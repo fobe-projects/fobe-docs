@@ -1,11 +1,11 @@
-The FoBE Quill nRF52840 Mesh is a compact and versatile development platform for IoT solutions. It combines Nordic's high-end multiprotocol SoC, the nRF52840, with Semtech's ultra-low-power sub-GHz radio transceiver, the SX1262. Designed for IoT applications, it offers a comprehensive wireless connectivity solution, supporting protocols such as bluetooth 5, Thread, Zigbee, IEEE 80.2.15.4, and LoRa®.
+The FoBE Quill nRF52840 Mesh is a compact and versatile development platform for IoT solutions. It combines nordic's high-end multiprotocol SoC, the nRF52840, with Semtech's ultra-low-power sub-GHz radio transceiver, the SX1262. Designed for IoT applications, it offers a comprehensive wireless connectivity solution, supporting protocols such as bluetooth 5, Thread, Zigbee, IEEE 80.2.15.4, and LoRa®.
 
 This development board is feature-rich, including a battery charger, dedicated power path management, an ultra-low quiescent current DC-DC converter, a 1.14-inch color IPS display, user-programmable LEDs and buttons, an MFP expansion connector, a reversible USB-C connector, and header sockets for easy expansion.
 
 ## Technical Details
 
 - **Board:** FoBE Quill nRF52840 Mesh (F1101)
-- **Microcontroller:** Nordic nRF52840 (64 MHz Arm® Cortex-M4 with FPU)
+- **Microcontroller:** nordic nRF52840 (64 MHz Arm® Cortex-M4 with FPU)
 - **Memory:** 1024 kB ROM, 256 kB SRAM
 - **Wireless (Integrated):** bluetooth® 5, Thread, Zigbee, IEEE 802.15.4, nfc-A Tag, 2.4 GHz proprietary with an embedded SMD ceramic antenna.
 - **Wireless (External):** On-board SX1262 for LoRa® communication (470 MHz for Model SLT, 868 - 915 MHz for Model SHT) with an iPEX-U.FL connector for an external antenna.

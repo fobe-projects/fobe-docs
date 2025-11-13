@@ -3,7 +3,7 @@
     "id": "fobe_idea_mesh_tracker_c1",
     "name": "FoBE IDEA Mesh Tracker C1",
     "manufacturer": "FoBE",
-    "mcu_manufacturer": "Nordic",
+    "mcu_manufacturer": "nordic",
     "image": "/img/products/f2102.render.shot-box.r1lg.webp",
     "features": ["bluetooth", "lora", "gps"]
   },
@@ -11,7 +11,7 @@
     "id": "fobe_idea_mesh_tracker_c1_voice",
     "name": "FoBE IDEA Mesh Tracker C1 Voice",
     "manufacturer": "FoBE",
-    "mcu_manufacturer": "Nordic",
+    "mcu_manufacturer": "nordic",
     "image": "",
     "features": ["bluetooth", "lora", "gps"]
   },
@@ -27,7 +27,7 @@
     "id": "fobe_quill_nrf52840_mesh",
     "name": "FoBE Quill NRF52840 Mesh",
     "manufacturer": "FoBE",
-    "mcu_manufacturer": "Nordic",
+    "mcu_manufacturer": "nordic",
     "image": "/img/products/f1101.render.shot-box.r1a.webp",
     "features": ["nfc", "bluetooth"]
   },
@@ -35,7 +35,7 @@
     "id": "fobe_quill_nrf52840_mesh_solar",
     "name": "FoBE Quill NRF52840 Mesh Solar",
     "manufacturer": "FoBE",
-    "mcu_manufacturer": "Nordic",
+    "mcu_manufacturer": "nordic",
     "image": "/img/products/f1101.render.shot-box.r1a.webp",
     "features": ["nfc", "bluetooth"]
   }
