@@ -6,7 +6,7 @@
   "mcu": "NRF52840",
   "series": "nrf52",
   "mcu_manufacturer": "Nordic",
-  "features": ["Bluetooth", "Lora", "GPS"],
+  "features": ["bluetooth", "lora", "gps"],
   "firmwares": {
     "circuitpython": {
       "id": "fobe_idea_mesh_tracker_c1",

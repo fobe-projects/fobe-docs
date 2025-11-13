@@ -6,7 +6,7 @@
   "mcu": "ESP32-S3",
   "series": "esp32",
   "mcu_manufacturer": "Espressif",
-  "features": ["WiFi", "Bluetooth"],
+  "features": ["wifi", "bluetooth"],
   "firmwares": {
     "circuitpython": {
       "id": "fobe_quill_esp32s3_mesh",

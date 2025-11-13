@@ -5,7 +5,7 @@
     "manufacturer": "FoBE",
     "mcu_manufacturer": "Nordic",
     "image": "/img/products/f2102.render.shot-box.r1lg.webp",
-    "features": ["Bluetooth", "Lora", "GPS"]
+    "features": ["bluetooth", "lora", "gps"]
   },
   {
     "id": "fobe_idea_mesh_tracker_c1_voice",
@@ -13,7 +13,7 @@
     "manufacturer": "FoBE",
     "mcu_manufacturer": "Nordic",
     "image": "",
-    "features": ["Bluetooth", "Lora", "GPS", "Microphone"]
+    "features": ["bluetooth", "lora", "gps"]
   },
   {
     "id": "fobe_quill_esp32s3_mesh",
@@ -21,7 +21,7 @@
     "manufacturer": "FoBE",
     "mcu_manufacturer": "Espressif",
     "image": "/img/products/f1102.render.shot-box.r1a.webp",
-    "features": ["WiFi", "Bluetooth"]
+    "features": ["wifi", "bluetooth"]
   },
   {
     "id": "fobe_quill_nrf52840_mesh",
@@ -29,7 +29,7 @@
     "manufacturer": "FoBE",
     "mcu_manufacturer": "Nordic",
     "image": "/img/products/f1101.render.shot-box.r1a.webp",
-    "features": ["NFC", "Bluetooth"]
+    "features": ["nfc", "bluetooth"]
   },
   {
     "id": "fobe_quill_nrf52840_mesh_solar",
@@ -37,6 +37,6 @@
     "manufacturer": "FoBE",
     "mcu_manufacturer": "Nordic",
     "image": "/img/products/f1101.render.shot-box.r1a.webp",
-    "features": ["NFC", "Bluetooth", "Solar"]
+    "features": ["nfc", "bluetooth"]
   }
 ]
