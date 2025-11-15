@@ -5,7 +5,7 @@
   "image": "/img/products/f1102.render.shot-box.r1a.webp",
   "mcu": "ESP32-S3",
   "series": "esp32",
-  "mcu_manufacturer": "Espressif",
+  "mcu_manufacturer": "espressif",
   "features": ["wifi", "bluetooth"],
   "firmwares": {
     "circuitpython": {

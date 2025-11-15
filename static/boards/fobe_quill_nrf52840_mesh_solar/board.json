@@ -6,7 +6,7 @@
   "mcu": "NRF52840",
   "series": "nrf52",
   "mcu_manufacturer": "nordic",
-  "features": ["nfc", "bluetooth", "Solar"],
+  "features": ["nfc", "bluetooth", "solar"],
   "firmwares": {
     "circuitpython": {
       "id": "fobe_quill_nrf52840_mesh",
