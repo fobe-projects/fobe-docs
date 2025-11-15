@@ -84,6 +84,7 @@
     "TCXO",
     "MOSI",
     "RXEN",
+    "RFSW",
     "Vout",
     "TCXO",
     "optimised",
