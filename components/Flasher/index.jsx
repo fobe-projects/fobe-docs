@@ -475,16 +475,16 @@ const Flasher = () => {
       if (!content) throw new Error("No firmware available");
 
       // const zipData = await response.blob();
-
       setFlashStatus("Connecting to the device, This may take some time...");
 
       const dfu = new Dfu(port, erase.current);
       await dfu.dfuUpdate(content, async (progress) => {
+        setFlashStatus("Flashing in progress (" + progress.toFixed(2) + "%)");
         setProgress(progress);
       });
       // Optionally set progress to 100 on complete
       setProgress(100);
-      setFlashStatus("Flashed");
+      setFlashStatus("Flashing completed, device will now reboot.");
     } catch (error) {
       // Optionally handle error (could set progress to 0 or display error)
       setProgress(-1);
@@ -557,7 +557,7 @@ const Flasher = () => {
         },
       });
       setProgress(100);
-      setFlashStatus("Flashed");
+      setFlashStatus("Flashing completed, device will now reboot.");
       await reset();
     } catch (error) {
       setFlashStatus(error.message);

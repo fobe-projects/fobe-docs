@@ -416,22 +416,26 @@
   display: block;
 }
 
+progress {
+  border-radius: 50px;
+}
+
 .flashProgress {
   width: 100%;
-  block-size: 1.5rem;
   border: none;
   appearance: none;
   margin-top: 16px;
+  border-radius: 50px;
 }
 
 .flashProgress::-webkit-progress-bar {
   background-color: var(--ifm-color-success-lightest);
-  border-radius: 8px;
+  border-radius: 50px;
 }
 
 .flashProgress::-webkit-progress-value {
   background-color: var(--ifm-color-success-darkest);
-  border-radius: 8px;
+  border-radius: 50px;
 }
 
 .flashProgressError::-webkit-progress-bar {
