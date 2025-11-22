@@ -476,7 +476,7 @@ const Flasher = () => {
 
       // const zipData = await response.blob();
 
-      setFlashStatus("Flashing... (Please make sure your device in DFU mode)");
+      setFlashStatus("Connecting to the device, This may take some time...");
 
       const dfu = new Dfu(port, erase.current);
       await dfu.dfuUpdate(content, async (progress) => {
