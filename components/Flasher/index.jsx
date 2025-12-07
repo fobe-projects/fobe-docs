@@ -338,8 +338,11 @@ const ReleaseGrid = ({
               <span>Enter DFU mode</span>
               <div className={styles.tooltip} role="tooltip">
                 Enter DFU mode - this mode enables you to flash your firmware.
-                If you did not trigger the DFU mode manually, please click this
-                button.
+                <br />
+                <b>
+                  If you did not trigger the DFU mode manually, click this
+                  button.
+                </b>
               </div>
             </button>
           ) : null}
@@ -368,8 +371,11 @@ const ReleaseGrid = ({
             <span>Flash</span>
             <div className={styles.tooltip} role="tooltip">
               Upload the firmware into your device. Existing firmware will get
-              overwritten. If you did not trigger DFU mode manually, use the{" "}
-              <b>Enter DFU mode</b> before flashing
+              overwritten. <br />
+              <b>
+                If you did not trigger DFU mode manually, use the Enter DFU mode
+                before flashing
+              </b>
             </div>
           </button>
         </div>
