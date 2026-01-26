@@ -226,7 +226,6 @@ module.exports = {
       // Miscellaneous tags
       { name: "viewport", content: "width=device-width, initial-scale=1.0" },
       { name: "theme-color", content: "#003e21" },
-      { name: "canonical", content: "https://docs.fobestudio.com" },
       { name: "mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-status-bar-style", content: "default" },
       { name: "format-detection", content: "telephone=no" },
@@ -333,7 +332,21 @@ module.exports = {
           lastmod: "datetime",
           changefreq: "weekly",
           priority: 0.5,
-          ignorePatterns: ["/404", "/404/**", "/tags", "/tags/**", "/search"],
+          ignorePatterns: [
+            "/404",
+            "/404/**",
+            "/tags",
+            "/tags/**",
+            "/search",
+
+            // Blog listing/filter pages are typically low-value for indexing
+            "/blog/tags",
+            "/blog/tags/**",
+            "/blog/authors",
+            "/blog/authors/**",
+            "/blog/archive",
+            "/blog/archive/**",
+          ],
         },
         blog: {
           feedOptions: {
