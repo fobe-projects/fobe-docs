@@ -230,6 +230,10 @@ module.exports = {
       { name: "mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-status-bar-style", content: "default" },
       { name: "format-detection", content: "telephone=no" },
+      {
+        name: "google-site-verification",
+        content: "AUUWWlCjbUGlBAyxVHAoZezP4XhpA4XWw0nii8PnL6M",
+      },
     ],
 
     announcementBar: {
