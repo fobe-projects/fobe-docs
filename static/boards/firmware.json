@@ -59,8 +59,30 @@
     "name": "Meshtastic",
     "releases": [
       {
+        "tag_name": "v2.7.18.a2da79f",
+        "note": "This is a vendor release version. Please refer to the Changelog in the upstream repository.\r\nUpstream Change log: [https://github.com/meshtastic/firmware/releases/tag/v2.7.18.fb3bf78](https://github.com/meshtastic/firmware/releases/tag/v2.7.18.fb3bf78)",
+        "dir": "v2.7.18.a2da79f",
+        "prerelease": false,
+        "packages": [
+          "Meshtastic_nRF52_factory_erase_v3_S140_6.1.0.uf2",
+          "Meshtastic_nRF52_factory_erase_v3_S140_7.3.0.uf2",
+          "device-install.bat",
+          "device-install.sh",
+          "device-update.bat",
+          "device-update.sh",
+          "firmware-fobe_idea_mesh_tracker_c1-2.7.18.a2da79f-ota.zip",
+          "firmware-fobe_idea_mesh_tracker_c1-2.7.18.a2da79f.uf2",
+          "firmware-fobe_quill_esp32s3_mesh-2.7.18.a2da79f.bin",
+          "firmware-fobe_quill_esp32s3_mesh-2.7.18.a2da79f.factory.bin",
+          "firmware-fobe_quill_nrf52840_mesh-2.7.18.a2da79f-ota.zip",
+          "firmware-fobe_quill_nrf52840_mesh-2.7.18.a2da79f.uf2",
+          "littlefs-fobe_quill_esp32s3_mesh-2.7.18.a2da79f.bin"
+        ],
+        "updated_at": ""
+      },
+      {
         "tag_name": "v2.7.15.e7e04f1",
-        "note": "> [!IMPORTANT]\r\n> This version fixes a critical configuration error in previous firmware. Updating is strongly recommended.\r\n\r\n> [!IMPORTANT]\r\n> This version fixes a critical configuration error in previous firmware. Updating is strongly recommended.\r\n\r\n> [!WARNING]\r\n> This release marks the end of legacy (non-private) DMs. Direct messages will only be allowed using PKI going forward.\r\nThis release also disables device telemetry broadcasts over the mesh by default. If you want to opt back in, you will need to re-enable this in the apps.\r\n\r\nThis is a vendor release version. Please refer to the Changelog in the upstream repository.\r\nUpstream Change log: [https://github.com/meshtastic/firmware/releases/tag/v2.7.15.567b8ea](https://github.com/meshtastic/firmware/releases/tag/v2.7.15.567b8ea)",
+        "note": "> [!IMPORTANT]\r\n> This version fixes a critical configuration error in previous firmware. Updating is strongly recommended.\r\n\r\n> [!IMPORTANT]\r\n> This release marks the end of legacy (non-private) DMs. Direct messages will only be allowed using PKI going forward.\r\nThis release also disables device telemetry broadcasts over the mesh by default. If you want to opt back in, you will need to re-enable this in the apps.\r\n\r\n> [!WARNING]\r\n> This release marks the end of legacy (non-private) DMs. Direct messages will only be allowed using PKI going forward.\r\nThis release also disables device telemetry broadcasts over the mesh by default. If you want to opt back in, you will need to re-enable this in the apps.\r\n\r\nThis is a vendor release version. Please refer to the Changelog in the upstream repository.\r\nUpstream Change log: [https://github.com/meshtastic/firmware/releases/tag/v2.7.15.567b8ea](https://github.com/meshtastic/firmware/releases/tag/v2.7.15.567b8ea)",
         "dir": "v2.7.15.e7e04f1",
         "prerelease": false,
         "packages": [
@@ -73,14 +95,10 @@
           "device-update.sh",
           "firmware-fobe_idea_mesh_tracker_c1-2.7.15.e7e04f1-ota.zip",
           "firmware-fobe_idea_mesh_tracker_c1-2.7.15.e7e04f1.uf2",
-          "firmware-fobe_idea_mesh_tracker_c1_voice-2.7.15.e7e04f1-ota.zip",
-          "firmware-fobe_idea_mesh_tracker_c1_voice-2.7.15.e7e04f1.uf2",
           "firmware-fobe_quill_esp32s3_mesh-2.7.15.e7e04f1-update.bin",
           "firmware-fobe_quill_esp32s3_mesh-2.7.15.e7e04f1.bin",
           "firmware-fobe_quill_nrf52840_mesh-2.7.15.e7e04f1-ota.zip",
           "firmware-fobe_quill_nrf52840_mesh-2.7.15.e7e04f1.uf2",
-          "firmware-fobe_quill_nrf52840_mesh_solar-2.7.15.e7e04f1-ota.zip",
-          "firmware-fobe_quill_nrf52840_mesh_solar-2.7.15.e7e04f1.uf2",
           "littlefs-fobe_quill_esp32s3_mesh-2.7.15.e7e04f1.bin"
         ],
         "updated_at": ""
